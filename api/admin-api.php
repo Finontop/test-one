@@ -17,7 +17,7 @@ function respond($d) { ob_end_clean(); echo json_encode($d); exit; }
 require __DIR__ . "/config.php";
 
 // ── Password check via header or body ──────────────────────────
-define("ADMIN_PASSWORD", "bizboost2026"); // ← change this
+define("ADMIN_PASSWORD", getenv("ADMIN_PASSWORD") ?: "changeme");
 
 $raw  = file_get_contents("php://input");
 $data = json_decode($raw, true) ?? [];
@@ -216,6 +216,6 @@ try {
     respond(["success" => false, "error" => "Unknown action or missing parameters"]);
 
 } catch (Throwable $e) {
-    respond(["success" => false, "error" => $e->getMessage()]);
+    respond(["success" => false, "error" => "An internal error occurred. Please try again later."]);
 }
 ?>

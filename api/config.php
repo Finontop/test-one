@@ -14,17 +14,17 @@ if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] === "OPTIONS
     exit;
 }
 
-// ── InfinityFree Database Credentials ─────────────────────────
-define("DB_HOST", "sql311.infinityfree.com"); 
-define("DB_PORT", "3306");
-define("DB_NAME", "if0_41214152_stest");
-define("DB_USER", "if0_41214152");
-define("DB_PASS", "LGjkW1eFXy6");
+// ── Database Credentials (from environment variables) ──────────
+define("DB_HOST", getenv("DB_HOST") ?: "localhost");
+define("DB_PORT", getenv("DB_PORT") ?: "3306");
+define("DB_NAME", getenv("DB_NAME") ?: "");
+define("DB_USER", getenv("DB_USER") ?: "");
+define("DB_PASS", getenv("DB_PASS") ?: "");
 
-// ── Free API Keys ──────────────────────────────────────────────
-define("SERPER_KEY",       "b51155a8139fc218728144065b36731f9fefa113");
-define("GROQ_KEY",         "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");
-define("DISCORD_WEBHOOK",  "https://discord.com/api/webhooks/1474912431808713019/fEM1v3Lq6zMED-VmK5eC1CUcXar0BZOk4W7IWjKZJFO2b3kHu_6ok4foNrfZQRLlVrfh");
+// ── API Keys (from environment variables) ─────────────────────
+define("SERPER_KEY",      getenv("SERPER_KEY")      ?: "");
+define("GROQ_KEY",        getenv("GROQ_KEY")        ?: "");
+define("DISCORD_WEBHOOK", getenv("DISCORD_WEBHOOK") ?: "");
 
 // ── Discord Webhook Notifier ───────────────────────────────────
 // Colors: 3066993 green | 5814783 blue | 15844367 yellow | 15105570 orange | 15158332 red
@@ -161,11 +161,17 @@ function setupDB() {
             contact           VARCHAR(50)  NOT NULL,
             email             VARCHAR(255) NOT NULL UNIQUE,
             password          VARCHAR(255) NOT NULL,
+            is_featured       TINYINT(1)   NOT NULL DEFAULT 0,
+            is_verified       TINYINT(1)   NOT NULL DEFAULT 0,
+            featured_order    INT          NOT NULL DEFAULT 0,
             subscription_tier VARCHAR(20)  NOT NULL DEFAULT 'free',
             created_at        TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4");
 
-        // Safely add subscription_tier to existing sellers tables
+        // Safely add columns to existing sellers tables
+        try { $pdo->exec("ALTER TABLE sellers ADD COLUMN is_featured TINYINT(1) NOT NULL DEFAULT 0"); } catch (Throwable $_) {}
+        try { $pdo->exec("ALTER TABLE sellers ADD COLUMN is_verified TINYINT(1) NOT NULL DEFAULT 0"); } catch (Throwable $_) {}
+        try { $pdo->exec("ALTER TABLE sellers ADD COLUMN featured_order INT NOT NULL DEFAULT 0"); } catch (Throwable $_) {}
         try { $pdo->exec("ALTER TABLE sellers ADD COLUMN subscription_tier VARCHAR(20) NOT NULL DEFAULT 'free'"); } catch (Throwable $_) {}
 
         $pdo->exec("CREATE TABLE IF NOT EXISTS buyers (
