@@ -618,7 +618,9 @@
     .price-card.featured .price-amount { color: #fff; }
     .price-amount sup { font-size: 20px; vertical-align: top; margin-top: 8px; display: inline-block; }
     .price-amount span { font-size: 16px; font-weight: 400; color: var(--muted); letter-spacing: 0; }
+    .price-amount .price-val { all: unset; font-family: 'Sora', sans-serif; font-size: 44px; font-weight: 800; letter-spacing: -0.05em; }
     .price-card.featured .price-amount span { color: rgba(255,255,255,0.6); }
+    .price-card.featured .price-amount .price-val { color: #fff; }
     .price-desc { font-size: 13.5px; color: var(--muted); margin-top: 12px; line-height: 1.55; }
     .price-card.featured .price-desc { color: rgba(255,255,255,0.75); }
     .price-div { height: 1px; background: var(--border); margin: 22px 0; }
@@ -1042,7 +1044,9 @@
       #scroll-progress,
       .nav, .nav-mobile-menu, .mobile-fab,
       #cursor, #cursor-ring,
-      .hero, #how, #features, #proof, #pricing, #cta, footer {
+      .hero, .trusted-section, #how, #features, #proof,
+      #stats-highlight, #compare, #pricing, #faq, #cta, footer,
+      #back-to-top, #toast-container {
         display: none !important;
       }
 
@@ -1474,19 +1478,24 @@
 
       /* ── BOTTOM NAV ──────────────────────────────────── */
       .ma-bottom-nav {
-        display: flex; align-items: center; justify-content: space-around;
+        display: flex; align-items: center;
         height: 64px; flex-shrink: 0;
         background: var(--bg); border-top: 1px solid var(--border);
         position: relative; z-index: 10;
-        padding: 0 4px;
+        padding: 0 2px;
+        overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        /* Right-edge fade to hint scrollability */
+        -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+        mask-image: linear-gradient(to right, black 85%, transparent 100%);
       }
+      .ma-bottom-nav::-webkit-scrollbar { display: none; }
       .ma-nav-btn {
-        display: flex; flex-direction: column; align-items: center; gap: 4px;
-        flex: 1; padding: 8px 4px;
+        display: flex; flex-direction: column; align-items: center; gap: 3px;
+        flex: 1; min-width: 52px; padding: 8px 4px;
         background: none; border: none;
         color: var(--muted); transition: color 0.2s;
-        font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;
-        position: relative;
+        font-family: 'DM Sans', sans-serif; font-size: 10.5px; font-weight: 500;
+        position: relative; flex-shrink: 0;
       }
       .ma-nav-btn:active { transform: scale(0.92); }
       .ma-nav-btn.active { color: var(--accent); }
@@ -1505,6 +1514,87 @@
       .ma-nav-btn.cta.active { color: #fff !important; }
       .ma-nav-btn.cta.active::before { display: none; }
       .ma-nav-btn.cta:active { transform: scale(0.93); box-shadow: 0 2px 8px rgba(37,99,235,0.3); }
+
+      /* ── SWIPE HINT OVERLAY ──────────────────────────── */
+      .ma-swipe-hint {
+        position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+        background: var(--surface2); border: 1px solid var(--border2);
+        border-radius: 20px; padding: 5px 14px;
+        font-size: 11px; color: var(--muted2); white-space: nowrap;
+        pointer-events: none; z-index: 5;
+        opacity: 1; transition: opacity 0.5s;
+      }
+      .ma-swipe-hint.hide { opacity: 0; }
+
+      /* ── NEXT-SCREEN BUTTON ──────────────────────────── */
+      .ma-next-screen-btn {
+        display: flex; align-items: center; gap: 6px; justify-content: center;
+        margin-top: auto; padding-top: 18px;
+        background: none; border: none;
+        font-family: 'DM Sans', sans-serif; font-size: 13px;
+        color: var(--muted); letter-spacing: 0.02em;
+        transition: color 0.2s;
+      }
+      .ma-next-screen-btn:active { color: var(--accent); }
+      .ma-next-screen-btn svg { transition: transform 0.2s; }
+      .ma-next-screen-btn:active svg { transform: translateX(4px); }
+
+      /* ── REVIEWS SCREEN ──────────────────────────────── */
+      .ma-reviews-list {
+        display: flex; flex-direction: column; gap: 14px;
+        overflow-y: auto; flex: 1; padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .ma-review-card {
+        background: var(--surface2); border: 1px solid var(--border);
+        border-radius: 18px; padding: 18px;
+        transition: border-color 0.2s;
+      }
+      .ma-review-card:active { border-color: var(--accent); }
+      .ma-review-stars { color: #F59E0B; font-size: 13px; letter-spacing: 2px; margin-bottom: 8px; }
+      .ma-review-body { font-size: 14px; color: var(--text); line-height: 1.6; font-style: italic; margin-bottom: 12px; }
+      .ma-review-author { display: flex; align-items: center; gap: 10px; }
+      .ma-review-avatar {
+        width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+        font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700;
+        color: #fff; display: flex; align-items: center; justify-content: center;
+      }
+      .ma-review-name { font-size: 13px; font-weight: 700; color: var(--text); }
+      .ma-review-biz  { font-size: 11.5px; color: var(--muted); }
+
+      /* ── FAQ SCREEN ──────────────────────────────────── */
+      .ma-faq-list {
+        display: flex; flex-direction: column; gap: 0;
+        overflow-y: auto; flex: 1;
+        -webkit-overflow-scrolling: touch;
+      }
+      .ma-faq-item { border-bottom: 1px solid var(--border); }
+      .ma-faq-item:first-child { border-top: 1px solid var(--border); }
+      .ma-faq-q {
+        display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        padding: 16px 0; cursor: pointer;
+        font-family: 'Sora', sans-serif; font-size: 14.5px; font-weight: 600;
+        color: var(--text); background: none; border: none; width: 100%; text-align: left;
+        transition: color 0.2s;
+      }
+      .ma-faq-q.open { color: var(--accent); }
+      .ma-faq-q-icon {
+        width: 24px; height: 24px; border-radius: 50%;
+        border: 1px solid var(--border2); background: var(--surface2);
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0; color: var(--muted);
+        transition: transform 0.3s, background 0.2s, border-color 0.2s;
+      }
+      .ma-faq-q.open .ma-faq-q-icon {
+        transform: rotate(45deg);
+        background: rgba(37,99,235,0.12); border-color: rgba(37,99,235,0.3); color: var(--accent);
+      }
+      .ma-faq-a {
+        max-height: 0; overflow: hidden;
+        transition: max-height 0.4s cubic-bezier(0.25,0.46,0.45,0.94), padding 0.3s;
+        font-size: 13.5px; color: var(--muted); line-height: 1.65;
+      }
+      .ma-faq-a.open { max-height: 300px; padding-bottom: 16px; }
 
     } /* end @media 480px */
 
@@ -2363,7 +2453,7 @@
 <!-- ═══════════════════════════════════════════════════════════
      MOBILE APP SHELL  (visible only on ≤480px, replaces whole page)
      ═══════════════════════════════════════════════════════════ -->
-<div id="mob-app" aria-hidden="true">
+<div id="mob-app">
 
   <!-- Top bar -->
   <header class="ma-topbar">
@@ -2441,6 +2531,11 @@
         <button class="ma-cta-btn ripple-container" onclick="openModal('register')">
           Start for Free — No Credit Card
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+
+        <button class="ma-next-screen-btn" onclick="maGoScreen('how', document.querySelector('.ma-nav-btn[data-target=how]'))">
+          How it works
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
 
       </div>
@@ -2708,6 +2803,79 @@
       </div>
     </div>
 
+    <!-- ── SCREEN 6: REVIEWS ─────────────────────────────── -->
+    <div class="ma-screen" id="ms-reviews" data-screen="reviews">
+      <div class="ma-screen-inner">
+        <div class="ma-screen-header">
+          <span class="ma-screen-label">Success Stories</span>
+          <h2 class="ma-screen-h2">Real <span class="ma-h1-grad">results</span></h2>
+          <p class="ma-screen-sub">From Surat to Hyderabad — sellers growing with BizBoost</p>
+        </div>
+
+        <div class="ma-reviews-list">
+          <div class="ma-review-card">
+            <div class="ma-review-stars">★★★★★</div>
+            <p class="ma-review-body">"Found 9 real competitors selling kurtis near my shop. Implemented AI plan — beat 3 of them in 6 weeks."</p>
+            <div class="ma-review-author">
+              <div class="ma-review-avatar av1">PM</div>
+              <div>
+                <div class="ma-review-name">Priya Mehta</div>
+                <div class="ma-review-biz">Priya's Kurta House, Surat</div>
+              </div>
+            </div>
+          </div>
+          <div class="ma-review-card">
+            <div class="ma-review-stars">★★★★★</div>
+            <p class="ma-review-body">"Finally a tool that shows local dealers, not Amazon. My sales went up 40% in 2 months."</p>
+            <div class="ma-review-author">
+              <div class="ma-review-avatar av2">RS</div>
+              <div>
+                <div class="ma-review-name">Rahul Sharma</div>
+                <div class="ma-review-biz">QuickMobile, Nagpur</div>
+              </div>
+            </div>
+          </div>
+          <div class="ma-review-card">
+            <div class="ma-review-stars">★★★★★</div>
+            <p class="ma-review-body">"Ranked on first page for 'printed tshirt Vadodara' in 3 weeks. The keyword list was spot on."</p>
+            <div class="ma-review-author">
+              <div class="ma-review-avatar av3">DP</div>
+              <div>
+                <div class="ma-review-name">Dev Patel</div>
+                <div class="ma-review-biz">PrintZone, Vadodara</div>
+              </div>
+            </div>
+          </div>
+          <div class="ma-review-card">
+            <div class="ma-review-stars">★★★★★</div>
+            <p class="ma-review-body">"3 buyer leads in first week — one became a ₹85,000 bulk order. Worth every rupee."</p>
+            <div class="ma-review-author">
+              <div class="ma-review-avatar av4">SA</div>
+              <div>
+                <div class="ma-review-name">Sunita Agarwal</div>
+                <div class="ma-review-biz">Agarwal Textiles, Jaipur</div>
+              </div>
+            </div>
+          </div>
+          <div class="ma-review-card">
+            <div class="ma-review-stars">★★★★★</div>
+            <p class="ma-review-body">"My Google Business Profile views went up 4× after implementing the SEO fixes. Incredible."</p>
+            <div class="ma-review-author">
+              <div class="ma-review-avatar av5">AV</div>
+              <div>
+                <div class="ma-review-name">Amit Verma</div>
+                <div class="ma-review-biz">Verma Hardware, Lucknow</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="ma-cta-btn ripple-container" style="margin-top:16px;flex-shrink:0" onclick="openModal('register')">
+          Join 2,400+ Sellers →
+        </button>
+      </div>
+    </div>
+
   </div><!-- /ma-screens -->
 
   <!-- Bottom navigation -->
@@ -2727,6 +2895,10 @@
     <button class="ma-nav-btn" data-target="pricing" onclick="maGoScreen('pricing',this)">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
       <span>Pricing</span>
+    </button>
+    <button class="ma-nav-btn" data-target="reviews" onclick="maGoScreen('reviews',this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>Reviews</span>
     </button>
     <button class="ma-nav-btn cta" data-target="join" onclick="maGoScreen('join',this)">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
@@ -3601,6 +3773,53 @@ async function doBuyerRegister() {
       return;
     }
     openModal('register');
+  };
+
+  /* ── Swipe between screens (horizontal) ─────────────── */
+  const screenOrder = ['home','how','features','pricing','reviews','join'];
+  const MIN_SWIPE_DISTANCE = 50;   // px — minimum horizontal travel to register
+  const HORIZONTAL_RATIO   = 1.5;  // dx must be this times dy to count as horizontal
+  const screensEl = document.getElementById('maScreens');
+  if (screensEl) {
+    let swipeStartX = 0, swipeStartY = 0;
+    screensEl.addEventListener('touchstart', e => {
+      swipeStartX = e.touches[0].clientX;
+      swipeStartY = e.touches[0].clientY;
+    }, { passive: true });
+    screensEl.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - swipeStartX;
+      const dy = e.changedTouches[0].clientY - swipeStartY;
+      // Only trigger horizontal swipe if clearly horizontal
+      if (Math.abs(dx) < MIN_SWIPE_DISTANCE || Math.abs(dx) < Math.abs(dy) * HORIZONTAL_RATIO) return;
+      const idx = screenOrder.indexOf(currentScreen);
+      if (dx < 0 && idx < screenOrder.length - 1) {
+        // swipe left → next screen
+        const nextId = screenOrder[idx + 1];
+        maGoScreen(nextId, document.querySelector(`.ma-nav-btn[data-target="${nextId}"]`));
+      } else if (dx > 0 && idx > 0) {
+        // swipe right → prev screen
+        const prevId = screenOrder[idx - 1];
+        maGoScreen(prevId, document.querySelector(`.ma-nav-btn[data-target="${prevId}"]`));
+      }
+    }, { passive: true });
+  }
+
+  /* ── Mobile FAQ accordion ───────────────────────────── */
+  window.mToggleFaq = function(btn) {
+    const item = btn.closest('.ma-faq-item');
+    const ans  = item.querySelector('.ma-faq-a');
+    const isOpen = btn.classList.contains('open');
+    // Close all others in this list
+    btn.closest('.ma-faq-list')?.querySelectorAll('.ma-faq-q.open').forEach(q => {
+      if (q !== btn) {
+        q.classList.remove('open');
+        q.setAttribute('aria-expanded', 'false');
+        q.closest('.ma-faq-item').querySelector('.ma-faq-a').classList.remove('open');
+      }
+    });
+    btn.classList.toggle('open', !isOpen);
+    btn.setAttribute('aria-expanded', String(!isOpen));
+    ans.classList.toggle('open', !isOpen);
   };
 
   /* ── Ripple on mobile app buttons ──────────────────── */
