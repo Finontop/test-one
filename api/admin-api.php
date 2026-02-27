@@ -17,7 +17,11 @@ function respond($d) { ob_end_clean(); echo json_encode($d); exit; }
 require __DIR__ . "/config.php";
 
 // ── Password check via header or body ──────────────────────────
-define("ADMIN_PASSWORD", getenv("ADMIN_PASSWORD") ?: "changeme");
+// ADMIN_PASSWORD is now defined in config.php
+// If not defined there for some reason, fall back to a safe default
+if (!defined("ADMIN_PASSWORD")) {
+    define("ADMIN_PASSWORD", "changeme");
+}
 
 $raw  = file_get_contents("php://input");
 $data = json_decode($raw, true) ?? [];
