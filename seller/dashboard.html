@@ -292,6 +292,26 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
 .usage-tier-basic{background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.22);color:#22d3ee}
 .usage-tier-pro{background:rgba(41,151,255,.12);border:1px solid rgba(41,151,255,.25);color:var(--blue)}
 .usage-tier-enterprise{background:rgba(255,214,10,.12);border:1px solid rgba(255,214,10,.22);color:#ffd60a}
+
+/* PLAN CHIP — welcome bar */
+.plan-chip{display:inline-flex;align-items:center;gap:10px;padding:9px 16px;
+  border-radius:14px;cursor:default;user-select:none;transition:transform .15s,box-shadow .15s}
+.plan-chip:hover{transform:translateY(-1px)}
+.plan-chip-icon{flex-shrink:0;display:flex}
+.plan-chip-label{display:flex;flex-direction:column;line-height:1.2}
+.plan-chip-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.01em}
+.plan-chip-sub{font-size:10px;font-weight:600;opacity:.65;letter-spacing:.09em;text-transform:uppercase}
+.plan-chip-free{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:rgba(245,245,247,.55)}
+.plan-chip-basic{background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.28);
+  color:#22d3ee;box-shadow:0 0 20px rgba(34,211,238,.1)}
+.plan-chip-basic:hover{box-shadow:0 0 28px rgba(34,211,238,.18)}
+.plan-chip-pro{background:linear-gradient(135deg,rgba(41,151,255,.22),rgba(99,102,241,.22));
+  border:1px solid rgba(41,151,255,.38);color:#fff;box-shadow:0 0 24px rgba(41,151,255,.18)}
+.plan-chip-pro:hover{box-shadow:0 0 34px rgba(41,151,255,.28)}
+.plan-chip-enterprise{background:linear-gradient(135deg,rgba(255,214,10,.18),rgba(255,159,10,.18));
+  border:1px solid rgba(255,214,10,.42);color:#ffd60a;box-shadow:0 0 28px rgba(255,214,10,.15)}
+.plan-chip-enterprise:hover{box-shadow:0 0 38px rgba(255,214,10,.26)}
 .usage-upgrade-hint{margin-top:14px;padding:12px 14px;border-radius:10px;
   background:rgba(255,159,10,.07);border:1px solid rgba(255,159,10,.15);
   font-size:12.5px;color:var(--orange);line-height:1.55;display:flex;align-items:flex-start;gap:8px}
@@ -388,14 +408,12 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
 
   <div class="wbar">
     <div class="wbar-l">
-      <div class="w-greeting" style="display:flex;align-items:center;gap:10px">
-        <span>Your Dashboard</span>
-        <span id="wTierBadge"></span>
-      </div>
+      <div class="w-greeting">Your Dashboard</div>
       <h1 id="wTitle">Welcome back</h1>
       <p id="wSub">Loading your business…</p>
     </div>
     <div class="wbar-r">
+      <div id="wTierBadge"></div>
       <button class="nbtn blue" id="topBtn" onclick="runResearch()">✦ Run Analysis</button>
     </div>
   </div>
@@ -904,12 +922,20 @@ function renderUsage(d){
   const tierLabels={free:"Free",basic:"Basic",pro:"Pro",enterprise:"Enterprise"};
   const tierBadgeClass={free:"usage-tier-free",basic:"usage-tier-basic",pro:"usage-tier-pro",enterprise:"usage-tier-enterprise"};
   const tierIcons={free:icon('circle',11),basic:icon('circle',11),pro:icon('gem',11),enterprise:icon('crown',11)};
+  const chipIcons={free:icon('circle',18),basic:icon('zap',18),pro:icon('gem',18),enterprise:icon('crown',18)};
+  const chipClass={free:"plan-chip-free",basic:"plan-chip-basic",pro:"plan-chip-pro",enterprise:"plan-chip-enterprise"};
 
   const badgeEl=document.getElementById("usageTierBadge");
   const wTierEl=document.getElementById("wTierBadge");
   const badgeHtml=`<span class="usage-tier-badge ${tierBadgeClass[tier]||'usage-tier-free'}">${tierIcons[tier]||''} ${tierLabels[tier]||tier}</span>`;
   if(badgeEl)badgeEl.innerHTML=badgeHtml;
-  if(wTierEl)wTierEl.innerHTML=badgeHtml;
+  if(wTierEl)wTierEl.innerHTML=`<div class="plan-chip ${chipClass[tier]||'plan-chip-free'}">
+    <span class="plan-chip-icon">${chipIcons[tier]||chipIcons.free}</span>
+    <span class="plan-chip-label">
+      <span class="plan-chip-name">${tierLabels[tier]||tier}</span>
+      <span class="plan-chip-sub">Current Plan</span>
+    </span>
+  </div>`;
 
   const featureNames={analyze:`${icon('search',13)} Analyze`,competitor_intel:`${icon('compass',13)} Competitor Intel`};
   const features=["analyze","competitor_intel"];
