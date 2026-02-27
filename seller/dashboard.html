@@ -220,6 +220,18 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
 .tag:hover{background:rgba(41,151,255,.22);transform:scale(1.05)}
 .tag:active{transform:scale(.95)}
 .tag.copied{background:rgba(48,209,88,.12);border-color:rgba(48,209,88,.25);color:var(--green)}
+.r-section{padding:18px 0;border-top:1px solid var(--border2)}
+.r-section:first-child{border-top:none;padding-top:0}
+.r-section:last-child{padding-bottom:0}
+.r-sec-hd{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--text3);margin-bottom:12px}
+.r-split{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.r-col-hd{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text3);margin-bottom:8px;padding-bottom:7px;
+  border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:5px}
+.r-col-hd.blue{color:var(--blue);border-bottom-color:rgba(41,151,255,.2)}
+.r-sec-hint{font-weight:400;text-transform:none;letter-spacing:0;opacity:.6}
+@media(max-width:600px){.r-split{grid-template-columns:1fr}}
 
 /* PROFILE */
 .prof-pct{display:flex;justify-content:space-between;align-items:center;
@@ -783,38 +795,46 @@ function renderReport(s){
   let h="";
   const tc=s.top_competitor;
   if(tc?.name){
-    h+=`<div style="margin-bottom:24px">
-      <div class="slbl">${icon('trophy',11)} Top Local Competitor</div>
+    h+=`<div class="r-section">
+      <div class="r-sec-hd">${icon('trophy',11)} Top Local Competitor</div>
       <div class="tcc">
         <div class="tcc-name">${icon('trending-up',14)} ${esc(tc.name)}</div>
         <div class="tcc-sub">Currently winning your local market</div>
         <div class="tcc-why">${esc(tc.why_winning||"")}</div>
       </div>`;
-    if((tc.their_strengths||[]).length){
-      h+=`<div class="slbl">Why they're ahead</div>`;
-      h+=tc.their_strengths.map(t=>`<div class="ri"><span class="ic">${icon('zap',13)}</span><p>${esc(t)}</p></div>`).join("");
-    }
-    if((tc.how_to_beat_them||[]).length){
-      h+=`<div class="slbl" style="color:var(--blue)">How to beat them</div>`;
-      h+=tc.how_to_beat_them.map((t,i)=>`<div class="ri"><div class="rnum">${i+1}</div><p>${esc(t)}</p></div>`).join("");
+    const hasStr=(tc.their_strengths||[]).length;
+    const hasBeat=(tc.how_to_beat_them||[]).length;
+    if(hasStr||hasBeat){
+      h+=`<div class="r-split">`;
+      if(hasStr){
+        h+=`<div><div class="r-col-hd">${icon('zap',10)} Why they're ahead</div>`;
+        h+=tc.their_strengths.map(t=>`<div class="ri"><span class="ic">${icon('zap',13)}</span><p>${esc(t)}</p></div>`).join("");
+        h+=`</div>`;
+      }
+      if(hasBeat){
+        h+=`<div><div class="r-col-hd blue">${icon('compass',10)} How to beat them</div>`;
+        h+=tc.how_to_beat_them.map((t,i)=>`<div class="ri"><div class="rnum">${i+1}</div><p>${esc(t)}</p></div>`).join("");
+        h+=`</div>`;
+      }
+      h+=`</div>`;
     }
     h+=`</div>`;
   }
   if((s.bottlenecks||[]).length){
-    h+=`<div style="margin-bottom:24px"><div class="slbl">${icon('alert-triangle',11)} What's Blocking Your Sales</div>`;
+    h+=`<div class="r-section">
+      <div class="r-sec-hd">${icon('alert-triangle',11)} What's Blocking Your Sales</div>`;
     h+=s.bottlenecks.map(b=>`<div class="ri"><span class="ic">${icon('alert-triangle',13)}</span><p>${esc(b)}</p></div>`).join("");
     h+=`</div>`;
   }
   if((s.weekly_actions||[]).length){
-    h+=`<div style="margin-bottom:24px"><div class="slbl">${icon('list',11)} This Week's Priority Actions</div>`;
+    h+=`<div class="r-section">
+      <div class="r-sec-hd">${icon('list',11)} This Week's Priority Actions</div>`;
     h+=s.weekly_actions.map((a,i)=>`<div class="ri"><div class="rnum">${i+1}</div><p>${esc(a)}</p></div>`).join("");
     h+=`</div>`;
   }
   if((s.keyword_targets||[]).length){
-    h+=`<div style="margin-bottom:4px">
-      <div class="slbl">${icon('key',11)} Keyword Targets
-        <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)"> — tap to copy</span>
-      </div>
+    h+=`<div class="r-section">
+      <div class="r-sec-hd">${icon('key',11)} Keyword Targets <span class="r-sec-hint"> — tap to copy</span></div>
       <div class="tags">`;
     h+=s.keyword_targets.map(k=>`<span class="tag" onclick="copyTag(this,'${esc(k)}')">${esc(k)}</span>`).join("");
     h+=`</div></div>`;
