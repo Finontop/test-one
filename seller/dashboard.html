@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — BizBoost</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -27,7 +27,7 @@ body{
     radial-gradient(ellipse 60% 40% at 85% 15%, rgba(168,85,247,0.07) 0%, transparent 50%);
 }
 /* ANIMATED BG ORBS */
-.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(80px);opacity:.35}
+.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(80px);opacity:.35;will-change:transform;contain:layout style paint}
 .bg-orb-1{width:600px;height:600px;top:-200px;left:-100px;background:radial-gradient(circle,rgba(85,133,255,0.3),transparent 70%);animation:orbFloat1 18s ease-in-out infinite}
 .bg-orb-2{width:500px;height:500px;top:30%;right:-150px;background:radial-gradient(circle,rgba(168,85,247,0.25),transparent 70%);animation:orbFloat2 22s ease-in-out infinite}
 .bg-orb-3{width:400px;height:400px;bottom:-100px;left:30%;background:radial-gradient(circle,rgba(34,197,94,0.12),transparent 70%);animation:orbFloat3 26s ease-in-out infinite}
@@ -137,7 +137,7 @@ body{
   background:linear-gradient(135deg,var(--blue),var(--purple),var(--blue));
   background-size:300%;z-index:-1;filter:blur(8px);opacity:.7;animation:btnOrbit 3s linear infinite}
 @keyframes btnOrbit{0%{background-position:0%}100%{background-position:300%}}
-/* KPI RINGS */
+/* KPI RINGS — stroke-dasharray = 2 × π × r = 2 × π × 35 ≈ 219.9 (ring circumference) */
 .hero-right{display:grid;grid-template-columns:repeat(2,1fr);gap:0;
   padding:24px 32px;align-items:center;position:relative}
 .hero-right::before{content:'';position:absolute;left:0;top:16px;bottom:16px;
@@ -364,7 +364,7 @@ body{
 .mob-bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;
   background:rgba(7,9,26,0.95);backdrop-filter:blur(24px);
   border-top:1px solid var(--border);
-  padding:8px 0 16px;padding-bottom:calc(8px + env(safe-area-inset-bottom,8px));
+  padding:8px 0;padding-bottom:calc(8px + env(safe-area-inset-bottom,8px));
   grid-template-columns:repeat(4,1fr)}
 .mob-nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;
   padding:8px 4px;cursor:pointer;text-decoration:none;color:var(--text3);
@@ -391,8 +391,8 @@ body{
   .vs-grid{grid-template-columns:1fr}
 }
 @media(min-width:681px){
-  .mob-bottom-nav{display:none!important}
-  .burger{display:none!important}
+  .mob-bottom-nav{display:none}
+  .burger{display:none}
 }
 </style>
 </head>
@@ -404,7 +404,9 @@ body{
 
 <div id="mobDrawer">
   <a href="../index.html" class="mob-nav-link">Home</a>
-  <a href="dashboard.html" class="mob-nav-link on">Dashboard</a>
+  <a href="dashboard.html" class="mob-nav-link on">Overview</a>
+  <a href="competitors.html" class="mob-nav-link">Competitors</a>
+  <a href="keywords.html" class="mob-nav-link">Keywords</a>
   <a href="leads.html" class="mob-nav-link">Leads</a>
   <a href="onboard.html" class="mob-nav-link">Edit Profile</a>
   <button class="mob-logout" id="mobLogout">Sign Out</button>
@@ -417,9 +419,10 @@ body{
     <span class="logo-dot"></span>
   </a>
   <div class="nav-tabs">
-    <a href="dashboard.html" class="ntab on">Dashboard</a>
+    <a href="dashboard.html" class="ntab on">Overview</a>
+    <a href="competitors.html" class="ntab">Competitors</a>
+    <a href="keywords.html" class="ntab">Keywords</a>
     <a href="leads.html" class="ntab">Leads</a>
-    <a href="onboard.html" class="ntab">Profile</a>
   </div>
   <div class="nav-r">
     <div class="nav-avatar" id="navAvatar">?</div>
@@ -522,7 +525,7 @@ body{
 
         <div class="card" id="loaderBox">
           <div class="ch">
-            <h3><div class="ch-icon blue"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>Analysing&#8230;</h3>
+            <h3><div class="ch-icon blue"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>Analyzing&#8230;</h3>
           </div>
           <div class="cb loader-box">
             <div class="loader-progress"><div id="lpf"></div></div>
@@ -612,11 +615,11 @@ body{
     <svg class="mob-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
     Overview
   </a>
-  <a class="mob-nav-item" href="#compCard">
+  <a class="mob-nav-item" href="competitors.html">
     <svg class="mob-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>
     Rivals
   </a>
-  <a class="mob-nav-item" href="#reportCard">
+  <a class="mob-nav-item" href="keywords.html">
     <svg class="mob-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
     Keywords
   </a>
