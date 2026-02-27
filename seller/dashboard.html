@@ -874,7 +874,7 @@ async function runResearch(){
       <p style="color:var(--red)">${esc(err.message)}</p>
       <div class="cta-btns"><button class="cta-primary" onclick="runResearch()">Retry →</button></div>
     </div>`;
-    toast(`${icon('x-circle',14)} `+err.message,6000,"err");
+    toast(`${icon('x-circle',14)} `+esc(err.message),6000,"err");
   }finally{
     document.getElementById("loaderBox").style.display="none";
     document.getElementById("topBtn").disabled=false;
