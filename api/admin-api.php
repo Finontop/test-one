@@ -37,6 +37,7 @@ try {
         $rows = db()->query("
             SELECT s.id, s.name, s.category, s.city, s.state, s.email,
                    s.is_featured, s.is_verified, s.featured_order, s.created_at,
+                   COALESCE(s.subscription_tier,'free') AS subscription_tier,
                    COALESCE(d.products_offered,'') AS products_offered
             FROM sellers s
             LEFT JOIN seller_details d ON d.seller_id = s.id
@@ -44,12 +45,58 @@ try {
         ")->fetchAll();
 
         foreach ($rows as &$r) {
-            $r["id"]            = (int)$r["id"];
-            $r["is_featured"]   = (bool)$r["is_featured"];
-            $r["is_verified"]   = (bool)$r["is_verified"];
-            $r["featured_order"]= (int)$r["featured_order"];
+            $r["id"]             = (int)$r["id"];
+            $r["is_featured"]    = (bool)$r["is_featured"];
+            $r["is_verified"]    = (bool)$r["is_verified"];
+            $r["featured_order"] = (int)$r["featured_order"];
         }
         respond(["success" => true, "sellers" => $rows]);
+    }
+
+    // ── SET TIER ───────────────────────────────────────────────
+    if ($action === "set_tier" && $sid) {
+        $validTiers = ["free", "basic", "pro", "enterprise"];
+        $tier = $data["tier"] ?? "";
+        if (!in_array($tier, $validTiers)) {
+            respond(["success" => false, "error" => "Invalid tier. Allowed: " . implode(", ", $validTiers)]);
+        }
+        db()->prepare("UPDATE sellers SET subscription_tier=? WHERE id=?")->execute([$tier, $sid]);
+        respond(["success" => true, "tier" => $tier]);
+    }
+
+    // ── GET USAGE ──────────────────────────────────────────────
+    if ($action === "get_usage" && $sid) {
+        // Safely create table if missing
+        try { db()->exec("CREATE TABLE IF NOT EXISTS seller_usage (
+            id INT AUTO_INCREMENT PRIMARY KEY, seller_id INT NOT NULL,
+            feature VARCHAR(50) NOT NULL DEFAULT 'analyze',
+            used_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            INDEX idx_usage (seller_id, feature, used_at)
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4"); } catch (Throwable $_) {}
+
+        $rows = db()->prepare("
+            SELECT feature,
+                   SUM(CASE WHEN YEAR(used_at)=YEAR(NOW()) AND MONTH(used_at)=MONTH(NOW()) THEN 1 ELSE 0 END) AS this_month,
+                   COUNT(*) AS total
+            FROM seller_usage
+            WHERE seller_id=?
+            GROUP BY feature
+        ");
+        $rows->execute([$sid]);
+        $usage = $rows->fetchAll();
+
+        $tier = db()->prepare("SELECT COALESCE(subscription_tier,'free') AS tier FROM sellers WHERE id=?");
+        $tier->execute([$sid]);
+        $tierRow = $tier->fetch();
+
+        $limits = defined('TIER_LIMITS') ? TIER_LIMITS : ["free"=>2,"basic"=>10,"pro"=>30,"enterprise"=>-1];
+        respond([
+            "success" => true,
+            "seller_id" => $sid,
+            "tier"      => $tierRow["tier"] ?? "free",
+            "limits"    => $limits,
+            "usage"     => $usage,
+        ]);
     }
 
     // ── TOGGLE FEATURED ────────────────────────────────────────
