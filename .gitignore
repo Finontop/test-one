@@ -1,2 +1,4 @@
 .env
 api/config.php
+api/db-test.php
+api/raw_test.php
