@@ -120,9 +120,16 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
 .kpi-lbl{font-size:11px;color:var(--text3);font-weight:600;
   letter-spacing:.05em;text-transform:uppercase}
 
-/* GRID */
-.grid{display:grid;grid-template-columns:1fr 340px;gap:16px;
-  animation:fadeUp .6s var(--ease) .14s both}
+/* LAYOUT */
+.dash-main{display:grid;grid-template-columns:1.7fr 1fr;gap:16px;
+  margin-bottom:16px;animation:fadeUp .6s var(--ease) .14s both}
+.dash-side{display:flex;flex-direction:column;gap:16px}
+.dash-bottom{display:grid;grid-template-columns:1fr 1fr;gap:16px;
+  animation:fadeUp .65s var(--ease) .19s both}
+.prof-hero{padding:4px 0 14px;border-bottom:1px solid var(--border2);margin-bottom:12px}
+.prof-hero-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;
+  letter-spacing:-0.03em;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prof-hero-meta{font-size:12px;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* CARD */
 .card{background:var(--bg1);border:1px solid var(--border);
@@ -391,7 +398,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
 
 /* RESPONSIVE */
 @media(max-width:900px){
-  .grid{grid-template-columns:1fr}
+  .dash-main{grid-template-columns:1fr}
   .nav-tabs{display:none}
   .burger{display:flex}
   .nbtn:not(.blue):not(#logoutBtn){display:none}
@@ -401,6 +408,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
   .nav{padding:0 16px}
   .main{padding:24px 16px 80px}
   .kpi-strip{grid-template-columns:1fr 1fr;gap:10px}
+  .dash-bottom{grid-template-columns:1fr}
   .kpi{padding:16px 18px}
   .kpi-val{font-size:26px}
   .wbar-l h1{font-size:22px}
@@ -501,8 +509,8 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
     </div>
   </div>
 
-  <div class="grid">
-    <!-- LEFT -->
+  <div class="dash-main">
+    <!-- LEFT: Analysis -->
     <div>
       <div class="card" id="loaderBox" style="display:none">
         <div class="loader-box" style="display:block;padding:52px 24px">
@@ -550,8 +558,8 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
       </div>
     </div>
 
-    <!-- RIGHT -->
-    <div>
+    <!-- RIGHT: compact sidebar -->
+    <div class="dash-side">
       <div class="card">
         <div class="ch">
           <h3><div class="ch-icon purple"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V11a4 4 0 00-8 0v10"/><path d="M2 7l2-5h16l2 5"/></svg></div>Business Profile</h3>
@@ -576,34 +584,36 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
         <div class="cb" id="compPreview"></div>
         <a href="competitors.html" class="va">View all competitors <span class="va-arr">→</span></a>
       </div>
+    </div>
+  </div>
 
-      <!-- USAGE / CREDITS CARD -->
-      <div class="card" id="usageCard">
-        <div class="ch">
-          <h3><div class="ch-icon blue"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>API Credits</h3>
-          <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
-            <span id="usageTierBadge"></span>
-            <button class="ctog" id="togUsage" onclick="toggleCb('usagePanel','togUsage')">▾</button>
-          </div>
-        </div>
-        <div class="cb" id="usagePanel">
-          <div class="empty"><div class="ei"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.35"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><p>Loading usage…</p></div>
+  <!-- BOTTOM ROW: Credits + Leads (equal columns) -->
+  <div class="dash-bottom">
+    <div class="card" id="usageCard">
+      <div class="ch">
+        <h3><div class="ch-icon blue"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>API Credits</h3>
+        <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
+          <span id="usageTierBadge"></span>
+          <button class="ctog" id="togUsage" onclick="toggleCb('usagePanel','togUsage')">▾</button>
         </div>
       </div>
-
-      <div class="card" id="leadsWrap">
-        <div class="ch">
-          <h3><div class="ch-icon green"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>Buyer Leads</h3>
-          <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
-            <span id="leadsSub" style="font-size:12px;color:var(--text3)"></span>
-            <button class="ctog" id="togLeads" onclick="toggleCb('leadsPreview','togLeads')">▾</button>
-          </div>
-        </div>
-        <div class="cb" id="leadsPreview">
-          <div class="empty"><div class="ei"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.35"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><p>No leads yet.</p></div>
-        </div>
-        <a href="leads.html" class="va">View all leads <span class="va-arr">→</span></a>
+      <div class="cb" id="usagePanel">
+        <div class="empty"><div class="ei"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.35"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><p>Loading usage…</p></div>
       </div>
+    </div>
+
+    <div class="card" id="leadsWrap">
+      <div class="ch">
+        <h3><div class="ch-icon green"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>Buyer Leads</h3>
+        <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
+          <span id="leadsSub" style="font-size:12px;color:var(--text3)"></span>
+          <button class="ctog" id="togLeads" onclick="toggleCb('leadsPreview','togLeads')">▾</button>
+        </div>
+      </div>
+      <div class="cb" id="leadsPreview">
+        <div class="empty"><div class="ei"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.35"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><p>No leads yet.</p></div>
+      </div>
+      <a href="leads.html" class="va">View all leads <span class="va-arr">→</span></a>
     </div>
   </div>
 </div>
@@ -748,35 +758,38 @@ initWelcome();
 function renderProfile(){
   seller=JSON.parse(localStorage.getItem("seller")||"{}");
   details=JSON.parse(localStorage.getItem("sellerDetails")||"{}");
-  const rows=[
+  const allRows=[
     ["Business",seller.name],["Category",seller.category],["Type",details.business_type],
     ["City",seller.city],["State",seller.state],["Phone",seller.contact],
     ["GST",details.gst_number],["Employees",details.employees],
     ["Turnover",details.annual_turnover],["Website",seller.website],
   ];
-  const filled=rows.filter(r=>r[1]).length;
-  const pct=Math.round(filled/rows.length*100);
-  let h=`<div class="prof-pct">
-    <span>Profile Completeness</span>
-    <span style="color:${pct<60?"var(--orange)":"var(--green)"};font-weight:700">${pct}%</span>
+  const filled=allRows.filter(r=>r[1]).length;
+  const pct=Math.round(filled/allRows.length*100);
+  const pctColor=pct<60?"var(--orange)":"var(--green)";
+
+  let h=`<div class="prof-hero">
+    <div class="prof-hero-name">${esc(seller.name||"Your Business")}</div>
+    <div class="prof-hero-meta">${[seller.category,seller.city,seller.state].filter(Boolean).join(" · ")||"No details yet"}</div>
+  </div>
+  <div class="prof-pct">
+    <span>Profile completeness</span>
+    <span style="color:${pctColor};font-weight:700">${pct}%</span>
   </div>
   <div class="prof-bar-wrap"><div class="prof-bar" id="profBar"></div></div>`;
-  rows.forEach(([l,v])=>{
-    h+=`<div class="pr"><span class="plbl">${esc(l)}</span>
-      <span class="pval${v?"":" empty"}">${esc(v||"Not added")}</span></div>`;
+
+  const keyFields=[["Phone",seller.contact],["Website",seller.website],["Employees",details.employees],["Turnover",details.annual_turnover]].filter(([,v])=>v).slice(0,3);
+  keyFields.forEach(([l,v])=>{
+    h+=`<div class="pr"><span class="plbl">${esc(l)}</span><span class="pval">${esc(v)}</span></div>`;
   });
-  if(details.products_offered){
-    h+=`<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border2)">
-      <div class="slbl" style="margin-top:0">Products / Services</div>
-      <p style="font-size:13px;line-height:1.65;color:var(--text2)">${esc(details.products_offered)}</p>
-    </div>`;
+  if(!keyFields.length&&pct<40){
+    h+=`<div class="pr"><span class="plbl">Type</span><span class="pval empty">${esc(details.business_type||"Not added")}</span></div>`;
   }
   if(pct<60){
-    h+=`<div style="margin-top:14px;background:rgba(255,159,10,.07);
+    h+=`<div style="margin-top:12px;background:rgba(255,159,10,.07);
         border:1px solid rgba(255,159,10,.15);border-radius:10px;
-        padding:12px 14px;font-size:13px;color:var(--orange);line-height:1.55">
-      ${icon('alert-triangle',14)} Add more details for better analysis.
-      <a href="onboard.html" style="color:var(--orange);font-weight:700;margin-left:6px">Complete →</a>
+        padding:10px 12px;font-size:12.5px;color:var(--orange);line-height:1.55;display:flex;align-items:center;gap:7px">
+      ${icon('alert-triangle',13)} <span>Add more details for better analysis. <a href="onboard.html" style="color:var(--orange);font-weight:700">Complete →</a></span>
     </div>`;
   }
   document.getElementById("profilePanel").innerHTML=h;
