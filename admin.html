@@ -497,7 +497,7 @@ td{padding:13px 16px;font-size:13.5px;vertical-align:middle}
         <div class="modal-title" id="um-title">Usage & Credits</div>
         <div class="modal-sub" id="um-sub">Monthly feature usage for this seller</div>
       </div>
-      <button class="modal-close" onclick="closeModal('usageModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('usageModal')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="modal-body" id="um-body">
       <div class="state-box"><div class="spin-ring"></div><p>Loading…</p></div>
@@ -516,7 +516,7 @@ td{padding:13px 16px;font-size:13.5px;vertical-align:middle}
         <div class="modal-title" id="lm-product">Lead Detail</div>
         <div class="modal-sub" id="lm-sub">—</div>
       </div>
-      <button class="modal-close" onclick="closeModal('leadModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('leadModal')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="modal-body">
       <div class="ld-grid" id="lm-grid"></div>
@@ -533,7 +533,7 @@ td{padding:13px 16px;font-size:13.5px;vertical-align:middle}
         <div class="modal-title">Assign to Seller</div>
         <div class="modal-sub" id="am-sub">Select a seller to receive this lead</div>
       </div>
-      <button class="modal-close" onclick="closeModal('assignModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('assignModal')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="modal-body">
       <input type="text" class="assign-search" id="assignSearch" placeholder="Search sellers by name, city…" oninput="filterAssignList()">
@@ -551,7 +551,7 @@ td{padding:13px 16px;font-size:13.5px;vertical-align:middle}
   <div class="modal" style="max-width:400px">
     <div class="modal-header">
       <div><div class="modal-title">Delete Lead?</div><div class="modal-sub">This cannot be undone.</div></div>
-      <button class="modal-close" onclick="closeModal('deleteModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('deleteModal')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="modal-body">
       <p style="font-size:14px;color:var(--muted2);line-height:1.6" id="deleteModalMsg">Are you sure you want to delete this lead?</p>
@@ -602,7 +602,6 @@ const ICONS = {
   'alert-triangle': '<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
   'x': '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
   'shield-check': '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>',
-  'diamond': '<polygon points="6 3 18 3 22 9 12 22 2 9"/><polyline points="2 9 6 3 12 9 18 3 22 9"/><line x1="12" y1="22" x2="12" y2="9"/>',
   'layers': '<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>',
   'pie-chart': '<path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>',
 };
@@ -671,7 +670,7 @@ async function doLogin(){
     document.getElementById('loginWrap').style.display='none';
     document.getElementById('app').style.display='block';
     renderSellers();
-    loadLeads();
+    await loadLeads();
     renderDashboard();
     switchTab('dashboard', document.querySelector('.tab'));
   }catch(e){
@@ -732,7 +731,6 @@ async function refreshAll(){
 // ═══════════════════════════════════════════════
 const TIER_LABELS = {free:'Free',basic:'Basic',pro:'Pro',enterprise:'Enterprise'};
 const TIER_LIMITS = {free:2,basic:10,pro:30,enterprise:'∞'};
-const TIER_ICONS  = {free:'⚪',basic:'🔵',pro:'💎',enterprise:'👑'};
 function tierBadge(tier){
   const t=tier||'free';
   const ico = t==='pro'||t==='enterprise' ? icon('gem',11) : icon('circle',11);
@@ -1228,7 +1226,7 @@ function renderDashboard(){
     <div class="tier-bar-row" onclick="switchToTabFiltered('sellers','tier-${t}')">
       <div class="tier-bar-lbl" style="color:${tierColors[t]}">${icon(t==='pro'||t==='enterprise'?'gem':'circle',13)} ${TIER_LABELS[t]}</div>
       <div class="tier-bar-track"><div class="tier-bar-fill" id="tbar-${t}" style="background:${tierColors[t]};width:0%"></div></div>
-      <div class="tier-bar-count">${tierCounts[t]} <span style="opacity:.5;font-size:10px">(${Math.round(tierCounts[t]/sellers.length*100)||0}%)</span></div>
+      <div class="tier-bar-count">${tierCounts[t]} <span style="opacity:.5;font-size:10px">(${sellers.length?Math.round(tierCounts[t]/sellers.length*100):0}%)</span></div>
     </div>`).join('');
   setTimeout(()=>{
     tierOrder.forEach(t=>{
