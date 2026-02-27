@@ -1040,7 +1040,7 @@
 
     @media (max-width: 480px) {
 
-      /* Hide entire desktop page */
+      /* ── HIDE ENTIRE DESKTOP PAGE ────────────────────── */
       #scroll-progress,
       .nav, .nav-mobile-menu, .mobile-fab,
       #cursor, #cursor-ring,
@@ -1050,551 +1050,458 @@
         display: none !important;
       }
 
-      /* Show app shell */
+      /* ── BODY ────────────────────────────────────────── */
       body { overflow: hidden; cursor: auto; padding-bottom: 0; }
       * { cursor: auto !important; }
-      #mob-app { display: flex; flex-direction: column; height: 100svh; overflow: hidden; }
 
-      /* ── TOP BAR ──────────────────────────────────────── */
-      .ma-topbar {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 0 20px; height: 56px; flex-shrink: 0;
-        background: var(--bg); border-bottom: 1px solid var(--border);
-        position: relative; z-index: 10;
+      /* ── SHELL LAYOUT ────────────────────────────────── */
+      #mob-app {
+        display: flex; flex-direction: column;
+        position: fixed; inset: 0; z-index: 1;
+        height: 100svh; overflow: hidden;
+        background: var(--bg);
       }
-      .ma-logo {
-        font-family: 'Sora', sans-serif; font-size: 20px; font-weight: 800;
+
+      /* ── TOP BAR ─────────────────────────────────────── */
+      .mb-top {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 18px; height: 54px; flex-shrink: 0;
+        background: var(--bg); border-bottom: 1px solid var(--border);
+        position: relative; z-index: 5;
+      }
+      .mb-logo {
+        font-family: 'Sora', sans-serif; font-size: 19px; font-weight: 800;
         color: var(--text); text-decoration: none; letter-spacing: -0.05em;
       }
-      .ma-logo span { color: var(--accent); }
-      .ma-topbar-right { display: flex; align-items: center; gap: 10px; }
-      .ma-theme-btn {
-        width: 36px; height: 36px; border-radius: 50%;
+      .mb-logo span { color: var(--accent); }
+      .mb-top-r { display: flex; align-items: center; gap: 8px; }
+      .mb-theme {
+        width: 34px; height: 34px; border-radius: 50%;
         border: 1px solid var(--border2); background: var(--surface2);
         color: var(--muted); display: flex; align-items: center; justify-content: center;
       }
-      .ma-theme-btn .icon-sun { display: none; }
-      .ma-theme-btn .icon-moon { display: block; }
-      [data-theme="light"] .ma-theme-btn .icon-sun { display: block; }
-      [data-theme="light"] .ma-theme-btn .icon-moon { display: none; }
-      .ma-signin-pill {
-        padding: 8px 16px; border-radius: 50px;
+      .mb-theme .ic-sun  { display: none; }
+      .mb-theme .ic-moon { display: block; }
+      [data-theme="light"] .mb-theme .ic-sun  { display: block; }
+      [data-theme="light"] .mb-theme .ic-moon { display: none; }
+      .mb-signin {
+        padding: 7px 14px; border-radius: 50px;
         border: 1.5px solid var(--border2); background: transparent;
         color: var(--text); font-family: 'Sora', sans-serif;
-        font-size: 13px; font-weight: 600;
+        font-size: 12.5px; font-weight: 600;
       }
 
-      /* ── SCREENS ─────────────────────────────────────── */
-      .ma-screens {
-        flex: 1; overflow: hidden;
-        position: relative;
+      /* ── PAGES (native scroll-snap — no JS animation needed) */
+      .mb-pages {
+        flex: 1;
+        display: flex;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        overscroll-behavior-x: contain;
       }
-      .ma-screen {
-        position: absolute; inset: 0;
-        overflow-y: auto; -webkit-overflow-scrolling: touch;
-        opacity: 0; pointer-events: none;
-        transform: translateX(30px);
-        transition: opacity 0.35s cubic-bezier(0.25,0.46,0.45,0.94),
-                    transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
-        background: var(--bg);
+      .mb-pages::-webkit-scrollbar { display: none; }
+      .mb-page {
+        flex-shrink: 0;
+        width: 100%;
+        height: 100%;
+        scroll-snap-align: start;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
       }
-      .ma-screen.active {
-        opacity: 1; pointer-events: all;
-        transform: translateX(0);
-      }
-      .ma-screen.exit-left {
-        opacity: 0; transform: translateX(-30px);
-      }
-      .ma-screen-inner {
-        padding: 24px 20px 28px;
+
+      /* ── PAGE INNER PADDING ──────────────────────────── */
+      .mb-pi {
+        padding: 22px 18px 32px;
         min-height: 100%;
         display: flex; flex-direction: column;
       }
 
-      /* ── SCREEN HEADERS ──────────────────────────────── */
-      .ma-screen-header { margin-bottom: 22px; }
-      .ma-screen-label {
-        font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
-        text-transform: uppercase; color: var(--accent); display: block;
-        margin-bottom: 8px;
+      /* ── SHARED SECTION LABELS ───────────────────────── */
+      .mb-label {
+        font-size: 10.5px; font-weight: 700; letter-spacing: 0.13em;
+        text-transform: uppercase; color: var(--accent);
+        display: block; margin-bottom: 7px;
       }
-      .ma-screen-h2 {
-        font-family: 'Sora', sans-serif; font-size: 28px; font-weight: 800;
+      .mb-h2 {
+        font-family: 'Sora', sans-serif; font-size: 26px; font-weight: 800;
         letter-spacing: -0.04em; line-height: 1.1; color: var(--text);
+        margin-bottom: 6px;
       }
-      .ma-screen-sub {
-        font-size: 13px; color: var(--muted); margin-top: 6px;
+      .mb-h2-sm { font-size: 24px; margin-bottom: 0; }
+      .mb-sub {
+        font-size: 13px; color: var(--muted); margin-bottom: 22px;
+        line-height: 1.5;
       }
-      .ma-h1-grad {
+      .mb-grad {
         background: linear-gradient(135deg, var(--accent), var(--purple));
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         background-clip: text;
       }
 
-      /* ── HOME SCREEN ─────────────────────────────────── */
-      .ma-badge {
-        display: inline-flex; align-items: center; gap: 8px;
-        padding: 6px 14px 6px 8px; border-radius: 50px;
+      /* ── HOME: BADGE ─────────────────────────────────── */
+      .mb-badge {
+        display: inline-flex; align-items: center; gap: 7px;
+        padding: 5px 12px 5px 7px; border-radius: 50px;
         background: var(--surface2); border: 1px solid var(--border2);
-        font-size: 12px; color: var(--muted); margin-bottom: 20px;
-        animation: fadeup 0.6s both;
+        font-size: 11.5px; color: var(--muted); margin-bottom: 18px;
+        align-self: flex-start;
       }
-      .ma-badge-dot {
-        width: 8px; height: 8px; background: var(--green);
-        border-radius: 50%; flex-shrink: 0;
+      .mb-badge-dot {
+        width: 7px; height: 7px; background: var(--green); border-radius: 50%;
         box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
-        animation: pulse-dot 2s ease-in-out infinite;
+        animation: mb-pulse 2s ease-in-out infinite; flex-shrink: 0;
       }
-      @keyframes pulse-dot {
-        0%,100% { box-shadow: 0 0 0 3px rgba(34,197,94,0.2); }
-        50% { box-shadow: 0 0 0 6px rgba(34,197,94,0.1); }
+      @keyframes mb-pulse {
+        0%, 100% { box-shadow: 0 0 0 3px rgba(34,197,94,0.2); }
+        50%      { box-shadow: 0 0 0 6px rgba(34,197,94,0.08); }
       }
-      .ma-badge strong { color: var(--text); }
+      .mb-badge strong { color: var(--text); }
 
-      .ma-h1 {
+      /* ── HOME: HEADLINE ──────────────────────────────── */
+      .mb-h1 {
         font-family: 'Sora', sans-serif;
-        font-size: clamp(34px, 9vw, 44px);
-        font-weight: 800; letter-spacing: -0.04em; line-height: 1.08;
-        color: var(--text); margin-bottom: 22px;
-        animation: fadeup 0.6s 0.05s both;
+        font-size: clamp(32px, 8.5vw, 42px); font-weight: 800;
+        letter-spacing: -0.04em; line-height: 1.07;
+        color: var(--text); margin-bottom: 20px;
       }
 
-      /* Search bar */
-      .ma-search-wrap {
-        display: flex; align-items: center; gap: 0;
+      /* ── HOME: SEARCH ────────────────────────────────── */
+      .mb-search {
+        display: flex; align-items: center;
         background: var(--surface2); border: 1.5px solid var(--border2);
-        border-radius: 16px; overflow: hidden;
-        margin-bottom: 12px;
-        animation: fadeup 0.6s 0.1s both;
+        border-radius: 14px; overflow: hidden;
+        margin-bottom: 10px;
         transition: border-color 0.2s, box-shadow 0.2s;
       }
-      .ma-search-wrap:focus-within {
+      .mb-search:focus-within {
         border-color: var(--accent);
         box-shadow: 0 0 0 3px var(--accent-glow);
       }
-      .ma-search-icon {
-        padding: 0 14px; color: var(--muted);
+      .mb-search-ic {
+        padding: 0 12px; color: var(--muted);
         display: flex; align-items: center; flex-shrink: 0;
       }
-      .ma-search-input {
-        flex: 1; padding: 16px 8px; background: transparent; border: none; outline: none;
-        font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text);
+      .mb-search-inp {
+        flex: 1; padding: 14px 8px; background: transparent; border: none; outline: none;
+        font-family: 'DM Sans', sans-serif; font-size: 14.5px; color: var(--text);
         min-width: 0;
       }
-      .ma-search-input::placeholder { color: var(--muted2); }
-      .ma-search-btn {
-        width: 52px; height: 52px; background: var(--accent); border: none;
+      .mb-search-inp::placeholder { color: var(--muted2); }
+      .mb-search-btn {
+        width: 48px; height: 48px; background: var(--accent); border: none;
         display: flex; align-items: center; justify-content: center;
-        color: #fff; flex-shrink: 0;
-        transition: background 0.2s;
+        color: #fff; flex-shrink: 0; transition: background 0.15s;
       }
-      .ma-search-btn:active { background: #1D4ED8; }
+      .mb-search-btn:active { background: #1D4ED8; transform: scale(0.96); }
 
-      /* Chips */
-      .ma-chips {
-        display: flex; gap: 8px; overflow-x: auto;
-        -webkit-overflow-scrolling: touch; scrollbar-width: none;
-        padding-bottom: 4px; margin-bottom: 22px;
-        animation: fadeup 0.6s 0.15s both;
+      /* ── HOME: CHIPS ─────────────────────────────────── */
+      .mb-chips {
+        display: flex; gap: 7px;
+        overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        padding-bottom: 2px; margin-bottom: 20px;
       }
-      .ma-chips::-webkit-scrollbar { display: none; }
-      .ma-chip {
-        flex-shrink: 0; padding: 8px 14px;
+      .mb-chips::-webkit-scrollbar { display: none; }
+      .mb-chip {
+        flex-shrink: 0; padding: 7px 13px;
         background: var(--surface2); border: 1px solid var(--border);
-        border-radius: 50px; font-size: 13px; color: var(--muted);
+        border-radius: 50px; font-size: 12.5px; color: var(--muted);
         font-family: 'DM Sans', sans-serif; white-space: nowrap;
-        transition: all 0.2s;
+        transition: all 0.15s;
       }
-      .ma-chip:active { border-color: var(--accent); color: var(--accent); background: rgba(37,99,235,0.08); transform: scale(0.95); }
+      .mb-chip:active {
+        border-color: var(--accent); color: var(--accent);
+        background: rgba(37,99,235,0.08); transform: scale(0.95);
+      }
 
-      /* Stats grid */
-      .ma-stats {
+      /* ── HOME: STATS GRID ────────────────────────────── */
+      .mb-stats {
         display: grid; grid-template-columns: 1fr 1fr;
-        border: 1px solid var(--border); border-radius: 20px;
+        border: 1px solid var(--border); border-radius: 18px;
         overflow: hidden; background: var(--surface2);
-        margin-bottom: 20px;
-        animation: fadeup 0.6s 0.2s both;
+        margin-bottom: 18px;
       }
-      .ma-stat {
-        padding: 20px 16px; text-align: center;
+      .mb-stat {
+        padding: 18px 14px; text-align: center;
         border-right: 1px solid var(--border);
         border-bottom: 1px solid var(--border);
       }
-      .ma-stat:nth-child(2n) { border-right: none; }
-      .ma-stat:nth-child(3), .ma-stat:nth-child(4) { border-bottom: none; }
-      .ma-stat-num {
-        font-family: 'Sora', sans-serif; font-size: 24px; font-weight: 800;
+      .mb-stat:nth-child(2n) { border-right: none; }
+      .mb-stat:nth-child(3), .mb-stat:nth-child(4) { border-bottom: none; }
+      .mb-stat-n {
+        font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 800;
         letter-spacing: -0.04em; color: var(--text);
       }
-      .ma-stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+      .mb-stat-l { font-size: 10.5px; color: var(--muted); margin-top: 3px; }
 
-      /* CTA button */
-      .ma-cta-btn {
-        display: flex; align-items: center; justify-content: center; gap: 10px;
-        width: 100%; padding: 17px 20px;
-        background: var(--accent); color: #fff; border: none; border-radius: 16px;
-        font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700;
-        letter-spacing: -0.02em;
-        transition: transform 0.15s, box-shadow 0.2s;
-        box-shadow: 0 8px 24px rgba(37,99,235,0.4);
-        animation: fadeup 0.6s 0.25s both;
-      }
-      .ma-cta-btn:active { transform: scale(0.97); box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
-
-      /* ── HOW SCREEN ──────────────────────────────────── */
-      .ma-steps-wrap { flex: 1; display: flex; flex-direction: column; }
-      .ma-step-progress {
-        height: 4px; background: var(--border); border-radius: 4px;
-        margin-bottom: 28px; overflow: hidden;
-      }
-      .ma-step-bar {
-        height: 100%; background: linear-gradient(90deg, var(--accent), var(--purple));
-        border-radius: 4px; width: 33.3%;
-        transition: width 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
-      }
-      .ma-steps { flex: 1; position: relative; overflow: hidden; }
-      .ma-step {
-        position: absolute; inset: 0;
-        display: flex; flex-direction: column;
-        opacity: 0; pointer-events: none;
-        transform: translateX(30px);
-        transition: opacity 0.35s, transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
-      }
-      .ma-step.active {
-        opacity: 1; pointer-events: all; transform: translateX(0);
-      }
-      .ma-step.exit-left { opacity: 0; transform: translateX(-30px); }
-
-      .ma-step-icon {
-        width: 64px; height: 64px; border-radius: 18px;
-        display: flex; align-items: center; justify-content: center;
-        margin-bottom: 20px; flex-shrink: 0;
-      }
-      .ma-step-icon.blue { background: rgba(37,99,235,0.12); border: 1px solid rgba(37,99,235,0.25); color: var(--accent); }
-      .ma-step-icon.purple { background: rgba(167,139,250,0.12); border: 1px solid rgba(167,139,250,0.25); color: var(--purple); }
-      .ma-step-icon.green { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.25); color: var(--green); }
-      .ma-step-badge {
-        font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--accent);
-        background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.2);
-        border-radius: 6px; padding: 3px 9px; display: inline-block; margin-bottom: 14px;
-        font-family: 'Sora', sans-serif;
-      }
-      .ma-step-h {
-        font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 800;
-        letter-spacing: -0.04em; color: var(--text); margin-bottom: 12px;
-        line-height: 1.2;
-      }
-      .ma-step-p { font-size: 15px; color: var(--muted); line-height: 1.65; flex: 1; }
-      .ma-step-next {
-        display: flex; align-items: center; gap: 8px; justify-content: center;
-        margin-top: 28px; padding: 15px 24px;
+      /* ── PRIMARY CTA BUTTON ──────────────────────────── */
+      .mb-cta {
+        display: flex; align-items: center; justify-content: center; gap: 9px;
+        width: 100%; padding: 16px 18px;
         background: var(--accent); color: #fff; border: none; border-radius: 14px;
-        font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700;
-        transition: transform 0.15s;
+        font-family: 'Sora', sans-serif; font-size: 14.5px; font-weight: 700;
+        letter-spacing: -0.02em;
+        box-shadow: 0 6px 20px rgba(37,99,235,0.4);
+        transition: transform 0.12s, box-shadow 0.15s;
       }
-      .ma-step-next:active { transform: scale(0.97); }
-      .ma-step-dots { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
-      .ma-dot {
-        width: 8px; height: 8px; border-radius: 50%;
-        background: var(--border2); transition: all 0.3s;
-      }
-      .ma-dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
+      .mb-cta:active { transform: scale(0.97); box-shadow: 0 3px 10px rgba(37,99,235,0.3); }
+      .mb-cta-push { margin-top: auto; padding-top: 20px; }
+      .mb-cta-tight { margin-top: 10px; }
 
-      /* ── FEATURES SCREEN ─────────────────────────────── */
-      .ma-feat-deck-wrap {
-        flex: 1; display: flex; flex-direction: column;
-        position: relative;
-      }
-      .ma-feat-deck {
-        flex: 1; position: relative; touch-action: pan-y;
-        cursor: grab; user-select: none;
-      }
-      .ma-feat-card {
-        position: absolute; inset: 0;
-        background: var(--surface2); border: 1.5px solid var(--border);
-        border-radius: 22px; padding: 26px 24px;
-        display: flex; flex-direction: column;
-        opacity: 0; pointer-events: none;
-        transform: translateX(60px) scale(0.96);
-        transition: opacity 0.38s cubic-bezier(0.25,0.46,0.45,0.94),
-                    transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94),
-                    border-color 0.3s;
-      }
-      .ma-feat-card.active {
-        opacity: 1; pointer-events: all;
-        transform: translateX(0) scale(1);
-        border-color: var(--card-color);
-        box-shadow: 0 0 40px var(--card-glow);
-      }
-      .ma-feat-card.exit-left { opacity: 0; transform: translateX(-60px) scale(0.96); }
+      /* ── SECTION HEADER ──────────────────────────────── */
+      .mb-sec-hd { margin-bottom: 20px; }
 
-      .ma-feat-card-icon {
-        width: 56px; height: 56px; border-radius: 16px; border: 1px solid;
+      /* ── HOW: STEP CARDS ─────────────────────────────── */
+      .mb-steps { display: flex; flex-direction: column; gap: 12px; }
+      .mb-step-card {
+        background: var(--surface2); border: 1px solid var(--border);
+        border-radius: 18px; padding: 20px 18px;
+        display: flex; gap: 16px; align-items: flex-start;
+      }
+      .mb-step-num {
+        font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 700;
+        color: var(--accent); letter-spacing: 0.08em;
+        background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.2);
+        border-radius: 6px; padding: 3px 8px; flex-shrink: 0; margin-top: 2px;
+      }
+      .mb-step-body { flex: 1; min-width: 0; }
+      .mb-step-ic {
+        width: 44px; height: 44px; border-radius: 14px; flex-shrink: 0;
         display: flex; align-items: center; justify-content: center;
-        margin-bottom: 16px; flex-shrink: 0;
       }
-      .ma-feat-card-num {
-        font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
-        color: var(--muted2); font-family: 'Sora', sans-serif; margin-bottom: 10px;
-      }
-      .ma-feat-card-h {
-        font-family: 'Sora', sans-serif; font-size: 21px; font-weight: 800;
-        letter-spacing: -0.04em; color: var(--text); margin-bottom: 10px;
-        line-height: 1.2;
-      }
-      .ma-feat-card-p { font-size: 14.5px; color: var(--muted); line-height: 1.65; flex: 1; }
-      .ma-feat-card-tags {
-        display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px;
-      }
-      .ma-feat-card-tags span {
-        font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 7px;
-      }
-      .ma-feat-progress-wrap {
-        height: 4px; background: var(--border); border-radius: 4px;
-        margin-top: 16px; overflow: hidden; flex-shrink: 0;
-      }
-      .ma-feat-progress-bar {
-        height: 100%; border-radius: 4px;
-        background: linear-gradient(90deg, var(--accent), var(--purple));
-        width: 16.66%;
-        transition: width 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
-      }
+      .mb-step-ic.blue   { background: rgba(37,99,235,0.12);  color: var(--accent);  border: 1px solid rgba(37,99,235,0.2); }
+      .mb-step-ic.purple { background: rgba(167,139,250,0.12); color: var(--purple);  border: 1px solid rgba(167,139,250,0.2); }
+      .mb-step-ic.green  { background: rgba(34,197,94,0.12);   color: var(--green);   border: 1px solid rgba(34,197,94,0.2); }
+      .mb-step-h { font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+      .mb-step-p { font-size: 13px; color: var(--muted); line-height: 1.6; }
 
-      /* Swipe hint animation */
-      .ma-feat-deck::after {
-        content: '← swipe →'; position: absolute;
-        bottom: -28px; left: 50%; transform: translateX(-50%);
-        font-size: 11px; color: var(--muted2); letter-spacing: 0.06em;
-        animation: swipe-hint 2.5s ease-in-out 1s 1 forwards;
-        opacity: 0;
-      }
-      @keyframes swipe-hint {
-        0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; }
-      }
-
-      /* ── PRICING SCREEN ──────────────────────────────── */
-      .ma-pricing-scroll {
-        display: flex; gap: 14px;
-        overflow-x: auto; -webkit-overflow-scrolling: touch;
-        scrollbar-width: none; scroll-snap-type: x mandatory;
-        padding: 4px 2px 14px; flex-shrink: 0;
-      }
-      .ma-pricing-scroll::-webkit-scrollbar { display: none; }
-      .ma-price-card {
-        flex-shrink: 0; width: calc(85vw); scroll-snap-align: center;
-        background: var(--surface2); border: 1px solid var(--border);
-        border-radius: 22px; padding: 26px 22px;
-        display: flex; flex-direction: column;
-      }
-      .ma-price-card.featured {
-        background: var(--accent); border-color: var(--accent);
-        box-shadow: 0 12px 40px rgba(37,99,235,0.4);
-      }
-      .ma-plan-badge {
-        font-size: 10px; font-weight: 800; letter-spacing: 0.12em;
-        background: rgba(255,255,255,0.2); color: #fff;
-        padding: 4px 10px; border-radius: 6px; display: inline-block;
-        margin-bottom: 10px; align-self: flex-start;
-      }
-      .ma-plan-label {
-        font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
-        text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
-      }
-      .ma-price-card.featured .ma-plan-label { color: rgba(255,255,255,0.75); }
-      .ma-plan-price {
-        font-family: 'Sora', sans-serif; font-size: 42px; font-weight: 800;
-        letter-spacing: -0.05em; color: var(--text); line-height: 1;
-      }
-      .ma-plan-price sup { font-size: 18px; vertical-align: top; margin-top: 8px; }
-      .ma-plan-price span { font-size: 16px; font-weight: 400; color: var(--muted); letter-spacing: 0; }
-      .ma-price-card.featured .ma-plan-price { color: #fff; }
-      .ma-price-card.featured .ma-plan-price span { color: rgba(255,255,255,0.65); }
-      .ma-plan-desc { font-size: 13px; color: var(--muted); margin: 10px 0 14px; line-height: 1.5; }
-      .ma-price-card.featured .ma-plan-desc { color: rgba(255,255,255,0.8); }
-      .ma-plan-features { list-style: none; display: flex; flex-direction: column; gap: 9px; flex: 1; margin-bottom: 20px; }
-      .ma-plan-features li { font-size: 13.5px; color: var(--muted); display: flex; align-items: flex-start; gap: 8px; }
-      .ma-plan-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
-      .ma-price-card.featured .ma-plan-features li { color: rgba(255,255,255,0.9); }
-      .ma-price-card.featured .ma-plan-features li::before { color: #fff; }
-      .ma-plan-btn {
-        width: 100%; padding: 14px; border-radius: 12px;
-        font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 700;
-        transition: all 0.2s;
-      }
-      .ma-plan-btn.outline {
-        background: transparent; border: 1.5px solid var(--border2); color: var(--text);
-      }
-      .ma-plan-btn.outline:active { background: var(--surface3); }
-      .ma-plan-btn.filled {
-        background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.3); color: #fff;
-      }
-      .ma-plan-btn.filled:active { background: rgba(255,255,255,0.3); }
-      .ma-pricing-dots { display: flex; justify-content: center; gap: 8px; margin-top: 4px; }
-      .ma-pdot {
-        width: 8px; height: 8px; border-radius: 50%;
-        background: var(--border2); transition: all 0.3s;
-      }
-      .ma-pdot.active { background: var(--accent); width: 24px; border-radius: 4px; }
-
-      /* ── JOIN SCREEN ─────────────────────────────────── */
-      .ma-testimonial {
-        background: var(--surface2); border: 1px solid var(--border);
-        border-radius: 20px; padding: 22px 20px; margin-bottom: 18px;
-        position: relative;
-      }
-      .ma-testi-stars { color: #F59E0B; font-size: 16px; margin-bottom: 10px; letter-spacing: 2px; }
-      .ma-testi-body {
-        font-size: 15px; color: var(--text); line-height: 1.6;
-        font-style: italic; margin-bottom: 16px;
-      }
-      .ma-testi-author { display: flex; align-items: center; gap: 12px; }
-      .ma-testi-avatar {
-        width: 40px; height: 40px; border-radius: 50%;
-        font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700; color: #fff;
-        display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-      }
-      .ma-testi-name { font-size: 13.5px; font-weight: 700; color: var(--text); }
-      .ma-testi-biz { font-size: 12px; color: var(--muted); }
-      .ma-testi-dots { display: flex; gap: 6px; margin-top: 14px; }
-      .ma-tdot { width: 6px; height: 6px; border-radius: 50%; background: var(--border2); transition: all 0.3s; }
-      .ma-tdot.active { background: var(--accent); width: 18px; border-radius: 3px; }
-
-      .ma-join-card {
-        background: var(--surface2); border: 1px solid var(--border);
-        border-radius: 20px; padding: 24px 20px; flex: 1;
-      }
-      .ma-join-sub { font-size: 13px; color: var(--muted); margin-bottom: 18px; margin-top: 8px; }
-      .ma-join-email {
-        width: 100%; padding: 15px 16px;
-        background: var(--input-bg); border: 1.5px solid var(--input-border);
-        border-radius: 12px; font-family: 'DM Sans', sans-serif;
-        font-size: 15px; color: var(--text); outline: none;
-        transition: border-color 0.2s, box-shadow 0.2s;
-      }
-      .ma-join-email:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
-      .ma-join-email::placeholder { color: var(--muted2); }
-      .ma-join-or { text-align: center; font-size: 13px; color: var(--muted); margin-top: 14px; }
-      .ma-join-or a { color: var(--accent); text-decoration: none; }
-
-      /* ── BOTTOM NAV ──────────────────────────────────── */
-      .ma-bottom-nav {
-        display: flex; align-items: center;
-        height: 64px; flex-shrink: 0;
-        background: var(--bg); border-top: 1px solid var(--border);
-        position: relative; z-index: 10;
-        padding: 0 2px;
-        overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
-        /* Right-edge fade to hint scrollability */
-        -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
-        mask-image: linear-gradient(to right, black 85%, transparent 100%);
-      }
-      .ma-bottom-nav::-webkit-scrollbar { display: none; }
-      .ma-nav-btn {
-        display: flex; flex-direction: column; align-items: center; gap: 3px;
-        flex: 1; min-width: 52px; padding: 8px 4px;
-        background: none; border: none;
-        color: var(--muted); transition: color 0.2s;
-        font-family: 'DM Sans', sans-serif; font-size: 10.5px; font-weight: 500;
-        position: relative; flex-shrink: 0;
-      }
-      .ma-nav-btn:active { transform: scale(0.92); }
-      .ma-nav-btn.active { color: var(--accent); }
-      .ma-nav-btn.active::before {
-        content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-        width: 32px; height: 3px; background: var(--accent);
-        border-radius: 0 0 4px 4px;
-      }
-      .ma-nav-btn.cta {
-        background: var(--accent); color: #fff !important;
-        border-radius: 14px; margin: 8px 6px;
-        padding: 8px 12px; flex: none; width: 64px;
-        box-shadow: 0 4px 16px rgba(37,99,235,0.5);
-        transition: transform 0.15s, box-shadow 0.2s;
-      }
-      .ma-nav-btn.cta.active { color: #fff !important; }
-      .ma-nav-btn.cta.active::before { display: none; }
-      .ma-nav-btn.cta:active { transform: scale(0.93); box-shadow: 0 2px 8px rgba(37,99,235,0.3); }
-
-      /* ── SWIPE HINT OVERLAY ──────────────────────────── */
-      .ma-swipe-hint {
-        position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-        background: var(--surface2); border: 1px solid var(--border2);
-        border-radius: 20px; padding: 5px 14px;
-        font-size: 11px; color: var(--muted2); white-space: nowrap;
-        pointer-events: none; z-index: 5;
-        opacity: 1; transition: opacity 0.5s;
-      }
-      .ma-swipe-hint.hide { opacity: 0; }
-
-      /* ── NEXT-SCREEN BUTTON ──────────────────────────── */
-      .ma-next-screen-btn {
-        display: flex; align-items: center; gap: 6px; justify-content: center;
-        margin-top: auto; padding-top: 18px;
-        background: none; border: none;
-        font-family: 'DM Sans', sans-serif; font-size: 13px;
-        color: var(--muted); letter-spacing: 0.02em;
-        transition: color 0.2s;
-      }
-      .ma-next-screen-btn:active { color: var(--accent); }
-      .ma-next-screen-btn svg { transition: transform 0.2s; }
-      .ma-next-screen-btn:active svg { transform: translateX(4px); }
-
-      /* ── REVIEWS SCREEN ──────────────────────────────── */
-      .ma-reviews-list {
-        display: flex; flex-direction: column; gap: 14px;
-        overflow-y: auto; flex: 1; padding-bottom: 8px;
-        -webkit-overflow-scrolling: touch;
-      }
-      .ma-review-card {
-        background: var(--surface2); border: 1px solid var(--border);
+      /* ── FEATURES: FEATURE CARDS ─────────────────────── */
+      .mb-feats { display: flex; flex-direction: column; gap: 10px; }
+      .mb-feat-card {
+        background: var(--surface2); border: 1.5px solid var(--border);
         border-radius: 18px; padding: 18px;
+        display: flex; gap: 14px; align-items: flex-start;
         transition: border-color 0.2s;
       }
-      .ma-review-card:active { border-color: var(--accent); }
-      .ma-review-stars { color: #F59E0B; font-size: 13px; letter-spacing: 2px; margin-bottom: 8px; }
-      .ma-review-body { font-size: 14px; color: var(--text); line-height: 1.6; font-style: italic; margin-bottom: 12px; }
-      .ma-review-author { display: flex; align-items: center; gap: 10px; }
-      .ma-review-avatar {
-        width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
-        font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700;
+      .mb-feat-card:active { border-color: var(--card-color, var(--accent)); }
+      .mb-feat-ic {
+        width: 46px; height: 46px; border-radius: 13px; border: 1px solid;
+        display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      }
+      .mb-feat-body { flex: 1; min-width: 0; }
+      .mb-feat-h { font-family: 'Sora', sans-serif; font-size: 14.5px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+      .mb-feat-p { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+      .mb-feat-tags { display: flex; gap: 5px; margin-top: 8px; flex-wrap: wrap; }
+      .mb-feat-tag { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 6px; }
+
+      /* ── PRICING: TOGGLE ─────────────────────────────── */
+      .mb-bill-toggle {
+        display: flex; align-items: center; gap: 10px;
+        margin-bottom: 18px; padding: 4px 4px 4px 12px;
+        background: var(--surface2); border: 1px solid var(--border);
+        border-radius: 50px; align-self: flex-start;
+      }
+      .mb-bill-label { font-size: 12px; color: var(--muted); white-space: nowrap; font-family: 'DM Sans', sans-serif; }
+      .mb-bill-label.on { color: var(--text); font-weight: 600; }
+      .mb-bill-track {
+        width: 40px; height: 22px; background: var(--border2); border-radius: 50px;
+        position: relative; cursor: pointer; transition: background 0.25s; flex-shrink: 0;
+      }
+      .mb-bill-track.on { background: var(--accent); }
+      .mb-bill-knob {
+        position: absolute; top: 3px; left: 3px;
+        width: 16px; height: 16px; border-radius: 50%; background: #fff;
+        transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+      }
+      .mb-bill-track.on .mb-bill-knob { transform: translateX(18px); }
+      .mb-bill-save {
+        font-size: 10px; font-weight: 700; color: #fff; letter-spacing: 0.05em;
+        background: var(--green); border-radius: 50px; padding: 3px 8px;
+        margin-left: 4px;
+      }
+
+      /* ── PRICING: CARDS ──────────────────────────────── */
+      .mb-plans { display: flex; flex-direction: column; gap: 12px; }
+      .mb-plan-card {
+        background: var(--surface2); border: 1.5px solid var(--border);
+        border-radius: 20px; padding: 22px 20px;
+        position: relative; overflow: hidden;
+      }
+      .mb-plan-card.featured {
+        background: var(--accent); border-color: var(--accent);
+        box-shadow: 0 10px 32px rgba(37,99,235,0.38);
+      }
+      .mb-plan-pop {
+        font-size: 10px; font-weight: 800; letter-spacing: 0.1em;
+        background: rgba(255,255,255,0.18); color: #fff;
+        padding: 3px 10px; border-radius: 50px; display: inline-block;
+        margin-bottom: 8px;
+      }
+      .mb-plan-name {
+        font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+        color: var(--muted); margin-bottom: 10px;
+      }
+      .mb-plan-card.featured .mb-plan-name { color: rgba(255,255,255,0.75); }
+      .mb-plan-price {
+        font-family: 'Sora', sans-serif; font-size: 40px; font-weight: 800;
+        letter-spacing: -0.05em; color: var(--text); line-height: 1;
+        display: flex; align-items: flex-start; gap: 2px; margin-bottom: 4px;
+      }
+      .mb-plan-price sup { font-size: 17px; margin-top: 7px; }
+      .mb-plan-price .mb-pp-val { display: inline; }
+      .mb-plan-price .mb-pp-per {
+        font-size: 15px; font-weight: 400; color: var(--muted); letter-spacing: 0;
+        align-self: flex-end; margin-bottom: 4px; margin-left: 1px;
+      }
+      .mb-plan-card.featured .mb-plan-price { color: #fff; }
+      .mb-plan-card.featured .mb-plan-price .mb-pp-per { color: rgba(255,255,255,0.65); }
+      .mb-plan-old {
+        font-size: 13px; color: var(--muted2); text-decoration: line-through;
+        margin-bottom: 10px; display: none;
+      }
+      .mb-bill-annual-mode .mb-plan-old { display: block; }
+      .mb-plan-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
+      .mb-plan-card.featured .mb-plan-desc { color: rgba(255,255,255,0.75); }
+      .mb-plan-ul {
+        list-style: none; display: flex; flex-direction: column; gap: 8px;
+        margin-bottom: 18px;
+      }
+      .mb-plan-ul li {
+        font-size: 13px; color: var(--muted); display: flex; align-items: flex-start; gap: 8px;
+      }
+      .mb-plan-ul li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+      .mb-plan-card.featured .mb-plan-ul li { color: rgba(255,255,255,0.88); }
+      .mb-plan-card.featured .mb-plan-ul li::before { color: #fff; }
+      .mb-plan-btn {
+        width: 100%; padding: 13px; border-radius: 11px;
+        font-family: 'Sora', sans-serif; font-size: 13.5px; font-weight: 700;
+        transition: all 0.15s;
+      }
+      .mb-plan-btn.ghost { background: transparent; border: 1.5px solid var(--border2); color: var(--text); }
+      .mb-plan-btn.ghost:active { background: var(--surface3); }
+      .mb-plan-btn.white { background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.3); color: #fff; }
+      .mb-plan-btn.white:active { background: rgba(255,255,255,0.32); }
+
+      /* ── REVIEWS: CARDS ──────────────────────────────── */
+      .mb-rev-summary {
+        display: flex; align-items: center; gap: 12px;
+        background: var(--surface2); border: 1px solid var(--border);
+        border-radius: 16px; padding: 16px 18px; margin-bottom: 16px;
+      }
+      .mb-rev-big {
+        font-family: 'Sora', sans-serif; font-size: 38px; font-weight: 800;
+        color: var(--text); letter-spacing: -0.04em; line-height: 1;
+      }
+      .mb-rev-stars { color: #F59E0B; font-size: 15px; letter-spacing: 1px; }
+      .mb-rev-count { font-size: 12px; color: var(--muted); margin-top: 2px; }
+      .mb-revs { display: flex; flex-direction: column; gap: 10px; }
+      .mb-rev-card {
+        background: var(--surface2); border: 1px solid var(--border);
+        border-radius: 16px; padding: 16px;
+      }
+      .mb-rev-s { color: #F59E0B; font-size: 12px; letter-spacing: 1.5px; margin-bottom: 7px; }
+      .mb-rev-q { font-size: 13.5px; color: var(--text); line-height: 1.55; font-style: italic; margin-bottom: 11px; }
+      .mb-rev-auth { display: flex; align-items: center; gap: 9px; }
+      .mb-av {
+        width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+        font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 700;
         color: #fff; display: flex; align-items: center; justify-content: center;
       }
-      .ma-review-name { font-size: 13px; font-weight: 700; color: var(--text); }
-      .ma-review-biz  { font-size: 11.5px; color: var(--muted); }
+      .mb-av1 { background: linear-gradient(135deg,#2563EB,#7C3AED); }
+      .mb-av2 { background: linear-gradient(135deg,#059669,#0284C7); }
+      .mb-av3 { background: linear-gradient(135deg,#D97706,#DC2626); }
+      .mb-av4 { background: linear-gradient(135deg,#7C3AED,#EC4899); }
+      .mb-av5 { background: linear-gradient(135deg,#0284C7,#2563EB); }
+      .mb-rev-name { font-size: 12.5px; font-weight: 700; color: var(--text); }
+      .mb-rev-biz  { font-size: 11px; color: var(--muted); }
 
-      /* ── FAQ SCREEN ──────────────────────────────────── */
-      .ma-faq-list {
-        display: flex; flex-direction: column; gap: 0;
-        overflow-y: auto; flex: 1;
-        -webkit-overflow-scrolling: touch;
+      /* ── JOIN: TESTIMONIAL ───────────────────────────── */
+      .mb-testi {
+        background: var(--surface2); border: 1px solid var(--border);
+        border-radius: 18px; padding: 20px 18px; margin-bottom: 16px;
       }
-      .ma-faq-item { border-bottom: 1px solid var(--border); }
-      .ma-faq-item:first-child { border-top: 1px solid var(--border); }
-      .ma-faq-q {
-        display: flex; align-items: center; justify-content: space-between; gap: 12px;
-        padding: 16px 0; cursor: pointer;
-        font-family: 'Sora', sans-serif; font-size: 14.5px; font-weight: 600;
-        color: var(--text); background: none; border: none; width: 100%; text-align: left;
-        transition: color 0.2s;
+      .mb-testi-s { color: #F59E0B; font-size: 14px; letter-spacing: 2px; margin-bottom: 9px; }
+      .mb-testi-q {
+        font-size: 14px; color: var(--text); line-height: 1.6;
+        font-style: italic; margin-bottom: 14px;
+        transition: opacity 0.3s, transform 0.3s;
       }
-      .ma-faq-q.open { color: var(--accent); }
-      .ma-faq-q-icon {
-        width: 24px; height: 24px; border-radius: 50%;
-        border: 1px solid var(--border2); background: var(--surface2);
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0; color: var(--muted);
-        transition: transform 0.3s, background 0.2s, border-color 0.2s;
+      .mb-testi-auth { display: flex; align-items: center; gap: 11px; }
+      .mb-testi-name { font-size: 13px; font-weight: 700; color: var(--text); }
+      .mb-testi-biz  { font-size: 11.5px; color: var(--muted); }
+      .mb-tdots { display: flex; gap: 5px; margin-top: 12px; }
+      .mb-tdot {
+        width: 5px; height: 5px; border-radius: 50%;
+        background: var(--border2); cursor: pointer; transition: all 0.25s;
       }
-      .ma-faq-q.open .ma-faq-q-icon {
-        transform: rotate(45deg);
-        background: rgba(37,99,235,0.12); border-color: rgba(37,99,235,0.3); color: var(--accent);
+      .mb-tdot.on { background: var(--accent); width: 16px; border-radius: 3px; }
+
+      /* ── JOIN: FORM ──────────────────────────────────── */
+      .mb-join-card {
+        background: var(--surface2); border: 1px solid var(--border);
+        border-radius: 18px; padding: 22px 18px;
       }
-      .ma-faq-a {
-        max-height: 0; overflow: hidden;
-        transition: max-height 0.4s cubic-bezier(0.25,0.46,0.45,0.94), padding 0.3s;
-        font-size: 13.5px; color: var(--muted); line-height: 1.65;
+      .mb-join-sub { font-size: 12.5px; color: var(--muted); margin: 6px 0 16px; line-height: 1.5; }
+      .mb-join-inp {
+        width: 100%; padding: 14px 15px;
+        background: var(--input-bg); border: 1.5px solid var(--input-border);
+        border-radius: 11px; font-family: 'DM Sans', sans-serif;
+        font-size: 14.5px; color: var(--text); outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
       }
-      .ma-faq-a.open { max-height: 300px; padding-bottom: 16px; }
+      .mb-join-inp:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+      .mb-join-inp::placeholder { color: var(--muted2); }
+      .mb-join-or { text-align: center; font-size: 12.5px; color: var(--muted); margin-top: 12px; }
+      .mb-join-or a { color: var(--accent); text-decoration: none; }
+
+      /* ── BOTTOM NAV ──────────────────────────────────── */
+      .mb-nav {
+        display: flex; align-items: center; justify-content: space-around;
+        height: 60px; flex-shrink: 0;
+        background: var(--bg); border-top: 1px solid var(--border);
+        position: relative; z-index: 5;
+        padding: 0 4px;
+      }
+      .mb-nb {
+        display: flex; flex-direction: column; align-items: center; gap: 3px;
+        flex: 1; padding: 8px 2px;
+        background: none; border: none;
+        color: var(--muted); transition: color 0.18s;
+        font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;
+        position: relative; letter-spacing: 0.01em;
+      }
+      .mb-nb.on { color: var(--accent); }
+      .mb-nb.on::before {
+        content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+        width: 28px; height: 2.5px; background: var(--accent);
+        border-radius: 0 0 4px 4px;
+      }
+      .mb-nb.join-btn {
+        background: var(--accent); color: #fff !important;
+        border-radius: 12px; margin: 8px 5px;
+        padding: 7px 10px; flex: none; width: 58px;
+        box-shadow: 0 3px 12px rgba(37,99,235,0.45);
+        transition: transform 0.12s, box-shadow 0.15s;
+      }
+      .mb-nb.join-btn.on { color: #fff !important; }
+      .mb-nb.join-btn.on::before { display: none; }
+      .mb-nb.join-btn:active { transform: scale(0.93); box-shadow: 0 2px 6px rgba(37,99,235,0.3); }
+
+      /* ── PAGE INDICATOR DOTS ─────────────────────────── */
+      .mb-dots {
+        display: flex; justify-content: center; gap: 6px;
+        padding: 14px 0 4px; flex-shrink: 0;
+      }
+      .mb-dot {
+        width: 6px; height: 6px; border-radius: 50%;
+        background: var(--border2); transition: all 0.25s;
+      }
+      .mb-dot.on { background: var(--accent); width: 20px; border-radius: 3px; }
 
     } /* end @media 480px */
 
@@ -2455,278 +2362,275 @@
      ═══════════════════════════════════════════════════════════ -->
 <div id="mob-app">
 
-  <!-- Top bar -->
-  <header class="ma-topbar">
-    <a class="ma-logo" href="#">Biz<span>Boost</span></a>
-    <div class="ma-topbar-right">
-      <button class="ma-theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
-        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  <!-- TOP BAR -->
+  <header class="mb-top">
+    <a class="mb-logo" href="#">Biz<span>Boost</span></a>
+    <div class="mb-top-r">
+      <button class="mb-theme" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="ic-sun" aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="ic-moon" aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
-      <button class="ma-signin-pill" onclick="openModal('login')">Sign In</button>
+      <button class="mb-signin" onclick="openModal('login')">Sign In</button>
     </div>
   </header>
 
-  <!-- Screen container (slides) -->
-  <div class="ma-screens" id="maScreens">
+  <!-- PAGES — native CSS scroll-snap (no JS animation, butter smooth) -->
+  <div class="mb-pages" id="mbPages">
 
-    <!-- ── SCREEN 1: HOME ─────────────────────────────────── -->
-    <div class="ma-screen active" id="ms-home" data-screen="home">
-      <div class="ma-screen-inner">
+    <!-- PAGE 1 · HOME ───────────────────────────────────── -->
+    <section class="mb-page" id="mp-home">
+      <div class="mb-pi">
 
-        <!-- Live badge -->
-        <div class="ma-badge">
-          <span class="ma-badge-dot"></span>
+        <div class="mb-badge">
+          <span class="mb-badge-dot"></span>
           <strong>2,400+</strong> businesses growing with BizBoost
         </div>
 
-        <!-- Headline -->
-        <h1 class="ma-h1">
+        <h1 class="mb-h1">
           Grow your<br>
-          <span class="ma-h1-grad">local business</span><br>
+          <span class="mb-grad">local business</span><br>
           with AI precision
         </h1>
 
-        <!-- AI typing search -->
-        <div class="ma-search-wrap">
-          <div class="ma-search-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </div>
-          <input class="ma-search-input" id="maSearchInput" type="text" placeholder="Search products or services…" autocomplete="off" />
-          <button class="ma-search-btn ripple-container" onclick="maMobileSearch()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        <div class="mb-search">
+          <span class="mb-search-ic">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <input class="mb-search-inp" id="mbSearchInp" type="text" placeholder="Search products or services…" autocomplete="off"/>
+          <button class="mb-search-btn" onclick="mbSearch()">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </button>
         </div>
 
-        <!-- Chips -->
-        <div class="ma-chips">
-          <button class="ma-chip" onclick="maFillSearch('Kurtis')">👗 Kurtis</button>
-          <button class="ma-chip" onclick="maFillSearch('Mobile Accessories')">📱 Mobiles</button>
-          <button class="ma-chip" onclick="maFillSearch('Organic Spices')">🌿 Spices</button>
-          <button class="ma-chip" onclick="maFillSearch('Hardware Tools')">🔧 Tools</button>
-          <button class="ma-chip" onclick="maFillSearch('T-Shirts')">👕 T-Shirts</button>
+        <div class="mb-chips">
+          <button class="mb-chip" onclick="mbChip('Kurtis')">👗 Kurtis</button>
+          <button class="mb-chip" onclick="mbChip('Mobile Accessories')">📱 Mobiles</button>
+          <button class="mb-chip" onclick="mbChip('Organic Spices')">🌿 Spices</button>
+          <button class="mb-chip" onclick="mbChip('Hardware Tools')">🔧 Tools</button>
+          <button class="mb-chip" onclick="mbChip('Printed T-Shirts')">👕 T-Shirts</button>
         </div>
 
-        <!-- Stats 2×2 -->
-        <div class="ma-stats">
-          <div class="ma-stat">
-            <div class="ma-stat-num" data-target="2400" data-suffix="+">0</div>
-            <div class="ma-stat-label">Active Sellers</div>
+        <div class="mb-stats">
+          <div class="mb-stat">
+            <div class="mb-stat-n" data-cnt="2400" data-sfx="+">0</div>
+            <div class="mb-stat-l">Active Sellers</div>
           </div>
-          <div class="ma-stat">
-            <div class="ma-stat-num" data-target-text="₹4.2Cr+">₹0</div>
-            <div class="ma-stat-label">Revenue Generated</div>
+          <div class="mb-stat">
+            <div class="mb-stat-n" data-cnt-text="₹4.2Cr+">₹0</div>
+            <div class="mb-stat-l">Revenue Generated</div>
           </div>
-          <div class="ma-stat">
-            <div class="ma-stat-num" data-target="18000" data-suffix="+">0</div>
-            <div class="ma-stat-label">Buyer Connections</div>
+          <div class="mb-stat">
+            <div class="mb-stat-n" data-cnt="18000" data-sfx="+">0</div>
+            <div class="mb-stat-l">Buyer Connections</div>
           </div>
-          <div class="ma-stat">
-            <div class="ma-stat-num" data-target="94" data-suffix="%">0%</div>
-            <div class="ma-stat-label">Satisfaction Rate</div>
+          <div class="mb-stat">
+            <div class="mb-stat-n" data-cnt="94" data-sfx="%">0%</div>
+            <div class="mb-stat-l">Satisfaction Rate</div>
           </div>
         </div>
 
-        <!-- Primary CTA -->
-        <button class="ma-cta-btn ripple-container" onclick="openModal('register')">
+        <button class="mb-cta" onclick="openModal('register')">
           Start for Free — No Credit Card
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </button>
-
-        <button class="ma-next-screen-btn" onclick="maGoScreen('how', document.querySelector('.ma-nav-btn[data-target=how]'))">
-          How it works
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
 
       </div>
-    </div>
+    </section>
 
-    <!-- ── SCREEN 2: HOW IT WORKS ─────────────────────────── -->
-    <div class="ma-screen" id="ms-how" data-screen="how">
-      <div class="ma-screen-inner">
-        <div class="ma-screen-header">
-          <span class="ma-screen-label">Process</span>
-          <h2 class="ma-screen-h2">Up in <span class="ma-h1-grad">5 minutes</span></h2>
+    <!-- PAGE 2 · HOW IT WORKS ───────────────────────────── -->
+    <section class="mb-page" id="mp-how">
+      <div class="mb-pi">
+        <div class="mb-sec-hd">
+          <span class="mb-label">Process</span>
+          <h2 class="mb-h2">Up in <span class="mb-grad">5 minutes</span></h2>
+          <p class="mb-sub">No tech skills needed. Register and let AI do the rest.</p>
         </div>
 
-        <!-- Step stepper -->
-        <div class="ma-steps-wrap">
-          <div class="ma-step-progress">
-            <div class="ma-step-bar" id="maStepBar"></div>
+        <div class="mb-steps">
+          <div class="mb-step-card">
+            <div class="mb-step-ic blue">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div class="mb-step-body">
+              <div class="mb-step-num">STEP 01</div>
+              <div class="mb-step-h">Register your business</div>
+              <p class="mb-step-p">Enter your business name, category, and city. Takes under 2 minutes. No credit card required.</p>
+            </div>
+          </div>
+          <div class="mb-step-card">
+            <div class="mb-step-ic purple">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            </div>
+            <div class="mb-step-body">
+              <div class="mb-step-num">STEP 02</div>
+              <div class="mb-step-h">AI analyses your market</div>
+              <p class="mb-step-p">Our AI scans local competitors, identifies pricing gaps, and builds a custom growth strategy for your category.</p>
+            </div>
+          </div>
+          <div class="mb-step-card">
+            <div class="mb-step-ic green">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+            <div class="mb-step-body">
+              <div class="mb-step-num">STEP 03</div>
+              <div class="mb-step-h">Execute and grow</div>
+              <p class="mb-step-p">Receive buyer leads, keyword rankings, and step-by-step actions. Track results live from your dashboard.</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="mb-cta mb-cta-push" onclick="openModal('register')">
+          Get Started Free →
+        </button>
+      </div>
+    </section>
+
+    <!-- PAGE 3 · FEATURES ──────────────────────────────── -->
+    <section class="mb-page" id="mp-features">
+      <div class="mb-pi">
+        <div class="mb-sec-hd">
+          <span class="mb-label">Features</span>
+          <h2 class="mb-h2">Everything you <span class="mb-grad">need</span></h2>
+          <p class="mb-sub">Tools built specifically for Indian local businesses.</p>
+        </div>
+
+        <div class="mb-feats">
+
+          <div class="mb-feat-card" style="--card-color:#2563EB">
+            <div class="mb-feat-ic" style="background:rgba(37,99,235,0.12);border-color:rgba(37,99,235,0.25)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <div class="mb-feat-body">
+              <div class="mb-feat-h">Hyper-local competitor tracking</div>
+              <p class="mb-feat-p">Find actual competitors on your street — not giant e-commerce players.</p>
+              <div class="mb-feat-tags">
+                <span class="mb-feat-tag" style="background:rgba(37,99,235,0.1);color:#2563EB">Real-time</span>
+                <span class="mb-feat-tag" style="background:rgba(37,99,235,0.1);color:#2563EB">Street-level</span>
+              </div>
+            </div>
           </div>
 
-          <div class="ma-steps" id="maSteps">
-            <div class="ma-step active" data-step="0">
-              <div class="ma-step-icon blue">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-              </div>
-              <div class="ma-step-badge">STEP 01</div>
-              <h3 class="ma-step-h">Register your business</h3>
-              <p class="ma-step-p">Enter your business name, category, and city. Takes under 2 minutes. No credit card required.</p>
-              <button class="ma-step-next" onclick="maNextStep()">Next <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+          <div class="mb-feat-card" style="--card-color:#22C55E">
+            <div class="mb-feat-ic" style="background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.25)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="1.8" stroke-linecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
             </div>
-            <div class="ma-step" data-step="1">
-              <div class="ma-step-icon purple">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            <div class="mb-feat-body">
+              <div class="mb-feat-h">SEO keyword engine</div>
+              <p class="mb-feat-p">Discover what your local customers search for. Rank on Google's first page.</p>
+              <div class="mb-feat-tags">
+                <span class="mb-feat-tag" style="background:rgba(34,197,94,0.1);color:#22C55E">Local SEO</span>
+                <span class="mb-feat-tag" style="background:rgba(34,197,94,0.1);color:#22C55E">GMB</span>
               </div>
-              <div class="ma-step-badge">STEP 02</div>
-              <h3 class="ma-step-h">AI analyses your market</h3>
-              <p class="ma-step-p">Our AI scans local competitors, identifies pricing gaps, and builds a custom growth strategy for your exact category.</p>
-              <button class="ma-step-next" onclick="maNextStep()">Next <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
-            </div>
-            <div class="ma-step" data-step="2">
-              <div class="ma-step-icon green">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-              </div>
-              <div class="ma-step-badge">STEP 03</div>
-              <h3 class="ma-step-h">Execute and grow</h3>
-              <p class="ma-step-p">Receive buyer leads, keyword rankings, and step-by-step actions. Track results live from your dashboard.</p>
-              <button class="ma-step-next" onclick="openModal('register')">Get Started Free →</button>
             </div>
           </div>
 
-          <!-- Dot indicators -->
-          <div class="ma-step-dots" id="maStepDots">
-            <span class="ma-dot active" onclick="maGoStep(0)"></span>
-            <span class="ma-dot" onclick="maGoStep(1)"></span>
-            <span class="ma-dot" onclick="maGoStep(2)"></span>
+          <div class="mb-feat-card" style="--card-color:#A78BFA">
+            <div class="mb-feat-ic" style="background:rgba(167,139,250,0.12);border-color:rgba(167,139,250,0.25)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="mb-feat-body">
+              <div class="mb-feat-h">B2B & B2C buyer leads</div>
+              <p class="mb-feat-p">Retailers, wholesalers, and end consumers looking for your products get connected to you directly.</p>
+              <div class="mb-feat-tags">
+                <span class="mb-feat-tag" style="background:rgba(167,139,250,0.1);color:#A78BFA">Verified</span>
+                <span class="mb-feat-tag" style="background:rgba(167,139,250,0.1);color:#A78BFA">Bulk Orders</span>
+              </div>
+            </div>
           </div>
+
+          <div class="mb-feat-card" style="--card-color:#F59E0B">
+            <div class="mb-feat-ic" style="background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.25)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+            </div>
+            <div class="mb-feat-body">
+              <div class="mb-feat-h">AI Growth Playbook</div>
+              <p class="mb-feat-p">Personalised step-by-step action plan — pricing, marketing channels, seasonal tactics. Updated monthly.</p>
+              <div class="mb-feat-tags">
+                <span class="mb-feat-tag" style="background:rgba(245,158,11,0.1);color:#F59E0B">AI-personalised</span>
+                <span class="mb-feat-tag" style="background:rgba(245,158,11,0.1);color:#F59E0B">Monthly</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-feat-card" style="--card-color:#F87171">
+            <div class="mb-feat-ic" style="background:rgba(248,113,113,0.12);border-color:rgba(248,113,113,0.25)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="1.8" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <div class="mb-feat-body">
+              <div class="mb-feat-h">Live analytics dashboard</div>
+              <p class="mb-feat-p">Track visitor leads, keyword rankings, and buyer enquiries in real time.</p>
+              <div class="mb-feat-tags">
+                <span class="mb-feat-tag" style="background:rgba(248,113,113,0.1);color:#F87171">Real-time</span>
+                <span class="mb-feat-tag" style="background:rgba(248,113,113,0.1);color:#F87171">ROI</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-feat-card" style="--card-color:#06B6D4">
+            <div class="mb-feat-ic" style="background:rgba(6,182,212,0.12);border-color:rgba(6,182,212,0.25)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="1.8" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="mb-feat-body">
+              <div class="mb-feat-h">WhatsApp & social sync</div>
+              <p class="mb-feat-p">Get buyer enquiries on WhatsApp. Auto-post deals to Instagram and Facebook with one tap.</p>
+              <div class="mb-feat-tags">
+                <span class="mb-feat-tag" style="background:rgba(6,182,212,0.1);color:#06B6D4">WhatsApp</span>
+                <span class="mb-feat-tag" style="background:rgba(6,182,212,0.1);color:#06B6D4">Social</span>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- ── SCREEN 3: FEATURES ─────────────────────────────── -->
-    <div class="ma-screen" id="ms-features" data-screen="features">
-      <div class="ma-screen-inner">
-        <div class="ma-screen-header">
-          <span class="ma-screen-label">Features</span>
-          <h2 class="ma-screen-h2">Everything you <span class="ma-h1-grad">need</span></h2>
-          <p class="ma-screen-sub">Swipe to explore ←→</p>
+    <!-- PAGE 4 · PRICING ───────────────────────────────── -->
+    <section class="mb-page" id="mp-pricing">
+      <div class="mb-pi" id="mbPricingPi">
+        <div class="mb-sec-hd">
+          <span class="mb-label">Pricing</span>
+          <h2 class="mb-h2">Simple, <span class="mb-grad">honest</span> pricing</h2>
+          <p class="mb-sub">No hidden fees. Cancel anytime.</p>
         </div>
 
-        <!-- Swipeable card deck -->
-        <div class="ma-feat-deck-wrap">
-          <div class="ma-feat-deck" id="maFeatDeck">
-
-            <div class="ma-feat-card" data-idx="0" style="--card-color:#2563EB;--card-glow:rgba(37,99,235,0.2)">
-              <div class="ma-feat-card-icon" style="background:rgba(37,99,235,0.15);border-color:rgba(37,99,235,0.3)">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              </div>
-              <div class="ma-feat-card-num">01 / 06</div>
-              <h3 class="ma-feat-card-h">Hyper-local competitor tracking</h3>
-              <p class="ma-feat-card-p">Find actual competitors on your street — not giant e-commerce players. Real intel for your real market.</p>
-              <div class="ma-feat-card-tags">
-                <span style="background:rgba(37,99,235,0.12);color:#2563EB">Real-time</span>
-                <span style="background:rgba(37,99,235,0.12);color:#2563EB">Street-level</span>
-              </div>
-            </div>
-
-            <div class="ma-feat-card" data-idx="1" style="--card-color:#22C55E;--card-glow:rgba(34,197,94,0.2)">
-              <div class="ma-feat-card-icon" style="background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.3)">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-              </div>
-              <div class="ma-feat-card-num">02 / 06</div>
-              <h3 class="ma-feat-card-h">SEO keyword engine</h3>
-              <p class="ma-feat-card-p">Discover exactly what your local customers search for. Get on Google's first page for terms that convert.</p>
-              <div class="ma-feat-card-tags">
-                <span style="background:rgba(34,197,94,0.12);color:#22C55E">Local SEO</span>
-                <span style="background:rgba(34,197,94,0.12);color:#22C55E">GMB Optimize</span>
-              </div>
-            </div>
-
-            <div class="ma-feat-card" data-idx="2" style="--card-color:#A78BFA;--card-glow:rgba(167,139,250,0.2)">
-              <div class="ma-feat-card-icon" style="background:rgba(167,139,250,0.15);border-color:rgba(167,139,250,0.3)">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              </div>
-              <div class="ma-feat-card-num">03 / 06</div>
-              <h3 class="ma-feat-card-h">B2B & B2C buyer leads</h3>
-              <p class="ma-feat-card-p">Retailers, wholesalers, and end consumers looking for your products get connected to you directly.</p>
-              <div class="ma-feat-card-tags">
-                <span style="background:rgba(167,139,250,0.12);color:#A78BFA">Verified Buyers</span>
-                <span style="background:rgba(167,139,250,0.12);color:#A78BFA">Bulk Orders</span>
-              </div>
-            </div>
-
-            <div class="ma-feat-card" data-idx="3" style="--card-color:#F59E0B;--card-glow:rgba(245,158,11,0.2)">
-              <div class="ma-feat-card-icon" style="background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3)">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
-              </div>
-              <div class="ma-feat-card-num">04 / 06</div>
-              <h3 class="ma-feat-card-h">AI Growth Playbook</h3>
-              <p class="ma-feat-card-p">Personalised step-by-step action plan — pricing strategy, marketing channels, seasonal tactics. Updated monthly.</p>
-              <div class="ma-feat-card-tags">
-                <span style="background:rgba(245,158,11,0.12);color:#F59E0B">Personalised AI</span>
-                <span style="background:rgba(245,158,11,0.12);color:#F59E0B">Monthly Updates</span>
-              </div>
-            </div>
-
-            <div class="ma-feat-card" data-idx="4" style="--card-color:#F87171;--card-glow:rgba(248,113,113,0.2)">
-              <div class="ma-feat-card-icon" style="background:rgba(248,113,113,0.15);border-color:rgba(248,113,113,0.3)">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-              </div>
-              <div class="ma-feat-card-num">05 / 06</div>
-              <h3 class="ma-feat-card-h">Live analytics dashboard</h3>
-              <p class="ma-feat-card-p">Track visitor leads, keyword rankings, and buyer enquiries in real time. Know exactly what's working.</p>
-              <div class="ma-feat-card-tags">
-                <span style="background:rgba(248,113,113,0.12);color:#F87171">Real-time</span>
-                <span style="background:rgba(248,113,113,0.12);color:#F87171">ROI Tracking</span>
-              </div>
-            </div>
-
-            <div class="ma-feat-card" data-idx="5" style="--card-color:#06B6D4;--card-glow:rgba(6,182,212,0.2)">
-              <div class="ma-feat-card-icon" style="background:rgba(6,182,212,0.15);border-color:rgba(6,182,212,0.3)">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              </div>
-              <div class="ma-feat-card-num">06 / 06</div>
-              <h3 class="ma-feat-card-h">WhatsApp & social sync</h3>
-              <p class="ma-feat-card-p">Get buyer enquiries directly on WhatsApp. Auto-post your deals to Instagram and Facebook with one tap.</p>
-              <div class="ma-feat-card-tags">
-                <span style="background:rgba(6,182,212,0.12);color:#06B6D4">WhatsApp</span>
-                <span style="background:rgba(6,182,212,0.12);color:#06B6D4">Social Media</span>
-              </div>
-            </div>
-
+        <!-- Billing toggle -->
+        <div class="mb-bill-toggle" id="mbBillToggle" onclick="mbToggleBill()">
+          <span class="mb-bill-label on" id="mbLblM">Monthly</span>
+          <div class="mb-bill-track" id="mbBillTrack">
+            <div class="mb-bill-knob"></div>
           </div>
-
-          <!-- Progress bar -->
-          <div class="ma-feat-progress-wrap">
-            <div class="ma-feat-progress-bar" id="maFeatBar"></div>
-          </div>
+          <span class="mb-bill-label" id="mbLblA">Annual</span>
+          <span class="mb-bill-save">Save 20%</span>
         </div>
 
-      </div>
-    </div>
+        <div class="mb-plans" id="mbPlans">
 
-    <!-- ── SCREEN 4: PRICING ──────────────────────────────── -->
-    <div class="ma-screen" id="ms-pricing" data-screen="pricing">
-      <div class="ma-screen-inner">
-        <div class="ma-screen-header">
-          <span class="ma-screen-label">Pricing</span>
-          <h2 class="ma-screen-h2">Simple, <span class="ma-h1-grad">honest</span> pricing</h2>
-          <p class="ma-screen-sub">Swipe to compare plans</p>
-        </div>
-
-        <div class="ma-pricing-scroll" id="maPricingScroll">
-
-          <div class="ma-price-card">
-            <div class="ma-plan-label">Starter</div>
-            <div class="ma-plan-price"><sup>₹</sup>0<span>/mo</span></div>
-            <p class="ma-plan-desc">Explore and get your first buyer leads.</p>
-            <ul class="ma-plan-features">
+          <!-- Starter -->
+          <div class="mb-plan-card">
+            <div class="mb-plan-name">Starter</div>
+            <div class="mb-plan-price">
+              <sup>₹</sup><span class="mb-pp-val">0</span><span class="mb-pp-per">/mo</span>
+            </div>
+            <p class="mb-plan-desc">Explore and get your first buyer leads.</p>
+            <ul class="mb-plan-ul">
               <li>1 AI competitor analysis</li>
               <li>5 keyword recommendations</li>
               <li>Basic buyer listing</li>
               <li>Community support</li>
             </ul>
-            <button class="ma-plan-btn outline ripple-container" onclick="openModal('register')">Start Free</button>
+            <button class="mb-plan-btn ghost" onclick="openModal('register')">Start Free</button>
           </div>
 
-          <div class="ma-price-card featured">
-            <div class="ma-plan-badge">MOST POPULAR</div>
-            <div class="ma-plan-label">Growth</div>
-            <div class="ma-plan-price"><sup>₹</sup>499<span>/mo</span></div>
-            <p class="ma-plan-desc">Dominate your local market with AI.</p>
-            <ul class="ma-plan-features">
+          <!-- Growth -->
+          <div class="mb-plan-card featured" data-monthly="499" data-annual="399">
+            <div class="mb-plan-pop">MOST POPULAR</div>
+            <div class="mb-plan-name">Growth</div>
+            <div class="mb-plan-price">
+              <sup>₹</sup><span class="mb-pp-val">499</span><span class="mb-pp-per">/mo</span>
+            </div>
+            <div class="mb-plan-old" id="mbOldGrowth">₹499/mo</div>
+            <p class="mb-plan-desc">Dominate your local market with AI.</p>
+            <ul class="mb-plan-ul">
               <li>Unlimited competitor tracking</li>
               <li>Full AI Growth Playbook</li>
               <li>Priority buyer matching</li>
@@ -2734,14 +2638,18 @@
               <li>Monthly strategy refresh</li>
               <li>Email + chat support</li>
             </ul>
-            <button class="ma-plan-btn filled ripple-container" onclick="openModal('register')">Start 14-day Trial →</button>
+            <button class="mb-plan-btn white" onclick="openModal('register')">Start 14-day Trial →</button>
           </div>
 
-          <div class="ma-price-card">
-            <div class="ma-plan-label">Pro</div>
-            <div class="ma-plan-price"><sup>₹</sup>1,299<span>/mo</span></div>
-            <p class="ma-plan-desc">For wholesalers and multi-city sellers.</p>
-            <ul class="ma-plan-features">
+          <!-- Pro -->
+          <div class="mb-plan-card" data-monthly="1299" data-annual="1039">
+            <div class="mb-plan-name">Pro</div>
+            <div class="mb-plan-price">
+              <sup>₹</sup><span class="mb-pp-val">1,299</span><span class="mb-pp-per">/mo</span>
+            </div>
+            <div class="mb-plan-old" id="mbOldPro">₹1,299/mo</div>
+            <p class="mb-plan-desc">For wholesalers and multi-city sellers.</p>
+            <ul class="mb-plan-ul">
               <li>Everything in Growth</li>
               <li>Multi-city market intel</li>
               <li>B2B buyer pipeline</li>
@@ -2749,159 +2657,136 @@
               <li>Dedicated account manager</li>
               <li>API access</li>
             </ul>
-            <button class="ma-plan-btn outline ripple-container" onclick="openModal('register')">Contact Sales</button>
+            <button class="mb-plan-btn ghost" onclick="openModal('register')">Contact Sales</button>
           </div>
 
         </div>
+      </div>
+    </section>
 
-        <!-- Scroll dots -->
-        <div class="ma-pricing-dots" id="maPricingDots">
-          <span class="ma-pdot active"></span>
-          <span class="ma-pdot"></span>
-          <span class="ma-pdot"></span>
+    <!-- PAGE 5 · REVIEWS ───────────────────────────────── -->
+    <section class="mb-page" id="mp-reviews">
+      <div class="mb-pi">
+        <div class="mb-sec-hd">
+          <span class="mb-label">Success Stories</span>
+          <h2 class="mb-h2">Real <span class="mb-grad">results</span></h2>
+          <p class="mb-sub">From Surat to Hyderabad — sellers growing with BizBoost.</p>
         </div>
 
-      </div>
-    </div>
+        <div class="mb-rev-summary">
+          <div class="mb-rev-big">4.9</div>
+          <div>
+            <div class="mb-rev-stars">★★★★★</div>
+            <div class="mb-rev-count">Based on 2,400+ reviews</div>
+          </div>
+        </div>
 
-    <!-- ── SCREEN 5: JOIN ─────────────────────────────────── -->
-    <div class="ma-screen" id="ms-join" data-screen="join">
-      <div class="ma-screen-inner">
-
-        <!-- Testimonial snippet -->
-        <div class="ma-testimonial">
-          <div class="ma-testi-stars">★★★★★</div>
-          <p class="ma-testi-body" id="maTesiBody">"BizBoost helped me rank #1 for 'kurti Surat' in 3 weeks. Revenue doubled."</p>
-          <div class="ma-testi-author">
-            <div class="ma-testi-avatar av1" id="maTesiAvatar">PR</div>
-            <div>
-              <div class="ma-testi-name" id="maTesiName">Priya Rathod</div>
-              <div class="ma-testi-biz" id="maTesiBiz">Priya's Kurta House, Surat</div>
+        <div class="mb-revs">
+          <div class="mb-rev-card">
+            <div class="mb-rev-s">★★★★★</div>
+            <p class="mb-rev-q">"Found 9 real competitors near my shop. Implemented the AI plan — beat 3 of them in 6 weeks."</p>
+            <div class="mb-rev-auth">
+              <div class="mb-av mb-av1">PM</div>
+              <div><div class="mb-rev-name">Priya Mehta</div><div class="mb-rev-biz">Priya's Kurta House, Surat</div></div>
             </div>
           </div>
-          <div class="ma-testi-dots" id="maTestiDots">
-            <span class="ma-tdot active"></span>
-            <span class="ma-tdot"></span>
-            <span class="ma-tdot"></span>
+          <div class="mb-rev-card">
+            <div class="mb-rev-s">★★★★★</div>
+            <p class="mb-rev-q">"Finally a tool that shows local dealers, not Amazon. My sales went up 40% in 2 months."</p>
+            <div class="mb-rev-auth">
+              <div class="mb-av mb-av2">RS</div>
+              <div><div class="mb-rev-name">Rahul Sharma</div><div class="mb-rev-biz">QuickMobile, Nagpur</div></div>
+            </div>
+          </div>
+          <div class="mb-rev-card">
+            <div class="mb-rev-s">★★★★★</div>
+            <p class="mb-rev-q">"Ranked on first page for 'printed tshirt Vadodara' in 3 weeks. The keyword list was spot on."</p>
+            <div class="mb-rev-auth">
+              <div class="mb-av mb-av3">DP</div>
+              <div><div class="mb-rev-name">Dev Patel</div><div class="mb-rev-biz">PrintZone, Vadodara</div></div>
+            </div>
+          </div>
+          <div class="mb-rev-card">
+            <div class="mb-rev-s">★★★★★</div>
+            <p class="mb-rev-q">"3 buyer leads in first week — one became a ₹85,000 bulk order. Worth every rupee."</p>
+            <div class="mb-rev-auth">
+              <div class="mb-av mb-av4">SA</div>
+              <div><div class="mb-rev-name">Sunita Agarwal</div><div class="mb-rev-biz">Agarwal Textiles, Jaipur</div></div>
+            </div>
+          </div>
+          <div class="mb-rev-card">
+            <div class="mb-rev-s">★★★★★</div>
+            <p class="mb-rev-q">"My Google Business Profile views went up 4× after implementing the SEO fixes. Incredible."</p>
+            <div class="mb-rev-auth">
+              <div class="mb-av mb-av5">AV</div>
+              <div><div class="mb-rev-name">Amit Verma</div><div class="mb-rev-biz">Verma Hardware, Lucknow</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 6 · JOIN ──────────────────────────────────── -->
+    <section class="mb-page" id="mp-join">
+      <div class="mb-pi">
+
+        <div class="mb-testi">
+          <div class="mb-testi-s">★★★★★</div>
+          <p class="mb-testi-q" id="mbTestiQ">"BizBoost helped me rank #1 for 'kurti Surat' in 3 weeks. Revenue doubled."</p>
+          <div class="mb-testi-auth">
+            <div class="mb-av mb-av1" id="mbTestiAv">PR</div>
+            <div>
+              <div class="mb-testi-name" id="mbTestiName">Priya Rathod</div>
+              <div class="mb-testi-biz" id="mbTestiBiz">Priya's Kurta House, Surat</div>
+            </div>
+          </div>
+          <div class="mb-tdots" id="mbTdots">
+            <span class="mb-tdot on"></span>
+            <span class="mb-tdot"></span>
+            <span class="mb-tdot"></span>
           </div>
         </div>
 
-        <!-- CTA card -->
-        <div class="ma-join-card">
-          <div class="ma-join-header">
-            <span class="ma-screen-label" style="margin-bottom:8px;display:block">Get Started</span>
-            <h2 class="ma-screen-h2" style="font-size:26px">Ready to outgrow<br><span class="ma-h1-grad">your competition?</span></h2>
-          </div>
-          <p class="ma-join-sub">Free forever plan · No credit card · 2-min setup</p>
-          <input class="ma-join-email" id="maJoinEmail" type="email" placeholder="Enter your email address" />
-          <button class="ma-cta-btn ripple-container" style="margin-top:12px" onclick="maCtaSignup()">
+        <div class="mb-join-card">
+          <span class="mb-label">Get Started</span>
+          <h2 class="mb-h2 mb-h2-sm">Ready to outgrow<br><span class="mb-grad">your competition?</span></h2>
+          <p class="mb-join-sub">Free forever plan · No credit card · 2-min setup</p>
+          <input class="mb-join-inp" id="mbJoinInp" type="email" placeholder="Enter your email address"/>
+          <button class="mb-cta mb-cta-tight" onclick="mbJoinCta()">
             Get Started Free →
           </button>
-          <p class="ma-join-or">Already have an account? <a href="#" onclick="openModal('login');return false">Sign In</a></p>
+          <p class="mb-join-or">Already have an account? <a href="#" onclick="openModal('login');return false">Sign In</a></p>
         </div>
 
       </div>
-    </div>
+    </section>
 
-    <!-- ── SCREEN 6: REVIEWS ─────────────────────────────── -->
-    <div class="ma-screen" id="ms-reviews" data-screen="reviews">
-      <div class="ma-screen-inner">
-        <div class="ma-screen-header">
-          <span class="ma-screen-label">Success Stories</span>
-          <h2 class="ma-screen-h2">Real <span class="ma-h1-grad">results</span></h2>
-          <p class="ma-screen-sub">From Surat to Hyderabad — sellers growing with BizBoost</p>
-        </div>
+  </div><!-- /mb-pages -->
 
-        <div class="ma-reviews-list">
-          <div class="ma-review-card">
-            <div class="ma-review-stars">★★★★★</div>
-            <p class="ma-review-body">"Found 9 real competitors selling kurtis near my shop. Implemented AI plan — beat 3 of them in 6 weeks."</p>
-            <div class="ma-review-author">
-              <div class="ma-review-avatar av1">PM</div>
-              <div>
-                <div class="ma-review-name">Priya Mehta</div>
-                <div class="ma-review-biz">Priya's Kurta House, Surat</div>
-              </div>
-            </div>
-          </div>
-          <div class="ma-review-card">
-            <div class="ma-review-stars">★★★★★</div>
-            <p class="ma-review-body">"Finally a tool that shows local dealers, not Amazon. My sales went up 40% in 2 months."</p>
-            <div class="ma-review-author">
-              <div class="ma-review-avatar av2">RS</div>
-              <div>
-                <div class="ma-review-name">Rahul Sharma</div>
-                <div class="ma-review-biz">QuickMobile, Nagpur</div>
-              </div>
-            </div>
-          </div>
-          <div class="ma-review-card">
-            <div class="ma-review-stars">★★★★★</div>
-            <p class="ma-review-body">"Ranked on first page for 'printed tshirt Vadodara' in 3 weeks. The keyword list was spot on."</p>
-            <div class="ma-review-author">
-              <div class="ma-review-avatar av3">DP</div>
-              <div>
-                <div class="ma-review-name">Dev Patel</div>
-                <div class="ma-review-biz">PrintZone, Vadodara</div>
-              </div>
-            </div>
-          </div>
-          <div class="ma-review-card">
-            <div class="ma-review-stars">★★★★★</div>
-            <p class="ma-review-body">"3 buyer leads in first week — one became a ₹85,000 bulk order. Worth every rupee."</p>
-            <div class="ma-review-author">
-              <div class="ma-review-avatar av4">SA</div>
-              <div>
-                <div class="ma-review-name">Sunita Agarwal</div>
-                <div class="ma-review-biz">Agarwal Textiles, Jaipur</div>
-              </div>
-            </div>
-          </div>
-          <div class="ma-review-card">
-            <div class="ma-review-stars">★★★★★</div>
-            <p class="ma-review-body">"My Google Business Profile views went up 4× after implementing the SEO fixes. Incredible."</p>
-            <div class="ma-review-author">
-              <div class="ma-review-avatar av5">AV</div>
-              <div>
-                <div class="ma-review-name">Amit Verma</div>
-                <div class="ma-review-biz">Verma Hardware, Lucknow</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <button class="ma-cta-btn ripple-container" style="margin-top:16px;flex-shrink:0" onclick="openModal('register')">
-          Join 2,400+ Sellers →
-        </button>
-      </div>
-    </div>
-
-  </div><!-- /ma-screens -->
-
-  <!-- Bottom navigation -->
-  <nav class="ma-bottom-nav" id="maBottomNav">
-    <button class="ma-nav-btn active" data-target="home" onclick="maGoScreen('home',this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+  <!-- BOTTOM NAV -->
+  <nav class="mb-nav" id="mbNav">
+    <button class="mb-nb on" data-pi="0" onclick="mbGo(0)">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       <span>Home</span>
     </button>
-    <button class="ma-nav-btn" data-target="how" onclick="maGoScreen('how',this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <button class="mb-nb" data-pi="1" onclick="mbGo(1)">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       <span>How</span>
     </button>
-    <button class="ma-nav-btn" data-target="features" onclick="maGoScreen('features',this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <button class="mb-nb" data-pi="2" onclick="mbGo(2)">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       <span>Features</span>
     </button>
-    <button class="ma-nav-btn" data-target="pricing" onclick="maGoScreen('pricing',this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    <button class="mb-nb" data-pi="3" onclick="mbGo(3)">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
       <span>Pricing</span>
     </button>
-    <button class="ma-nav-btn" data-target="reviews" onclick="maGoScreen('reviews',this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <button class="mb-nb" data-pi="4" onclick="mbGo(4)">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       <span>Reviews</span>
     </button>
-    <button class="ma-nav-btn cta" data-target="join" onclick="maGoScreen('join',this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+    <button class="mb-nb join-btn" data-pi="5" onclick="mbGo(5)">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
       <span>Join</span>
     </button>
   </nav>
@@ -3591,252 +3476,142 @@ async function doBuyerRegister() {
 (function() {
   if (window.innerWidth > 480) return; // only run on mobile
 
-  /* ── Screen navigation ──────────────────────────────── */
-  let currentScreen = 'home';
-  function maGoScreen(id, btn) {
-    if (id === currentScreen) return;
-    const prev = document.getElementById('ms-' + currentScreen);
-    const next = document.getElementById('ms-' + id);
-    if (!prev || !next) return;
+  const pages  = document.getElementById('mbPages');
+  const navBtns = document.querySelectorAll('.mb-nb');
 
-    prev.classList.remove('active');
-    prev.classList.add('exit-left');
-    setTimeout(() => prev.classList.remove('exit-left'), 400);
-
-    next.style.transform = 'translateX(30px)';
-    next.classList.add('active');
-    // force reflow
-    next.getBoundingClientRect();
-    next.style.transform = '';
-
-    currentScreen = id;
-
-    // Update bottom nav
-    document.querySelectorAll('.ma-nav-btn').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    else {
-      const b = document.querySelector(`.ma-nav-btn[data-target="${id}"]`);
-      if (b) b.classList.add('active');
-    }
-
-    // Trigger stat counters when home becomes visible
-    if (id === 'home') maStartCounters();
+  /* ── Navigate to page index ─────────────────────────── */
+  function mbGo(idx) {
+    if (!pages) return;
+    pages.scrollTo({ left: idx * pages.offsetWidth, behavior: 'smooth' });
   }
-  window.maGoScreen = maGoScreen;
+  window.mbGo = mbGo;
 
-  /* ── Stat counters ──────────────────────────────────── */
-  let countersRan = false;
-  function maStartCounters() {
-    if (countersRan) return;
-    countersRan = true;
-    document.querySelectorAll('.ma-stat-num[data-target]').forEach(el => {
-      const target = parseInt(el.dataset.target);
-      const suffix = el.dataset.suffix || '';
-      let start = null;
-      const step = ts => {
-        if (!start) start = ts;
-        const p = Math.min((ts - start) / 1400, 1);
+  /* ── Track active page via scroll ───────────────────── */
+  let scrollRaf = null;
+  if (pages) {
+    pages.addEventListener('scroll', function() {
+      if (scrollRaf) return;
+      scrollRaf = requestAnimationFrame(() => {
+        scrollRaf = null;
+        const idx = Math.round(pages.scrollLeft / pages.offsetWidth);
+        navBtns.forEach((b, i) => b.classList.toggle('on', i === idx));
+        if (idx === 0) mbStartCounters();
+      });
+    }, { passive: true });
+  }
+
+  /* ── Stat counters (home page) ──────────────────────── */
+  let cntDone = false;
+  function mbStartCounters() {
+    if (cntDone) return;
+    cntDone = true;
+    document.querySelectorAll('.mb-stat-n[data-cnt]').forEach(el => {
+      const target = +el.dataset.cnt;
+      const suffix = el.dataset.sfx || '';
+      let t0 = null;
+      (function tick(ts) {
+        if (!t0) t0 = ts;
+        const p = Math.min((ts - t0) / 1200, 1);
         const e = 1 - Math.pow(1 - p, 3);
         el.textContent = Math.floor(e * target).toLocaleString('en-IN') + suffix;
-        if (p < 1) requestAnimationFrame(step);
+        if (p < 1) requestAnimationFrame(tick);
         else el.textContent = target.toLocaleString('en-IN') + suffix;
-      };
-      requestAnimationFrame(step);
+      })(performance.now());
     });
-    // Revenue special
-    const rev = document.querySelector('.ma-stat-num[data-target-text]');
+    const rev = document.querySelector('.mb-stat-n[data-cnt-text]');
     if (rev) {
-      let s = null;
-      const step = ts => {
-        if (!s) s = ts;
-        const p = Math.min((ts - s) / 1400, 1);
+      let t0 = null;
+      (function tick(ts) {
+        if (!t0) t0 = ts;
+        const p = Math.min((ts - t0) / 1200, 1);
         const e = 1 - Math.pow(1 - p, 3);
         rev.textContent = '₹' + (e * 4.2).toFixed(1) + 'Cr+';
-        if (p < 1) requestAnimationFrame(step);
+        if (p < 1) requestAnimationFrame(tick);
         else rev.textContent = '₹4.2Cr+';
-      };
-      requestAnimationFrame(step);
+      })(performance.now());
     }
   }
-  // Start on load
-  setTimeout(maStartCounters, 400);
+  setTimeout(mbStartCounters, 300);
 
   /* ── Search ─────────────────────────────────────────── */
-  window.maFillSearch = function(q) {
-    const inp = document.getElementById('maSearchInput');
+  window.mbChip = function(q) {
+    const inp = document.getElementById('mbSearchInp');
     if (inp) { inp.value = q; inp.focus(); }
   };
-  window.maMobileSearch = function() {
-    const q = (document.getElementById('maSearchInput')?.value || '').trim();
+  window.mbSearch = function() {
+    const q = (document.getElementById('mbSearchInp')?.value || '').trim();
     if (!q) return;
     window.location.href = 'buyer/search.html?product=' + encodeURIComponent(q);
   };
-  document.getElementById('maSearchInput')?.addEventListener('keydown', e => {
-    if (e.key === 'Enter') window.maMobileSearch();
+  document.getElementById('mbSearchInp')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') mbSearch();
   });
 
-  /* ── How: step stepper ──────────────────────────────── */
-  let currentStep = 0;
-  function maGoStep(idx) {
-    const steps = document.querySelectorAll('.ma-step');
-    const dots = document.querySelectorAll('.ma-dot');
-    const bar = document.getElementById('maStepBar');
-    steps[currentStep]?.classList.remove('active');
-    steps[currentStep]?.classList.add('exit-left');
-    setTimeout(() => steps[currentStep]?.classList.remove('exit-left'), 400);
-    currentStep = idx;
-    steps[idx]?.classList.add('active');
-    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    if (bar) bar.style.width = ((idx + 1) / steps.length * 100) + '%';
-  }
-  window.maGoStep = maGoStep;
-  window.maNextStep = function() {
-    const total = document.querySelectorAll('.ma-step').length;
-    if (currentStep < total - 1) maGoStep(currentStep + 1);
+  /* ── Pricing toggle ─────────────────────────────────── */
+  let isAnnual = false;
+  window.mbToggleBill = function() {
+    isAnnual = !isAnnual;
+    const track = document.getElementById('mbBillTrack');
+    const lm = document.getElementById('mbLblM');
+    const la = document.getElementById('mbLblA');
+    if (track) track.classList.toggle('on', isAnnual);
+    if (lm) lm.classList.toggle('on', !isAnnual);
+    if (la) la.classList.toggle('on', isAnnual);
+    const pi = document.getElementById('mbPricingPi');
+    if (pi) pi.classList.toggle('mb-bill-annual-mode', isAnnual);
+    document.querySelectorAll('.mb-plan-card[data-monthly]').forEach(card => {
+      const val = isAnnual ? card.dataset.annual : card.dataset.monthly;
+      const old = isAnnual ? card.dataset.monthly : null;
+      const valEl = card.querySelector('.mb-pp-val');
+      if (valEl) valEl.textContent = Number(val).toLocaleString('en-IN');
+      const oldEl = card.querySelector('.mb-plan-old');
+      if (oldEl && old) oldEl.textContent = '₹' + Number(old).toLocaleString('en-IN') + '/mo';
+    });
   };
 
-  /* ── Features: swipe card deck ──────────────────────── */
-  let featIdx = 0;
-  const featCards = document.querySelectorAll('.ma-feat-card');
-  const featBar = document.getElementById('maFeatBar');
-  if (featCards.length) {
-    featCards[0].classList.add('active');
-    function maGoFeat(idx) {
-      if (idx === featIdx) return;
-      featCards[featIdx].classList.remove('active');
-      featCards[featIdx].classList.add('exit-left');
-      setTimeout(() => featCards[featIdx]?.classList.remove('exit-left'), 400);
-      featIdx = ((idx % featCards.length) + featCards.length) % featCards.length;
-      featCards[featIdx].classList.add('active');
-      if (featBar) featBar.style.width = ((featIdx + 1) / featCards.length * 100) + '%';
-    }
-
-    // Touch swipe
-    const deck = document.getElementById('maFeatDeck');
-    if (deck) {
-      let sx = 0, dragging = false;
-      deck.addEventListener('touchstart', e => { sx = e.touches[0].clientX; dragging = true; }, {passive:true});
-      deck.addEventListener('touchend', e => {
-        if (!dragging) return;
-        const dx = e.changedTouches[0].clientX - sx;
-        if (Math.abs(dx) > 40) maGoFeat(featIdx + (dx < 0 ? 1 : -1));
-        dragging = false;
-      });
-    }
-  }
-
-  /* ── Pricing scroll dots ────────────────────────────── */
-  const ps = document.getElementById('maPricingScroll');
-  const pdots = document.querySelectorAll('.ma-pdot');
-  if (ps && pdots.length) {
-    ps.addEventListener('scroll', () => {
-      const idx = Math.round(ps.scrollLeft / ps.offsetWidth);
-      pdots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    }, {passive:true});
-  }
-
-  /* ── Testimonial rotator ────────────────────────────── */
+  /* ── Testimonial rotator (join page) ────────────────── */
   const testis = [
-    { body: '"BizBoost helped me rank #1 for \'kurti Surat\' in 3 weeks. Revenue doubled."', name: 'Priya Rathod', biz: 'Priya\'s Kurta House, Surat', av: 'av1', init: 'PR' },
-    { body: '"The AI playbook told me exactly which keywords to target. My footfall went up 40%."', name: 'Rahul Verma', biz: 'Verma Electronics, Nagpur', av: 'av2', init: 'RV' },
-    { body: '"Within 2 months I connected with 3 wholesale buyers. Best investment I made."', name: 'Sunita Joshi', biz: 'Joshi Spice Traders, Jaipur', av: 'av3', init: 'SJ' },
+    { q: '"BizBoost helped me rank #1 for \'kurti Surat\' in 3 weeks. Revenue doubled."', name: 'Priya Rathod', biz: "Priya's Kurta House, Surat", av: 'mb-av1', init: 'PR' },
+    { q: '"The AI playbook told me exactly which keywords to target. My footfall went up 40%."', name: 'Rahul Verma', biz: 'Verma Electronics, Nagpur', av: 'mb-av2', init: 'RV' },
+    { q: '"Within 2 months I connected with 3 wholesale buyers. Best investment I made."', name: 'Sunita Joshi', biz: 'Joshi Spice Traders, Jaipur', av: 'mb-av3', init: 'SJ' },
   ];
   let tIdx = 0;
-  const tdots = document.querySelectorAll('.ma-tdot');
-  function showTesti(i) {
+  const tdots = document.querySelectorAll('.mb-tdot');
+  function mbShowTesti(i) {
     const t = testis[i];
-    const body = document.getElementById('maTesiBody');
-    const name = document.getElementById('maTesiName');
-    const biz  = document.getElementById('maTesiBiz');
-    const av   = document.getElementById('maTesiAvatar');
-    if (!body) return;
-    body.style.opacity = '0'; body.style.transform = 'translateY(8px)';
+    const q    = document.getElementById('mbTestiQ');
+    const name = document.getElementById('mbTestiName');
+    const biz  = document.getElementById('mbTestiBiz');
+    const av   = document.getElementById('mbTestiAv');
+    if (!q) return;
+    q.style.opacity = '0';
     setTimeout(() => {
-      body.textContent = t.body;
+      q.textContent = t.q;
       if (name) name.textContent = t.name;
-      if (biz)  biz.textContent  = t.biz;
-      if (av)   { av.className = 'ma-testi-avatar ' + t.av; av.textContent = t.init; }
-      tdots.forEach((d, j) => d.classList.toggle('active', j === i));
-      body.style.transition = 'opacity 0.4s, transform 0.4s';
-      body.style.opacity = '1'; body.style.transform = 'translateY(0)';
-    }, 200);
+      if (biz)  biz.textContent = t.biz;
+      if (av)   { av.className = 'mb-av ' + t.av; av.textContent = t.init; }
+      tdots.forEach((d, j) => d.classList.toggle('on', j === i));
+      q.style.transition = 'opacity 0.35s';
+      q.style.opacity = '1';
+    }, 180);
     tIdx = i;
   }
-  tdots.forEach((d, i) => d.addEventListener('click', () => showTesti(i)));
-  setInterval(() => showTesti((tIdx + 1) % testis.length), 4000);
+  tdots.forEach((d, i) => d.addEventListener('click', () => mbShowTesti(i)));
+  setInterval(() => mbShowTesti((tIdx + 1) % testis.length), 4500);
 
-  /* ── CTA email signup ───────────────────────────────── */
-  window.maCtaSignup = function() {
-    const email = document.getElementById('maJoinEmail')?.value.trim();
+  /* ── Join CTA ───────────────────────────────────────── */
+  window.mbJoinCta = function() {
+    const email = (document.getElementById('mbJoinInp')?.value || '').trim();
     if (!email || !email.includes('@')) {
-      document.getElementById('maJoinEmail')?.classList.add('error');
+      const inp = document.getElementById('mbJoinInp');
+      if (inp) { inp.style.borderColor = 'var(--red)'; inp.focus(); }
       return;
     }
     openModal('register');
   };
-
-  /* ── Swipe between screens (horizontal) ─────────────── */
-  const screenOrder = ['home','how','features','pricing','reviews','join'];
-  const MIN_SWIPE_DISTANCE = 50;   // px — minimum horizontal travel to register
-  const HORIZONTAL_RATIO   = 1.5;  // dx must be this times dy to count as horizontal
-  const screensEl = document.getElementById('maScreens');
-  if (screensEl) {
-    let swipeStartX = 0, swipeStartY = 0;
-    screensEl.addEventListener('touchstart', e => {
-      swipeStartX = e.touches[0].clientX;
-      swipeStartY = e.touches[0].clientY;
-    }, { passive: true });
-    screensEl.addEventListener('touchend', e => {
-      const dx = e.changedTouches[0].clientX - swipeStartX;
-      const dy = e.changedTouches[0].clientY - swipeStartY;
-      // Only trigger horizontal swipe if clearly horizontal
-      if (Math.abs(dx) < MIN_SWIPE_DISTANCE || Math.abs(dx) < Math.abs(dy) * HORIZONTAL_RATIO) return;
-      const idx = screenOrder.indexOf(currentScreen);
-      if (dx < 0 && idx < screenOrder.length - 1) {
-        // swipe left → next screen
-        const nextId = screenOrder[idx + 1];
-        maGoScreen(nextId, document.querySelector(`.ma-nav-btn[data-target="${nextId}"]`));
-      } else if (dx > 0 && idx > 0) {
-        // swipe right → prev screen
-        const prevId = screenOrder[idx - 1];
-        maGoScreen(prevId, document.querySelector(`.ma-nav-btn[data-target="${prevId}"]`));
-      }
-    }, { passive: true });
-  }
-
-  /* ── Mobile FAQ accordion ───────────────────────────── */
-  window.mToggleFaq = function(btn) {
-    const item = btn.closest('.ma-faq-item');
-    const ans  = item.querySelector('.ma-faq-a');
-    const isOpen = btn.classList.contains('open');
-    // Close all others in this list
-    btn.closest('.ma-faq-list')?.querySelectorAll('.ma-faq-q.open').forEach(q => {
-      if (q !== btn) {
-        q.classList.remove('open');
-        q.setAttribute('aria-expanded', 'false');
-        q.closest('.ma-faq-item').querySelector('.ma-faq-a').classList.remove('open');
-      }
-    });
-    btn.classList.toggle('open', !isOpen);
-    btn.setAttribute('aria-expanded', String(!isOpen));
-    ans.classList.toggle('open', !isOpen);
-  };
-
-  /* ── Ripple on mobile app buttons ──────────────────── */
-  document.querySelectorAll('#mob-app .ripple-container').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      const rect = this.getBoundingClientRect();
-      const ripple = document.createElement('span');
-      ripple.className = 'ripple';
-      const size = Math.max(rect.width, rect.height);
-      ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
-      this.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 600);
-    });
+  document.getElementById('mbJoinInp')?.addEventListener('input', function() {
+    this.style.borderColor = '';
   });
-
-  /* ── Scroll pricing dots ─────────────────────────────── */
-  document.getElementById('maPricingScroll')?.scrollTo({ left: 10, behavior: 'instant' });
 
 })();
 async function _parseRes(res) {
