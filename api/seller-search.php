@@ -104,6 +104,6 @@ try {
     ]);
 
 } catch (Throwable $e) {
-    respond(["success" => false, "error" => $e->getMessage()]);
+    respond(["success" => false, "error" => "An internal error occurred. Please try again later."]);
 }
 ?>
