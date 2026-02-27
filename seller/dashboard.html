@@ -388,7 +388,10 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
 
   <div class="wbar">
     <div class="wbar-l">
-      <div class="w-greeting">Your Dashboard</div>
+      <div class="w-greeting" style="display:flex;align-items:center;gap:10px">
+        <span>Your Dashboard</span>
+        <span id="wTierBadge"></span>
+      </div>
       <h1 id="wTitle">Welcome back</h1>
       <p id="wSub">Loading your business…</p>
     </div>
@@ -903,9 +906,10 @@ function renderUsage(d){
   const tierIcons={free:icon('circle',11),basic:icon('circle',11),pro:icon('gem',11),enterprise:icon('crown',11)};
 
   const badgeEl=document.getElementById("usageTierBadge");
-  if(badgeEl){
-    badgeEl.innerHTML=`<span class="usage-tier-badge ${tierBadgeClass[tier]||'usage-tier-free'}">${tierIcons[tier]||''} ${tierLabels[tier]||tier}</span>`;
-  }
+  const wTierEl=document.getElementById("wTierBadge");
+  const badgeHtml=`<span class="usage-tier-badge ${tierBadgeClass[tier]||'usage-tier-free'}">${tierIcons[tier]||''} ${tierLabels[tier]||tier}</span>`;
+  if(badgeEl)badgeEl.innerHTML=badgeHtml;
+  if(wTierEl)wTierEl.innerHTML=badgeHtml;
 
   const featureNames={analyze:`${icon('search',13)} Analyze`,competitor_intel:`${icon('compass',13)} Competitor Intel`};
   const features=["analyze","competitor_intel"];
