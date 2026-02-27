@@ -1,0 +1,3270 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BizBoost — Grow Your Local Business with AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── THEMES ──────────────────────────────────────────────── */
+    :root, [data-theme="dark"] {
+      --bg: #060608;
+      --surface: #0d0d10;
+      --surface2: #14141a;
+      --surface3: #1c1c24;
+      --border: rgba(255,255,255,0.06);
+      --border2: rgba(255,255,255,0.12);
+      --text: #F0F0F5;
+      --text2: #c8c8d4;
+      --muted: rgba(240,240,245,0.5);
+      --muted2: rgba(240,240,245,0.28);
+      --accent: #2563EB;
+      --accent-glow: rgba(37,99,235,0.35);
+      --accent2: #60A5FA;
+      --green: #22C55E;
+      --orange: #F59E0B;
+      --purple: #A78BFA;
+      --red: #F87171;
+      --nav-bg: rgba(6,6,8,0.75);
+      --nav-border: rgba(255,255,255,0.07);
+      --modal-bg: rgba(6,6,8,0.95);
+      --card-bg: rgba(13,13,16,0.8);
+      --input-bg: rgba(255,255,255,0.04);
+      --input-border: rgba(255,255,255,0.1);
+      --shadow: 0 24px 60px rgba(0,0,0,0.6);
+      --r: 16px;
+      --nav-h: 52px;
+      color-scheme: dark;
+    }
+
+    [data-theme="light"] {
+      --bg: #F8F8FC;
+      --surface: #FFFFFF;
+      --surface2: #F2F2F8;
+      --surface3: #EAEAF2;
+      --border: rgba(0,0,0,0.07);
+      --border2: rgba(0,0,0,0.14);
+      --text: #0A0A14;
+      --text2: #2a2a40;
+      --muted: rgba(10,10,20,0.5);
+      --muted2: rgba(10,10,20,0.3);
+      --accent: #2563EB;
+      --accent-glow: rgba(37,99,235,0.2);
+      --accent2: #1D4ED8;
+      --green: #16A34A;
+      --orange: #D97706;
+      --purple: #7C3AED;
+      --red: #DC2626;
+      --nav-bg: rgba(248,248,252,0.82);
+      --nav-border: rgba(0,0,0,0.08);
+      --modal-bg: rgba(248,248,252,0.98);
+      --card-bg: rgba(255,255,255,0.9);
+      --input-bg: rgba(0,0,0,0.03);
+      --input-border: rgba(0,0,0,0.12);
+      --shadow: 0 24px 60px rgba(0,0,0,0.12);
+      --r: 16px;
+      --nav-h: 52px;
+      color-scheme: light;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    /* ── SCROLL PROGRESS ────────────────────────────────────── */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0; height: 3px; z-index: 9997;
+      background: linear-gradient(90deg, var(--accent), var(--purple), var(--accent2));
+      width: 0%; transition: width 0.1s linear;
+      border-radius: 0 3px 3px 0;
+    }
+
+    /* ── RIPPLE EFFECT ──────────────────────────────────────── */
+    .ripple-container { position: relative; overflow: hidden; }
+    .ripple {
+      position: absolute; border-radius: 50%;
+      background: rgba(255,255,255,0.25); transform: scale(0);
+      animation: ripple-anim 0.5s linear; pointer-events: none;
+    }
+    @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+
+    /* ── MOBILE FLOATING CTA ────────────────────────────────── */
+    .mobile-fab {
+      display: none; position: fixed; bottom: 20px; left: 50%;
+      transform: translateX(-50%); z-index: 190;
+      background: var(--accent); color: #fff;
+      font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 700;
+      padding: 14px 32px; border-radius: 50px; border: none;
+      box-shadow: 0 8px 32px rgba(37,99,235,0.5);
+      white-space: nowrap; cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .mobile-fab:active { transform: translateX(-50%) scale(0.96); }
+    @media (max-width: 640px) { .mobile-fab { display: block; } }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      cursor: none;
+      transition: background 0.4s, color 0.4s;
+    }
+    @media (max-width: 640px) {
+      body { padding-bottom: 80px; cursor: auto; }
+      * { cursor: auto !important; }
+      #cursor, #cursor-ring { display: none; }
+    }
+
+    /* ── CUSTOM CURSOR ─────────────────────────────────────── */
+    #cursor {
+      position: fixed; width: 9px; height: 9px;
+      background: var(--accent); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s, opacity 0.15s, width 0.2s, height 0.2s;
+    }
+    #cursor-ring {
+      position: fixed; width: 34px; height: 34px;
+      border: 1.5px solid rgba(37,99,235,0.5); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.25s cubic-bezier(0.25,0.46,0.45,0.94),
+                  height 0.25s cubic-bezier(0.25,0.46,0.45,0.94),
+                  border-color 0.25s;
+    }
+    #cursor-ring.hover { width: 52px; height: 52px; border-color: rgba(37,99,235,0.8); }
+    body a, body button { cursor: none; }
+
+    /* ── NAV ───────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px;
+      background: var(--nav-bg);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--nav-border);
+      transition: background 0.35s, border-color 0.35s;
+    }
+    .nav-logo {
+      font-family: 'Sora', sans-serif;
+      font-size: 18px; font-weight: 800; color: var(--text);
+      text-decoration: none; letter-spacing: -0.05em;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links {
+      display: flex; gap: 36px; list-style: none;
+      position: absolute; left: 50%; transform: translateX(-50%);
+    }
+    .nav-links a {
+      font-size: 13.5px; font-weight: 500; color: var(--muted); text-decoration: none;
+      transition: color 0.15s; letter-spacing: -0.01em;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-right { display: flex; gap: 8px; align-items: center; }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid var(--border2);
+      background: var(--input-bg);
+      display: flex; align-items: center; justify-content: center;
+      cursor: none; transition: all 0.2s; position: relative; overflow: hidden;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .theme-toggle:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+    .theme-toggle svg { width: 16px; height: 16px; transition: transform 0.4s, opacity 0.2s; }
+    .theme-toggle .icon-sun { position: absolute; }
+    .theme-toggle .icon-moon { position: absolute; }
+    [data-theme="dark"] .theme-toggle .icon-sun { opacity: 0; transform: rotate(90deg) scale(0.5); }
+    [data-theme="dark"] .theme-toggle .icon-moon { opacity: 1; transform: rotate(0deg) scale(1); }
+    [data-theme="light"] .theme-toggle .icon-sun { opacity: 1; transform: rotate(0deg) scale(1); }
+    [data-theme="light"] .theme-toggle .icon-moon { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+
+    .btn-ghost {
+      font-size: 13px; font-weight: 500; padding: 7px 16px;
+      border-radius: 980px; border: 1px solid var(--border2);
+      color: var(--text); text-decoration: none;
+      background: transparent; transition: all 0.2s; cursor: none;
+    }
+    .btn-ghost:hover { background: var(--surface2); }
+    .btn-accent {
+      font-family: 'Sora', sans-serif;
+      font-size: 13px; font-weight: 600; padding: 8px 20px;
+      border-radius: 980px; border: none;
+      background: var(--accent); color: #fff; text-decoration: none;
+      transition: all 0.25s cubic-bezier(0.25,0.46,0.45,0.94);
+      cursor: none; position: relative; overflow: hidden;
+    }
+    .btn-accent:hover { transform: scale(1.04); box-shadow: 0 6px 28px var(--accent-glow); }
+
+    /* Hamburger — only shows on mobile */
+    .nav-burger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: none; background: none; border: none; padding: 8px;
+      width: 40px; height: 40px; align-items: center; justify-content: center;
+    }
+    .nav-burger span { width: 22px; height: 2px; background: var(--text); display: block; transition: all 0.35s cubic-bezier(0.23,1,0.32,1); border-radius: 2px; }
+    .nav-burger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-burger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+    /* ── MOBILE FULL-SCREEN MENU ───────────────────────────── */
+    .nav-mobile-menu {
+      display: none;
+      position: fixed; inset: 0; z-index: 199;
+      background: var(--bg);
+      flex-direction: column;
+      padding: 0 28px 40px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+      overflow-y: auto;
+    }
+    .nav-mobile-menu.open { opacity: 1; pointer-events: all; }
+
+    /* Menu top bar */
+    .mob-menu-top {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px; flex-shrink: 0;
+    }
+    .mob-menu-close {
+      width: 42px; height: 42px; border-radius: 50%;
+      border: 1px solid var(--border2); background: var(--surface2);
+      color: var(--text); display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+
+    /* Big nav links */
+    .mob-nav-links {
+      display: flex; flex-direction: column;
+      gap: 2px; flex: 1;
+      margin-top: 20px;
+    }
+    .mob-nav-links a {
+      display: flex; align-items: center; gap: 16px;
+      font-family: 'Sora', sans-serif;
+      font-size: 28px; font-weight: 800; letter-spacing: -0.04em;
+      color: var(--text); text-decoration: none;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s, padding-left 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .mob-nav-links a:last-child { border-bottom: none; }
+    .mob-nav-links a:active { color: var(--accent); padding-left: 6px; }
+    .mob-link-num {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      color: var(--muted2); font-family: 'DM Sans', sans-serif;
+      min-width: 24px;
+    }
+
+    /* Auth buttons in menu */
+    .mob-menu-actions {
+      display: flex; flex-direction: column; gap: 12px;
+      margin-top: 32px;
+    }
+    .mob-start-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 18px 24px;
+      background: var(--accent); color: #fff; border: none; border-radius: 16px;
+      font-family: 'Sora', sans-serif; font-size: 17px; font-weight: 700;
+      cursor: pointer; transition: background 0.2s, transform 0.15s;
+      letter-spacing: -0.02em;
+    }
+    .mob-start-btn:active { transform: scale(0.97); }
+    .mob-signin-btn {
+      width: 100%; padding: 16px 24px;
+      background: transparent; color: var(--text); border: 1.5px solid var(--border2);
+      border-radius: 16px; font-family: 'Sora', sans-serif;
+      font-size: 16px; font-weight: 600; cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .mob-signin-btn:active { background: var(--surface2); }
+
+    /* Menu footer */
+    .mob-menu-footer {
+      margin-top: 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .mob-theme-btn {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--surface2); border: 1px solid var(--border2);
+      border-radius: 50px; padding: 10px 18px; color: var(--text);
+      font-size: 14px; font-weight: 500; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .mob-theme-btn .icon-sun { display: none; }
+    .mob-theme-btn .icon-moon { display: block; }
+    [data-theme="light"] .mob-theme-btn .icon-sun { display: block; }
+    [data-theme="light"] .mob-theme-btn .icon-moon { display: none; }
+    .mob-menu-tagline { font-size: 12px; color: var(--muted2); }
+
+    /* ── HERO ──────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center;
+      padding: 120px 24px 100px;
+      position: relative; overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(37,99,235,0.14) 0%, transparent 60%),
+                  radial-gradient(ellipse 60% 50% at 80% 30%, rgba(96,165,250,0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse 70% 60% at 50% 95%, rgba(34,197,94,0.05) 0%, transparent 60%);
+      animation: meshshift 14s ease-in-out infinite alternate;
+    }
+    [data-theme="light"] .hero-bg {
+      background: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(37,99,235,0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse 60% 50% at 80% 30%, rgba(96,165,250,0.05) 0%, transparent 60%),
+                  radial-gradient(ellipse 70% 60% at 50% 95%, rgba(34,197,94,0.04) 0%, transparent 60%);
+    }
+    @keyframes meshshift {
+      0%   { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(12deg); opacity: 0.85; }
+    }
+
+    .hero-grid {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black, transparent);
+      -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black, transparent);
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px 6px 8px;
+      background: var(--surface2); border: 1px solid var(--border2);
+      border-radius: 980px; font-size: 12px; font-weight: 500;
+      color: var(--muted); margin-bottom: 28px;
+      position: relative; z-index: 1;
+      animation: fadeup 0.7s both;
+    }
+    .hero-badge-dot {
+      width: 18px; height: 18px; background: var(--green);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .hero-badge-dot::after {
+      content: ''; width: 8px; height: 8px; background: #fff; border-radius: 50%;
+    }
+    .hero-badge strong { color: var(--text); }
+
+    .hero-h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(42px, 7vw, 80px);
+      font-weight: 800; letter-spacing: -0.05em; line-height: 1.06;
+      position: relative; z-index: 1;
+      animation: fadeup 0.7s 0.1s both;
+    }
+    .hero-h1 .line2 {
+      display: block;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--purple) 50%, var(--accent2) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      margin-top: 20px; font-size: clamp(16px, 2vw, 19px);
+      color: var(--muted); max-width: 540px; line-height: 1.65;
+      position: relative; z-index: 1;
+      animation: fadeup 0.7s 0.2s both;
+    }
+
+    /* Buyer search bar */
+    .buyer-bar {
+      display: flex; gap: 0; margin-top: 44px;
+      background: var(--surface2); border: 1px solid var(--border2);
+      border-radius: 16px; overflow: hidden;
+      max-width: 600px; width: 100%;
+      position: relative; z-index: 1;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+      animation: fadeup 0.7s 0.3s both;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .buyer-bar:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-glow), 0 8px 40px rgba(0,0,0,0.3);
+    }
+    .buyer-bar input {
+      flex: 1; padding: 16px 18px; background: transparent; border: none; outline: none;
+      font-family: inherit; font-size: 15px; color: var(--text);
+      min-width: 0;
+    }
+    .buyer-bar input::placeholder { color: var(--muted2); }
+    .buyer-divider { width: 1px; background: var(--border2); margin: 12px 0; flex-shrink: 0; }
+    .buyer-bar-btn {
+      padding: 12px 22px; background: var(--accent); color: #fff; border: none;
+      font-family: 'Sora', sans-serif; font-size: 13.5px; font-weight: 600;
+      cursor: none; transition: background 0.2s; margin: 5px; border-radius: 11px;
+      white-space: nowrap;
+    }
+    .buyer-bar-btn:hover { background: #1D4ED8; }
+
+    .hero-chips {
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+      margin-top: 18px; position: relative; z-index: 1;
+      animation: fadeup 0.7s 0.4s both;
+      max-width: 600px; width: 100%;
+    }
+    .hero-chip {
+      padding: 6px 14px; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 980px; font-size: 12.5px; color: var(--muted);
+      cursor: none; transition: all 0.2s;
+    }
+    .hero-chip:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero-stats {
+      display: flex; gap: 40px; margin-top: 56px; position: relative; z-index: 1;
+      animation: fadeup 0.7s 0.5s both;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat-num {
+      font-family: 'Sora', sans-serif;
+      font-size: 28px; font-weight: 800; letter-spacing: -0.04em; color: var(--text);
+    }
+    .hero-stat-label { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+    /* Typing */
+    .typing-wrapper {
+      position: relative; z-index: 1; margin-bottom: 12px;
+      animation: fadeup 0.7s 0.05s both;
+    }
+    .typing-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 500; color: var(--accent);
+      background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.25);
+      padding: 5px 14px; border-radius: 980px;
+    }
+    .typing-tag #typingText {
+      min-width: 120px; text-align: left;
+    }
+    .typing-tag #typingText::after {
+      content: '|'; animation: blink 1s step-end infinite; margin-left: 1px;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── SECTIONS ──────────────────────────────────────────── */
+    section { padding: 100px 24px; }
+    .section-label {
+      display: inline-block; font-size: 11.5px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 16px;
+    }
+    .section-h2 {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(30px, 4.5vw, 52px); font-weight: 800;
+      letter-spacing: -0.05em; line-height: 1.1; color: var(--text);
+    }
+    .section-sub {
+      font-size: 17px; color: var(--muted); line-height: 1.65;
+      max-width: 500px; margin-top: 14px;
+    }
+    .container { max-width: 1080px; margin: 0 auto; }
+    .text-center { text-align: center; }
+    .text-center .section-sub { margin: 14px auto 0; }
+
+    /* ── HOW IT WORKS ──────────────────────────────────────── */
+    #how { background: var(--bg); }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+      margin-top: 56px;
+    }
+    .step-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r); padding: 32px 28px;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .step-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -20%, var(--accent-glow), transparent);
+      opacity: 0; transition: opacity 0.35s;
+    }
+    .step-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 20px 48px rgba(0,0,0,0.25); }
+    .step-card:hover::before { opacity: 1; }
+    .step-card:hover .step-icon { transform: scale(1.1); }
+    .step-icon { transition: transform 0.3s; }
+    .step-num {
+      font-family: 'Sora', sans-serif;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      color: var(--accent); background: rgba(37,99,235,0.1);
+      border: 1px solid rgba(37,99,235,0.2); border-radius: 6px;
+      padding: 3px 9px; display: inline-block; margin-bottom: 20px;
+    }
+    .step-icon {
+      width: 48px; height: 48px; background: var(--surface2);
+      border: 1px solid var(--border2); border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px; color: var(--accent);
+    }
+    .step-icon svg { width: 22px; height: 22px; }
+    .step-h { font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -0.03em; color: var(--text); margin-bottom: 10px; }
+    .step-p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    /* ── FEATURES ──────────────────────────────────────────── */
+    #features { background: var(--surface); }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+      margin-top: 56px;
+    }
+    .feat-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 28px 26px;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .feat-card::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -20%, var(--accent-glow), transparent);
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .feat-card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 20px 48px rgba(0,0,0,0.25); }
+    .feat-card:hover::after { opacity: 1; }
+    .feat-icon {
+      width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+      border-radius: 12px; margin-bottom: 18px; position: relative; z-index: 1;
+      transition: transform 0.3s;
+    }
+    .feat-card:hover .feat-icon { transform: scale(1.1) rotate(-4deg); }
+    .feat-icon svg { width: 24px; height: 24px; }
+    .fi-blue  { background: rgba(37,99,235,0.12);  color: var(--accent); border: 1px solid rgba(37,99,235,0.25); }
+    .fi-green { background: rgba(34,197,94,0.12);  color: var(--green);  border: 1px solid rgba(34,197,94,0.25); }
+    .fi-purple{ background: rgba(167,139,250,0.12);color: var(--purple); border: 1px solid rgba(167,139,250,0.25); }
+    .fi-orange{ background: rgba(245,158,11,0.12); color: var(--orange); border: 1px solid rgba(245,158,11,0.25); }
+    .fi-red   { background: rgba(248,113,113,0.12);color: var(--red);    border: 1px solid rgba(248,113,113,0.25); }
+    .fi-cyan  { background: rgba(6,182,212,0.12);  color: #06B6D4;       border: 1px solid rgba(6,182,212,0.25); }
+    .feat-h { font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: -0.03em; color: var(--text); margin-bottom: 8px; position: relative; z-index: 1; }
+    .feat-p { font-size: 13.5px; color: var(--muted); line-height: 1.65; position: relative; z-index: 1; }
+    .feat-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; position: relative; z-index: 1; }
+    .feat-tag {
+      font-size: 11.5px; font-weight: 500; padding: 4px 10px;
+      background: rgba(37,99,235,0.1); color: var(--accent);
+      border-radius: 6px;
+    }
+
+    /* ── TESTIMONIALS ──────────────────────────────────────── */
+    #proof { background: var(--bg); overflow: hidden; }
+    .proof-track-wrap { overflow: hidden; position: relative; margin-top: 52px; }
+    .proof-track-wrap::before, .proof-track-wrap::after {
+      content: ''; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2;
+      pointer-events: none;
+    }
+    .proof-track-wrap::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+    .proof-track-wrap::after { right: 0; background: linear-gradient(-90deg, var(--bg), transparent); }
+    .proof-track {
+      display: flex; gap: 16px;
+      animation: scrolltrack 52s linear infinite;
+      width: max-content;
+    }
+    .proof-track:hover { animation-play-state: paused; }
+    @keyframes scrolltrack { to { transform: translateX(-50%); } }
+    .tcard {
+      width: 310px; flex-shrink: 0;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 24px 22px;
+      transition: border-color 0.2s;
+    }
+    .tcard:hover { border-color: var(--border2); }
+    .tcard-stars { display: flex; gap: 3px; margin-bottom: 12px; }
+    .tcard-body { font-size: 13.5px; color: var(--text2); line-height: 1.65; margin-bottom: 18px; }
+    .tcard-author { display: flex; align-items: center; gap: 12px; }
+    .tcard-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Sora', sans-serif;
+      font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .av1 { background: linear-gradient(135deg, #2563EB, #7C3AED); }
+    .av2 { background: linear-gradient(135deg, #059669, #0284C7); }
+    .av3 { background: linear-gradient(135deg, #D97706, #DC2626); }
+    .av4 { background: linear-gradient(135deg, #7C3AED, #EC4899); }
+    .av5 { background: linear-gradient(135deg, #0284C7, #2563EB); }
+    .av6 { background: linear-gradient(135deg, #EC4899, #F97316); }
+    .tcard-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .tcard-biz { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* ── PRICING ───────────────────────────────────────────── */
+    #pricing { background: var(--surface); }
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+      margin-top: 56px; align-items: start;
+    }
+    .price-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 32px 28px;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+    .price-card:hover { border-color: var(--border2); transform: translateY(-4px); }
+    .price-card.featured {
+      background: var(--accent); border-color: var(--accent);
+      box-shadow: 0 0 60px rgba(37,99,235,0.35);
+    }
+    .price-card.featured:hover { transform: translateY(-6px); box-shadow: 0 0 80px rgba(37,99,235,0.45); }
+    .price-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+    .price-card.featured .price-label { color: rgba(255,255,255,0.7); }
+    .price-amount { font-family: 'Sora', sans-serif; font-size: 44px; font-weight: 800; letter-spacing: -0.05em; color: var(--text); line-height: 1; }
+    .price-card.featured .price-amount { color: #fff; }
+    .price-amount sup { font-size: 20px; vertical-align: top; margin-top: 8px; display: inline-block; }
+    .price-amount span { font-size: 16px; font-weight: 400; color: var(--muted); letter-spacing: 0; }
+    .price-card.featured .price-amount span { color: rgba(255,255,255,0.6); }
+    .price-desc { font-size: 13.5px; color: var(--muted); margin-top: 12px; line-height: 1.55; }
+    .price-card.featured .price-desc { color: rgba(255,255,255,0.75); }
+    .price-div { height: 1px; background: var(--border); margin: 22px 0; }
+    .price-card.featured .price-div { background: rgba(255,255,255,0.2); }
+    .price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .price-features li { font-size: 13.5px; color: var(--muted); display: flex; align-items: flex-start; gap: 10px; }
+    .price-card.featured .price-features li { color: rgba(255,255,255,0.85); }
+    .price-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .price-card.featured .price-features li::before { color: #fff; }
+    .price-cta {
+      display: block; width: 100%; margin-top: 28px;
+      padding: 13px 20px; border-radius: 980px; border: 1px solid var(--border2);
+      background: transparent; font-family: 'Sora', sans-serif;
+      font-size: 13.5px; font-weight: 600; color: var(--text);
+      text-align: center; cursor: none; transition: all 0.2s;
+    }
+    .price-cta:hover { background: var(--surface3); }
+    .price-card.featured .price-cta { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: #fff; }
+    .price-card.featured .price-cta:hover { background: rgba(255,255,255,0.25); }
+
+    /* ── CTA BANNER ────────────────────────────────────────── */
+    #cta { background: var(--bg); }
+    .cta-box {
+      background: linear-gradient(135deg, rgba(37,99,235,0.12) 0%, rgba(124,58,237,0.08) 100%);
+      border: 1px solid var(--border2);
+      border-radius: 24px; padding: 72px 48px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-box::before {
+      content: ''; position: absolute;
+      top: -80px; left: 50%; transform: translateX(-50%);
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(37,99,235,0.15), transparent 70%);
+      pointer-events: none;
+    }
+    .cta-box .section-h2 { position: relative; }
+    .cta-box .section-sub { position: relative; margin: 0 auto; margin-top: 14px; }
+    .cta-email-row {
+      display: flex; gap: 10px; max-width: 440px; margin: 36px auto 0;
+      position: relative;
+    }
+    .cta-email-row input {
+      flex: 1; padding: 13px 18px; background: var(--surface2);
+      border: 1px solid var(--border2); border-radius: 12px;
+      font-family: inherit; font-size: 14px; color: var(--text); outline: none;
+      transition: border-color 0.2s;
+    }
+    .cta-email-row input:focus { border-color: var(--accent); }
+    .cta-email-row input::placeholder { color: var(--muted2); }
+    .cta-email-row .btn-accent { white-space: nowrap; padding: 13px 24px; border-radius: 12px; }
+
+    /* ── FOOTER ────────────────────────────────────────────── */
+    footer {
+      padding: 52px 24px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .footer-inner {
+      max-width: 1080px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 40px;
+    }
+    .footer-brand .nav-logo { font-size: 20px; }
+    .footer-brand p { font-size: 13px; color: var(--muted); margin-top: 10px; max-width: 240px; line-height: 1.6; }
+    .footer-links-group h4 { font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted2); margin-bottom: 16px; }
+    .footer-links-group ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links-group a { font-size: 13.5px; color: var(--muted); text-decoration: none; transition: color 0.15s; }
+    .footer-links-group a:hover { color: var(--text); }
+    .footer-bottom { max-width: 1080px; margin: 36px auto 0; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-bottom p { font-size: 12.5px; color: var(--muted2); }
+
+    /* ── AUTH MODAL ────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 22px; width: 100%; max-width: 440px;
+      box-shadow: var(--shadow);
+      transform: translateY(22px) scale(0.97); transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1);
+      overflow: hidden;
+    }
+    .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
+
+    /* Header */
+    .modal-header {
+      padding: 22px 26px 0;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-logo { font-family: 'Sora', sans-serif; font-size: 17px; font-weight: 800; letter-spacing: -0.05em; color: var(--text); }
+    .modal-logo span { color: var(--accent); }
+    .modal-close {
+      width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--border2);
+      background: var(--surface2); color: var(--muted);
+      display: flex; align-items: center; justify-content: center; cursor: none;
+      transition: all 0.2s;
+    }
+    .modal-close:hover { background: var(--surface3); color: var(--text); }
+
+    /* Role Toggle — the big pill at top */
+    .role-toggle-wrap {
+      padding: 18px 26px 0;
+    }
+    .role-toggle {
+      display: grid; grid-template-columns: 1fr 1fr;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 4px; gap: 4px;
+    }
+    .role-btn {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      padding: 10px 14px; border-radius: 9px; border: none;
+      background: transparent; cursor: none;
+      font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700;
+      color: var(--muted); transition: all 0.22s; position: relative;
+    }
+    .role-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .role-btn.seller-on {
+      background: rgba(37,99,235,0.15); color: var(--accent);
+      box-shadow: 0 1px 8px rgba(37,99,235,0.18);
+    }
+    .role-btn.buyer-on {
+      background: rgba(34,197,94,0.12); color: var(--green);
+      box-shadow: 0 1px 8px rgba(34,197,94,0.15);
+    }
+    .role-badge {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 2px 6px; border-radius: 4px; margin-left: 2px;
+    }
+    .seller-badge { background: rgba(37,99,235,0.18); color: var(--accent); }
+    .buyer-badge  { background: rgba(34,197,94,0.14); color: var(--green); }
+
+    /* Context label that changes based on role */
+    .role-context {
+      padding: 10px 26px 0;
+      font-size: 12px; color: var(--muted2); line-height: 1.5;
+      transition: opacity 0.2s;
+    }
+
+    /* Action tabs (Sign In / Register) */
+    .modal-tabs {
+      display: flex; padding: 14px 26px 0; gap: 4px;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-tab {
+      flex: 1; padding: 8px 14px; background: transparent; border: none;
+      font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 600;
+      color: var(--muted); cursor: none; transition: color 0.18s;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .modal-tab.on { color: var(--accent); border-bottom-color: var(--accent); }
+    /* Buyer mode: green underline */
+    .modal-box.buyer-mode .modal-tab.on { color: var(--green); border-bottom-color: var(--green); }
+
+    .modal-body { padding: 22px 26px 26px; }
+
+    /* Form submit colors */
+    .form-submit.buyer-submit { background: var(--green); }
+    .form-submit.buyer-submit:hover:not(:disabled) { background: #16A34A; box-shadow: 0 6px 24px rgba(34,197,94,0.3); }
+    [data-theme="light"] .form-submit.buyer-submit:hover:not(:disabled) { box-shadow: 0 6px 24px rgba(22,163,74,0.28); }
+
+    .form-group { margin-bottom: 16px; }
+    .form-label {
+      display: block; font-size: 12px; font-weight: 600;
+      letter-spacing: 0.04em; color: var(--muted); margin-bottom: 7px;
+      text-transform: uppercase;
+    }
+    .form-input {
+      width: 100%; padding: 12px 16px;
+      background: var(--input-bg); border: 1px solid var(--input-border);
+      border-radius: 10px; font-family: inherit; font-size: 14.5px; color: var(--text);
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .form-input::placeholder { color: var(--muted2); }
+    .form-input.error { border-color: var(--red); box-shadow: 0 0 0 3px rgba(248,113,113,0.15); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .form-select {
+      width: 100%; padding: 12px 16px;
+      background: var(--input-bg); border: 1px solid var(--input-border);
+      border-radius: 10px; font-family: inherit; font-size: 14.5px; color: var(--text);
+      outline: none; transition: border-color 0.2s; cursor: none;
+      -webkit-appearance: none; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23888' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center;
+    }
+    .form-select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .form-select option { background: var(--surface2); color: var(--text); }
+
+    .form-err {
+      display: none; padding: 10px 14px; background: rgba(248,113,113,0.1);
+      border: 1px solid rgba(248,113,113,0.3); border-radius: 8px;
+      font-size: 13px; color: var(--red); margin-bottom: 16px;
+    }
+    .form-err.show { display: block; }
+
+    .form-success {
+      display: none; padding: 10px 14px; background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.3); border-radius: 8px;
+      font-size: 13px; color: var(--green); margin-bottom: 16px;
+    }
+    .form-success.show { display: block; }
+
+    .form-submit {
+      width: 100%; padding: 13px 20px;
+      background: var(--accent); border: none; border-radius: 10px;
+      font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 700;
+      color: #fff; cursor: none; transition: all 0.25s;
+      position: relative; overflow: hidden; margin-top: 4px;
+    }
+    .form-submit:hover:not(:disabled) { background: #1D4ED8; box-shadow: 0 6px 24px var(--accent-glow); transform: translateY(-1px); }
+    .form-submit:disabled { opacity: 0.6; }
+
+    .form-footer { text-align: center; margin-top: 18px; font-size: 13px; color: var(--muted); }
+    .form-footer a { color: var(--accent); text-decoration: none; }
+    .form-footer a:hover { text-decoration: underline; }
+
+    .form-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 18px 0; color: var(--muted2); font-size: 12px;
+    }
+    .form-divider::before, .form-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* Password toggle */
+    .input-wrap { position: relative; }
+    .input-wrap .form-input { padding-right: 44px; }
+    .pwd-toggle {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--muted); cursor: none;
+      padding: 4px; display: flex; align-items: center;
+    }
+    .pwd-toggle:hover { color: var(--text); }
+    .pwd-toggle svg { width: 18px; height: 18px; }
+
+    /* ── SELLER SECTION ────────────────────────────────────── */
+    #sellers { background: var(--surface); }
+    .seller-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px;
+      margin-top: 40px;
+    }
+    .seller-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 22px 20px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .seller-card:hover { border-color: var(--border2); transform: translateY(-3px); }
+    .seller-cat { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted2); margin-bottom: 8px; }
+    .seller-name { font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 700; color: var(--text); letter-spacing: -0.03em; margin-bottom: 4px; }
+    .seller-loc { font-size: 12.5px; color: var(--muted); }
+
+    /* Demo sellers */
+    .demo-sellers { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-top: 40px; }
+
+    /* ── ANIMATIONS ────────────────────────────────────────── */
+    @keyframes fadeup {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.65s cubic-bezier(0.25,0.46,0.45,0.94),
+                  transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ────────────────────────────────────────── */
+
+    /* Tablet: 2-col features */
+    @media (max-width: 960px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; gap: 16px; }
+    }
+
+    /* ── TABLET (768px) ─────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-right  { display: none; }
+      .nav-burger { display: flex; }
+      .nav-mobile-menu { display: flex; }
+      .nav { padding: 0 20px; }
+      section { padding: 80px 24px; }
+      .hero { padding: 100px 24px 88px; min-height: auto; }
+      .features-grid { grid-template-columns: 1fr; gap: 14px; }
+      .form-row { grid-template-columns: 1fr; }
+      .feat-card.wide { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; gap: 36px; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .cta-box { padding: 56px 28px; }
+      .cta-email-row { flex-direction: column; gap: 12px; }
+      .cta-email-row .btn-accent { width: 100%; text-align: center; }
+      .modal-overlay { align-items: flex-end; padding: 0; }
+      .modal-box { border-radius: 28px 28px 0 0; max-width: 100%; max-height: 92vh; overflow-y: auto; }
+    }
+
+    /* ── MOBILE (480px) — ground-up ─────────────────────── */
+    @media (max-width: 480px) {
+
+      /* Nav: clean, just logo + burger */
+      .nav { padding: 0 20px; height: 60px; }
+      .nav-logo { font-size: 20px; }
+
+      /* Hero: open, left-aligned, spacious */
+      .hero {
+        padding: 88px 22px 72px;
+        align-items: flex-start;
+        text-align: left;
+        min-height: 100svh;
+      }
+      .typing-wrapper { display: none; }
+      .hero-badge { font-size: 12px; padding: 5px 12px 5px 7px; margin-bottom: 22px; }
+      .hero-h1 { font-size: clamp(36px, 11vw, 52px); line-height: 1.05; letter-spacing: -0.04em; }
+      .hero-sub { font-size: 15px; line-height: 1.6; margin-top: 14px; max-width: 100%; }
+
+      /* Search bar */
+      .buyer-bar {
+        flex-direction: column;
+        margin-top: 28px;
+        border-radius: 20px;
+        width: 100%; max-width: 100%;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+      }
+      .buyer-bar:focus-within { box-shadow: 0 0 0 3px var(--accent-glow), 0 12px 40px rgba(0,0,0,0.35); }
+      .buyer-bar input { padding: 18px 20px; font-size: 16px; }
+      .buyer-divider { width: calc(100% - 24px); height: 1px; margin: 0 12px; }
+      .buyer-bar-btn { margin: 10px; border-radius: 13px; padding: 16px 20px; font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+
+      /* Chips: horizontal scroll */
+      .hero-chips {
+        flex-wrap: nowrap; overflow-x: auto;
+        -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        justify-content: flex-start; margin-top: 16px;
+        gap: 8px; width: 100%; max-width: 100%;
+      }
+      .hero-chips::-webkit-scrollbar { display: none; }
+      .hero-chip { flex-shrink: 0; padding: 8px 16px; font-size: 13px; }
+
+      /* Stats: 2×2 boxed grid */
+      .hero-stats {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+        margin-top: 40px; width: 100%;
+        border: 1px solid var(--border); border-radius: 20px;
+        overflow: hidden; background: var(--surface2);
+      }
+      .hero-stat { padding: 20px 18px; text-align: center; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+      .hero-stat:nth-child(2n) { border-right: none; }
+      .hero-stat:nth-child(3), .hero-stat:nth-child(4) { border-bottom: none; }
+      .hero-stat-num { font-size: 26px; }
+      .hero-stat-label { font-size: 11px; margin-top: 4px; }
+
+      /* Sections */
+      section { padding: 72px 20px; }
+      .section-h2 { font-size: clamp(28px, 8vw, 38px); }
+      .section-sub { font-size: 15px; line-height: 1.6; }
+
+      /* Cards */
+      .feat-card { padding: 28px 22px; border-radius: 20px; }
+      .feat-icon { width: 52px; height: 52px; border-radius: 14px; margin-bottom: 18px; }
+      .feat-icon svg { width: 22px; height: 22px; }
+      .feat-h { font-size: 17px; line-height: 1.3; }
+      .feat-p { font-size: 14px; line-height: 1.7; margin-top: 6px; }
+      .feat-tag { font-size: 12px; padding: 5px 12px; }
+      .step-card { padding: 28px 22px; border-radius: 20px; }
+      .step-h { font-size: 18px; }
+      .step-p { font-size: 14px; line-height: 1.7; }
+      .price-card { padding: 28px 22px; border-radius: 20px; }
+      .price-card.featured { transform: none !important; }
+      .price-amount { font-size: 42px; }
+      .tcard { width: 270px; }
+
+      /* CTA + footer */
+      .cta-box { padding: 48px 22px; border-radius: 20px; }
+      footer { padding: 52px 20px 40px; }
+      .footer-links-group ul { gap: 14px; }
+
+      /* FAB */
+      .mobile-fab { bottom: 20px; padding: 17px 40px; font-size: 15px; font-weight: 700; border-radius: 100px; box-shadow: 0 8px 36px rgba(37,99,235,0.55); }
+
+      /* Modal sheet */
+      .modal-box { border-radius: 28px 28px 0 0; }
+      .modal-header { padding: 24px 22px 0; }
+      .modal-body { padding: 20px 22px 40px; }
+      .role-toggle-wrap { padding: 16px 22px 0; }
+      .modal-tabs { padding: 14px 22px 0; }
+      .role-context { padding: 10px 22px 0; }
+      .form-input, .form-select { padding: 15px 16px; font-size: 15px; border-radius: 12px; }
+      .form-submit { padding: 16px 20px; font-size: 15px; border-radius: 12px; margin-top: 6px; }
+      .form-label { font-size: 11px; margin-bottom: 6px; }
+      .form-group { margin-bottom: 18px; }
+    }
+
+    @media (max-width: 360px) {
+      .hero-h1 { font-size: 32px; }
+      .hero { padding: 84px 18px 64px; }
+      .nav { padding: 0 16px; }
+      .mob-nav-links a { font-size: 24px; }
+    }
+
+
+    /* ═══════════════════════════════════════════════════════
+       MOBILE APP SHELL — only active on ≤480px
+       ═══════════════════════════════════════════════════════ */
+    #mob-app {
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+
+      /* Hide entire desktop page */
+      #scroll-progress,
+      .nav, .nav-mobile-menu, .mobile-fab,
+      #cursor, #cursor-ring,
+      .hero, #how, #features, #proof, #pricing, #cta, footer {
+        display: none !important;
+      }
+
+      /* Show app shell */
+      body { overflow: hidden; cursor: auto; padding-bottom: 0; }
+      * { cursor: auto !important; }
+      #mob-app { display: flex; flex-direction: column; height: 100svh; overflow: hidden; }
+
+      /* ── TOP BAR ──────────────────────────────────────── */
+      .ma-topbar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 20px; height: 56px; flex-shrink: 0;
+        background: var(--bg); border-bottom: 1px solid var(--border);
+        position: relative; z-index: 10;
+      }
+      .ma-logo {
+        font-family: 'Sora', sans-serif; font-size: 20px; font-weight: 800;
+        color: var(--text); text-decoration: none; letter-spacing: -0.05em;
+      }
+      .ma-logo span { color: var(--accent); }
+      .ma-topbar-right { display: flex; align-items: center; gap: 10px; }
+      .ma-theme-btn {
+        width: 36px; height: 36px; border-radius: 50%;
+        border: 1px solid var(--border2); background: var(--surface2);
+        color: var(--muted); display: flex; align-items: center; justify-content: center;
+      }
+      .ma-theme-btn .icon-sun { display: none; }
+      .ma-theme-btn .icon-moon { display: block; }
+      [data-theme="light"] .ma-theme-btn .icon-sun { display: block; }
+      [data-theme="light"] .ma-theme-btn .icon-moon { display: none; }
+      .ma-signin-pill {
+        padding: 8px 16px; border-radius: 50px;
+        border: 1.5px solid var(--border2); background: transparent;
+        color: var(--text); font-family: 'Sora', sans-serif;
+        font-size: 13px; font-weight: 600;
+      }
+
+      /* ── SCREENS ─────────────────────────────────────── */
+      .ma-screens {
+        flex: 1; overflow: hidden;
+        position: relative;
+      }
+      .ma-screen {
+        position: absolute; inset: 0;
+        overflow-y: auto; -webkit-overflow-scrolling: touch;
+        opacity: 0; pointer-events: none;
+        transform: translateX(30px);
+        transition: opacity 0.35s cubic-bezier(0.25,0.46,0.45,0.94),
+                    transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+        background: var(--bg);
+      }
+      .ma-screen.active {
+        opacity: 1; pointer-events: all;
+        transform: translateX(0);
+      }
+      .ma-screen.exit-left {
+        opacity: 0; transform: translateX(-30px);
+      }
+      .ma-screen-inner {
+        padding: 24px 20px 28px;
+        min-height: 100%;
+        display: flex; flex-direction: column;
+      }
+
+      /* ── SCREEN HEADERS ──────────────────────────────── */
+      .ma-screen-header { margin-bottom: 22px; }
+      .ma-screen-label {
+        font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+        text-transform: uppercase; color: var(--accent); display: block;
+        margin-bottom: 8px;
+      }
+      .ma-screen-h2 {
+        font-family: 'Sora', sans-serif; font-size: 28px; font-weight: 800;
+        letter-spacing: -0.04em; line-height: 1.1; color: var(--text);
+      }
+      .ma-screen-sub {
+        font-size: 13px; color: var(--muted); margin-top: 6px;
+      }
+      .ma-h1-grad {
+        background: linear-gradient(135deg, var(--accent), var(--purple));
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* ── HOME SCREEN ─────────────────────────────────── */
+      .ma-badge {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 6px 14px 6px 8px; border-radius: 50px;
+        background: var(--surface2); border: 1px solid var(--border2);
+        font-size: 12px; color: var(--muted); margin-bottom: 20px;
+        animation: fadeup 0.6s both;
+      }
+      .ma-badge-dot {
+        width: 8px; height: 8px; background: var(--green);
+        border-radius: 50%; flex-shrink: 0;
+        box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
+        animation: pulse-dot 2s ease-in-out infinite;
+      }
+      @keyframes pulse-dot {
+        0%,100% { box-shadow: 0 0 0 3px rgba(34,197,94,0.2); }
+        50% { box-shadow: 0 0 0 6px rgba(34,197,94,0.1); }
+      }
+      .ma-badge strong { color: var(--text); }
+
+      .ma-h1 {
+        font-family: 'Sora', sans-serif;
+        font-size: clamp(34px, 9vw, 44px);
+        font-weight: 800; letter-spacing: -0.04em; line-height: 1.08;
+        color: var(--text); margin-bottom: 22px;
+        animation: fadeup 0.6s 0.05s both;
+      }
+
+      /* Search bar */
+      .ma-search-wrap {
+        display: flex; align-items: center; gap: 0;
+        background: var(--surface2); border: 1.5px solid var(--border2);
+        border-radius: 16px; overflow: hidden;
+        margin-bottom: 12px;
+        animation: fadeup 0.6s 0.1s both;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      .ma-search-wrap:focus-within {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-glow);
+      }
+      .ma-search-icon {
+        padding: 0 14px; color: var(--muted);
+        display: flex; align-items: center; flex-shrink: 0;
+      }
+      .ma-search-input {
+        flex: 1; padding: 16px 8px; background: transparent; border: none; outline: none;
+        font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text);
+        min-width: 0;
+      }
+      .ma-search-input::placeholder { color: var(--muted2); }
+      .ma-search-btn {
+        width: 52px; height: 52px; background: var(--accent); border: none;
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; flex-shrink: 0;
+        transition: background 0.2s;
+      }
+      .ma-search-btn:active { background: #1D4ED8; }
+
+      /* Chips */
+      .ma-chips {
+        display: flex; gap: 8px; overflow-x: auto;
+        -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        padding-bottom: 4px; margin-bottom: 22px;
+        animation: fadeup 0.6s 0.15s both;
+      }
+      .ma-chips::-webkit-scrollbar { display: none; }
+      .ma-chip {
+        flex-shrink: 0; padding: 8px 14px;
+        background: var(--surface2); border: 1px solid var(--border);
+        border-radius: 50px; font-size: 13px; color: var(--muted);
+        font-family: 'DM Sans', sans-serif; white-space: nowrap;
+        transition: all 0.2s;
+      }
+      .ma-chip:active { border-color: var(--accent); color: var(--accent); background: rgba(37,99,235,0.08); transform: scale(0.95); }
+
+      /* Stats grid */
+      .ma-stats {
+        display: grid; grid-template-columns: 1fr 1fr;
+        border: 1px solid var(--border); border-radius: 20px;
+        overflow: hidden; background: var(--surface2);
+        margin-bottom: 20px;
+        animation: fadeup 0.6s 0.2s both;
+      }
+      .ma-stat {
+        padding: 20px 16px; text-align: center;
+        border-right: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+      .ma-stat:nth-child(2n) { border-right: none; }
+      .ma-stat:nth-child(3), .ma-stat:nth-child(4) { border-bottom: none; }
+      .ma-stat-num {
+        font-family: 'Sora', sans-serif; font-size: 24px; font-weight: 800;
+        letter-spacing: -0.04em; color: var(--text);
+      }
+      .ma-stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+      /* CTA button */
+      .ma-cta-btn {
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        width: 100%; padding: 17px 20px;
+        background: var(--accent); color: #fff; border: none; border-radius: 16px;
+        font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700;
+        letter-spacing: -0.02em;
+        transition: transform 0.15s, box-shadow 0.2s;
+        box-shadow: 0 8px 24px rgba(37,99,235,0.4);
+        animation: fadeup 0.6s 0.25s both;
+      }
+      .ma-cta-btn:active { transform: scale(0.97); box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+
+      /* ── HOW SCREEN ──────────────────────────────────── */
+      .ma-steps-wrap { flex: 1; display: flex; flex-direction: column; }
+      .ma-step-progress {
+        height: 4px; background: var(--border); border-radius: 4px;
+        margin-bottom: 28px; overflow: hidden;
+      }
+      .ma-step-bar {
+        height: 100%; background: linear-gradient(90deg, var(--accent), var(--purple));
+        border-radius: 4px; width: 33.3%;
+        transition: width 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+      }
+      .ma-steps { flex: 1; position: relative; overflow: hidden; }
+      .ma-step {
+        position: absolute; inset: 0;
+        display: flex; flex-direction: column;
+        opacity: 0; pointer-events: none;
+        transform: translateX(30px);
+        transition: opacity 0.35s, transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+      }
+      .ma-step.active {
+        opacity: 1; pointer-events: all; transform: translateX(0);
+      }
+      .ma-step.exit-left { opacity: 0; transform: translateX(-30px); }
+
+      .ma-step-icon {
+        width: 64px; height: 64px; border-radius: 18px;
+        display: flex; align-items: center; justify-content: center;
+        margin-bottom: 20px; flex-shrink: 0;
+      }
+      .ma-step-icon.blue { background: rgba(37,99,235,0.12); border: 1px solid rgba(37,99,235,0.25); color: var(--accent); }
+      .ma-step-icon.purple { background: rgba(167,139,250,0.12); border: 1px solid rgba(167,139,250,0.25); color: var(--purple); }
+      .ma-step-icon.green { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.25); color: var(--green); }
+      .ma-step-badge {
+        font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--accent);
+        background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.2);
+        border-radius: 6px; padding: 3px 9px; display: inline-block; margin-bottom: 14px;
+        font-family: 'Sora', sans-serif;
+      }
+      .ma-step-h {
+        font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 800;
+        letter-spacing: -0.04em; color: var(--text); margin-bottom: 12px;
+        line-height: 1.2;
+      }
+      .ma-step-p { font-size: 15px; color: var(--muted); line-height: 1.65; flex: 1; }
+      .ma-step-next {
+        display: flex; align-items: center; gap: 8px; justify-content: center;
+        margin-top: 28px; padding: 15px 24px;
+        background: var(--accent); color: #fff; border: none; border-radius: 14px;
+        font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700;
+        transition: transform 0.15s;
+      }
+      .ma-step-next:active { transform: scale(0.97); }
+      .ma-step-dots { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+      .ma-dot {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: var(--border2); transition: all 0.3s;
+      }
+      .ma-dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
+
+      /* ── FEATURES SCREEN ─────────────────────────────── */
+      .ma-feat-deck-wrap {
+        flex: 1; display: flex; flex-direction: column;
+        position: relative;
+      }
+      .ma-feat-deck {
+        flex: 1; position: relative; touch-action: pan-y;
+        cursor: grab; user-select: none;
+      }
+      .ma-feat-card {
+        position: absolute; inset: 0;
+        background: var(--surface2); border: 1.5px solid var(--border);
+        border-radius: 22px; padding: 26px 24px;
+        display: flex; flex-direction: column;
+        opacity: 0; pointer-events: none;
+        transform: translateX(60px) scale(0.96);
+        transition: opacity 0.38s cubic-bezier(0.25,0.46,0.45,0.94),
+                    transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94),
+                    border-color 0.3s;
+      }
+      .ma-feat-card.active {
+        opacity: 1; pointer-events: all;
+        transform: translateX(0) scale(1);
+        border-color: var(--card-color);
+        box-shadow: 0 0 40px var(--card-glow);
+      }
+      .ma-feat-card.exit-left { opacity: 0; transform: translateX(-60px) scale(0.96); }
+
+      .ma-feat-card-icon {
+        width: 56px; height: 56px; border-radius: 16px; border: 1px solid;
+        display: flex; align-items: center; justify-content: center;
+        margin-bottom: 16px; flex-shrink: 0;
+      }
+      .ma-feat-card-num {
+        font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+        color: var(--muted2); font-family: 'Sora', sans-serif; margin-bottom: 10px;
+      }
+      .ma-feat-card-h {
+        font-family: 'Sora', sans-serif; font-size: 21px; font-weight: 800;
+        letter-spacing: -0.04em; color: var(--text); margin-bottom: 10px;
+        line-height: 1.2;
+      }
+      .ma-feat-card-p { font-size: 14.5px; color: var(--muted); line-height: 1.65; flex: 1; }
+      .ma-feat-card-tags {
+        display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px;
+      }
+      .ma-feat-card-tags span {
+        font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 7px;
+      }
+      .ma-feat-progress-wrap {
+        height: 4px; background: var(--border); border-radius: 4px;
+        margin-top: 16px; overflow: hidden; flex-shrink: 0;
+      }
+      .ma-feat-progress-bar {
+        height: 100%; border-radius: 4px;
+        background: linear-gradient(90deg, var(--accent), var(--purple));
+        width: 16.66%;
+        transition: width 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+      }
+
+      /* Swipe hint animation */
+      .ma-feat-deck::after {
+        content: '← swipe →'; position: absolute;
+        bottom: -28px; left: 50%; transform: translateX(-50%);
+        font-size: 11px; color: var(--muted2); letter-spacing: 0.06em;
+        animation: swipe-hint 2.5s ease-in-out 1s 1 forwards;
+        opacity: 0;
+      }
+      @keyframes swipe-hint {
+        0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; }
+      }
+
+      /* ── PRICING SCREEN ──────────────────────────────── */
+      .ma-pricing-scroll {
+        display: flex; gap: 14px;
+        overflow-x: auto; -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; scroll-snap-type: x mandatory;
+        padding: 4px 2px 14px; flex-shrink: 0;
+      }
+      .ma-pricing-scroll::-webkit-scrollbar { display: none; }
+      .ma-price-card {
+        flex-shrink: 0; width: calc(85vw); scroll-snap-align: center;
+        background: var(--surface2); border: 1px solid var(--border);
+        border-radius: 22px; padding: 26px 22px;
+        display: flex; flex-direction: column;
+      }
+      .ma-price-card.featured {
+        background: var(--accent); border-color: var(--accent);
+        box-shadow: 0 12px 40px rgba(37,99,235,0.4);
+      }
+      .ma-plan-badge {
+        font-size: 10px; font-weight: 800; letter-spacing: 0.12em;
+        background: rgba(255,255,255,0.2); color: #fff;
+        padding: 4px 10px; border-radius: 6px; display: inline-block;
+        margin-bottom: 10px; align-self: flex-start;
+      }
+      .ma-plan-label {
+        font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+        text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+      }
+      .ma-price-card.featured .ma-plan-label { color: rgba(255,255,255,0.75); }
+      .ma-plan-price {
+        font-family: 'Sora', sans-serif; font-size: 42px; font-weight: 800;
+        letter-spacing: -0.05em; color: var(--text); line-height: 1;
+      }
+      .ma-plan-price sup { font-size: 18px; vertical-align: top; margin-top: 8px; }
+      .ma-plan-price span { font-size: 16px; font-weight: 400; color: var(--muted); letter-spacing: 0; }
+      .ma-price-card.featured .ma-plan-price { color: #fff; }
+      .ma-price-card.featured .ma-plan-price span { color: rgba(255,255,255,0.65); }
+      .ma-plan-desc { font-size: 13px; color: var(--muted); margin: 10px 0 14px; line-height: 1.5; }
+      .ma-price-card.featured .ma-plan-desc { color: rgba(255,255,255,0.8); }
+      .ma-plan-features { list-style: none; display: flex; flex-direction: column; gap: 9px; flex: 1; margin-bottom: 20px; }
+      .ma-plan-features li { font-size: 13.5px; color: var(--muted); display: flex; align-items: flex-start; gap: 8px; }
+      .ma-plan-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+      .ma-price-card.featured .ma-plan-features li { color: rgba(255,255,255,0.9); }
+      .ma-price-card.featured .ma-plan-features li::before { color: #fff; }
+      .ma-plan-btn {
+        width: 100%; padding: 14px; border-radius: 12px;
+        font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 700;
+        transition: all 0.2s;
+      }
+      .ma-plan-btn.outline {
+        background: transparent; border: 1.5px solid var(--border2); color: var(--text);
+      }
+      .ma-plan-btn.outline:active { background: var(--surface3); }
+      .ma-plan-btn.filled {
+        background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.3); color: #fff;
+      }
+      .ma-plan-btn.filled:active { background: rgba(255,255,255,0.3); }
+      .ma-pricing-dots { display: flex; justify-content: center; gap: 8px; margin-top: 4px; }
+      .ma-pdot {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: var(--border2); transition: all 0.3s;
+      }
+      .ma-pdot.active { background: var(--accent); width: 24px; border-radius: 4px; }
+
+      /* ── JOIN SCREEN ─────────────────────────────────── */
+      .ma-testimonial {
+        background: var(--surface2); border: 1px solid var(--border);
+        border-radius: 20px; padding: 22px 20px; margin-bottom: 18px;
+        position: relative;
+      }
+      .ma-testi-stars { color: #F59E0B; font-size: 16px; margin-bottom: 10px; letter-spacing: 2px; }
+      .ma-testi-body {
+        font-size: 15px; color: var(--text); line-height: 1.6;
+        font-style: italic; margin-bottom: 16px;
+      }
+      .ma-testi-author { display: flex; align-items: center; gap: 12px; }
+      .ma-testi-avatar {
+        width: 40px; height: 40px; border-radius: 50%;
+        font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700; color: #fff;
+        display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      }
+      .ma-testi-name { font-size: 13.5px; font-weight: 700; color: var(--text); }
+      .ma-testi-biz { font-size: 12px; color: var(--muted); }
+      .ma-testi-dots { display: flex; gap: 6px; margin-top: 14px; }
+      .ma-tdot { width: 6px; height: 6px; border-radius: 50%; background: var(--border2); transition: all 0.3s; }
+      .ma-tdot.active { background: var(--accent); width: 18px; border-radius: 3px; }
+
+      .ma-join-card {
+        background: var(--surface2); border: 1px solid var(--border);
+        border-radius: 20px; padding: 24px 20px; flex: 1;
+      }
+      .ma-join-sub { font-size: 13px; color: var(--muted); margin-bottom: 18px; margin-top: 8px; }
+      .ma-join-email {
+        width: 100%; padding: 15px 16px;
+        background: var(--input-bg); border: 1.5px solid var(--input-border);
+        border-radius: 12px; font-family: 'DM Sans', sans-serif;
+        font-size: 15px; color: var(--text); outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      .ma-join-email:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+      .ma-join-email::placeholder { color: var(--muted2); }
+      .ma-join-or { text-align: center; font-size: 13px; color: var(--muted); margin-top: 14px; }
+      .ma-join-or a { color: var(--accent); text-decoration: none; }
+
+      /* ── BOTTOM NAV ──────────────────────────────────── */
+      .ma-bottom-nav {
+        display: flex; align-items: center; justify-content: space-around;
+        height: 64px; flex-shrink: 0;
+        background: var(--bg); border-top: 1px solid var(--border);
+        position: relative; z-index: 10;
+        padding: 0 4px;
+      }
+      .ma-nav-btn {
+        display: flex; flex-direction: column; align-items: center; gap: 4px;
+        flex: 1; padding: 8px 4px;
+        background: none; border: none;
+        color: var(--muted); transition: color 0.2s;
+        font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500;
+        position: relative;
+      }
+      .ma-nav-btn:active { transform: scale(0.92); }
+      .ma-nav-btn.active { color: var(--accent); }
+      .ma-nav-btn.active::before {
+        content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+        width: 32px; height: 3px; background: var(--accent);
+        border-radius: 0 0 4px 4px;
+      }
+      .ma-nav-btn.cta {
+        background: var(--accent); color: #fff !important;
+        border-radius: 14px; margin: 8px 6px;
+        padding: 8px 12px; flex: none; width: 64px;
+        box-shadow: 0 4px 16px rgba(37,99,235,0.5);
+        transition: transform 0.15s, box-shadow 0.2s;
+      }
+      .ma-nav-btn.cta.active { color: #fff !important; }
+      .ma-nav-btn.cta.active::before { display: none; }
+      .ma-nav-btn.cta:active { transform: scale(0.93); box-shadow: 0 2px 8px rgba(37,99,235,0.3); }
+
+    } /* end @media 480px */
+  </style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- Mobile Floating CTA -->
+<button class="mobile-fab ripple-container" onclick="openModal('register')">🚀 Get Started Free</button>
+
+<!-- ── NAV ──────────────────────────────────────────────────── -->
+<nav class="nav" id="mainNav">
+  <a href="#" class="nav-logo">Biz<span>Boost</span></a>
+  <ul class="nav-links">
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#proof">Stories</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <div class="nav-right" id="navCta">
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle dark/light mode">
+      <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+      <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+    <button class="btn-ghost" onclick="openModal('login')">Sign In</button>
+    <button class="btn-accent" onclick="openModal('register')">Get Started Free</button>
+  </div>
+  <!-- Mobile: only burger -->
+  <button class="nav-burger" id="burgerBtn" onclick="toggleMobile()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── MOBILE FULL-SCREEN MENU ──────────────────────────────── -->
+<div class="nav-mobile-menu" id="mobileMenu">
+  <!-- Top bar inside menu -->
+  <div class="mob-menu-top">
+    <span class="nav-logo" style="font-size:20px">Biz<span style="color:var(--accent)">Boost</span></span>
+    <button class="mob-menu-close" onclick="toggleMobile()" aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <!-- Nav links -->
+  <nav class="mob-nav-links">
+    <a href="#how"      onclick="toggleMobile()"><span class="mob-link-num">01</span>How it works</a>
+    <a href="#features" onclick="toggleMobile()"><span class="mob-link-num">02</span>Features</a>
+    <a href="#proof"    onclick="toggleMobile()"><span class="mob-link-num">03</span>Stories</a>
+    <a href="#pricing"  onclick="toggleMobile()"><span class="mob-link-num">04</span>Pricing</a>
+  </nav>
+
+  <!-- Auth actions -->
+  <div class="mob-menu-actions">
+    <button class="mob-signin-btn" onclick="openModal('login');toggleMobile()">Sign In</button>
+    <button class="mob-start-btn ripple-container" onclick="openModal('register');toggleMobile()">
+      Get Started Free
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </div>
+
+  <!-- Footer inside menu -->
+  <div class="mob-menu-footer">
+    <button class="mob-theme-btn" onclick="toggleTheme()">
+      <svg class="icon-sun" width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="icon-moon" width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <span id="mob-theme-label">Switch to Light</span>
+    </button>
+    <p class="mob-menu-tagline">AI tools for India's local businesses</p>
+  </div>
+</div>
+
+<!-- ── HERO ─────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-badge">
+    <div class="hero-badge-dot"></div>
+    <span><strong>2,400+</strong> local businesses growing with BizBoost</span>
+  </div>
+
+  <div class="typing-wrapper">
+    <div class="typing-tag">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      AI is analysing <span id="typingText"></span>
+    </div>
+  </div>
+
+  <h1 class="hero-h1">
+    Grow your local business<br>
+    <span class="line2">with AI precision</span>
+  </h1>
+  <p class="hero-sub">
+    BizBoost finds real local competitors, generates targeted AI plans, and connects you with buyers — all in minutes.
+  </p>
+
+  <!-- Buyer Search -->
+  <div class="buyer-bar">
+    <input type="text" id="buyerProduct" placeholder="What are you looking for?" autocomplete="off" />
+    <div class="buyer-divider"></div>
+    <input type="text" id="buyerCity" placeholder="City (optional)" autocomplete="off" />
+    <button class="buyer-bar-btn" onclick="doBuyerSearch()">Search →</button>
+  </div>
+  <div class="hero-chips">
+    <span class="hero-chip" onclick="fillBuyerSearch('Printed T-Shirts')">Printed T-Shirts</span>
+    <span class="hero-chip" onclick="fillBuyerSearch('Mobile Accessories')">Mobile Accessories</span>
+    <span class="hero-chip" onclick="fillBuyerSearch('Kurtis & Ethnic Wear')">Kurtis & Ethnic Wear</span>
+    <span class="hero-chip" onclick="fillBuyerSearch('Hardware Tools')">Hardware Tools</span>
+    <span class="hero-chip" onclick="fillBuyerSearch('Organic Spices')">Organic Spices</span>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">2,400+</div>
+      <div class="hero-stat-label">Active Sellers</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">₹4.2Cr+</div>
+      <div class="hero-stat-label">Revenue Generated</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">18,000+</div>
+      <div class="hero-stat-label">Buyer Connections</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">94%</div>
+      <div class="hero-stat-label">Satisfaction Rate</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ──────────────────────────────────────────── -->
+<section id="how">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-label">Process</span>
+      <h2 class="section-h2">Up and running in 5 minutes</h2>
+      <p class="section-sub">No tech skills needed. Register your business and let AI do the heavy lifting.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-num">STEP 01</div>
+        <div class="step-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3 class="step-h">Register your business</h3>
+        <p class="step-p">Enter your business name, category, and city. Takes under 2 minutes. No credit card required.</p>
+      </div>
+      <div class="step-card reveal" style="transition-delay:0.1s">
+        <div class="step-num">STEP 02</div>
+        <div class="step-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <h3 class="step-h">AI analyses your market</h3>
+        <p class="step-p">Our AI scans local competitors, identifies pricing gaps, and builds a custom growth strategy for your business.</p>
+      </div>
+      <div class="step-card reveal" style="transition-delay:0.2s">
+        <div class="step-num">STEP 03</div>
+        <div class="step-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <h3 class="step-h">Execute and grow</h3>
+        <p class="step-p">Receive buyer leads, keyword rankings, and step-by-step actions. Track results from your dashboard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ──────────────────────────────────────────────── -->
+<section id="features">
+  <div class="container">
+    <div class="reveal text-center">
+      <span class="section-label">Features</span>
+      <h2 class="section-h2">Everything local businesses need</h2>
+      <p class="section-sub" style="margin:14px auto 0">Built for Indian SMEs — not Fortune 500 companies.</p>
+    </div>
+    <div class="features-grid" style="margin-top:52px">
+
+      <!-- Row 1 -->
+      <div class="feat-card reveal">
+        <div class="feat-icon fi-blue">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <h3 class="feat-h">Hyper-local competitor tracking</h3>
+        <p class="feat-p">Find actual competitors on your street, not giant e-commerce players. Real intel for your real market.</p>
+        <div class="feat-tags">
+          <span class="feat-tag">Real-time</span>
+          <span class="feat-tag">Street-level</span>
+        </div>
+      </div>
+
+      <div class="feat-card reveal" style="transition-delay:0.07s">
+        <div class="feat-icon fi-green">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <h3 class="feat-h">SEO keyword engine</h3>
+        <p class="feat-p">Discover exactly what your local customers search for. Get on Google's first page for terms that convert.</p>
+        <div class="feat-tags">
+          <span class="feat-tag" style="background:rgba(34,197,94,0.1);color:var(--green)">Local SEO</span>
+          <span class="feat-tag" style="background:rgba(34,197,94,0.1);color:var(--green)">GMB Optimize</span>
+        </div>
+      </div>
+
+      <div class="feat-card reveal" style="transition-delay:0.14s">
+        <div class="feat-icon fi-purple">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 class="feat-h">B2B & B2C buyer leads</h3>
+        <p class="feat-p">Retailers, wholesalers, and end consumers looking for your products get connected to you directly.</p>
+        <div class="feat-tags">
+          <span class="feat-tag" style="background:rgba(167,139,250,0.1);color:var(--purple)">Verified Buyers</span>
+          <span class="feat-tag" style="background:rgba(167,139,250,0.1);color:var(--purple)">Bulk Orders</span>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="feat-card reveal" style="transition-delay:0.1s">
+        <div class="feat-icon fi-orange">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+        </div>
+        <h3 class="feat-h">AI Growth Playbook</h3>
+        <p class="feat-p">Personalised, step-by-step action plans — pricing strategy, marketing channels, seasonal tactics. Refreshed every month.</p>
+        <div class="feat-tags">
+          <span class="feat-tag" style="background:rgba(245,158,11,0.1);color:var(--orange)">Personalised AI</span>
+          <span class="feat-tag" style="background:rgba(245,158,11,0.1);color:var(--orange)">Monthly Updates</span>
+        </div>
+      </div>
+
+      <div class="feat-card reveal" style="transition-delay:0.17s">
+        <div class="feat-icon fi-red">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <h3 class="feat-h">Live analytics dashboard</h3>
+        <p class="feat-p">Track visitor leads, keyword rankings, and buyer enquiries in real time. Know exactly what's working.</p>
+        <div class="feat-tags">
+          <span class="feat-tag" style="background:rgba(248,113,113,0.1);color:var(--red)">Real-time</span>
+          <span class="feat-tag" style="background:rgba(248,113,113,0.1);color:var(--red)">ROI Tracking</span>
+        </div>
+      </div>
+
+      <div class="feat-card reveal" style="transition-delay:0.24s">
+        <div class="feat-icon fi-cyan">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3 class="feat-h">WhatsApp & social sync</h3>
+        <p class="feat-p">Get buyer enquiries directly on WhatsApp. Auto-post your deals to Instagram and Facebook with one click.</p>
+        <div class="feat-tags">
+          <span class="feat-tag" style="background:rgba(6,182,212,0.1);color:#06B6D4">WhatsApp</span>
+          <span class="feat-tag" style="background:rgba(6,182,212,0.1);color:#06B6D4">Social Media</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ──────────────────────────────────────────── -->
+<section id="proof">
+  <div class="container text-center reveal">
+    <span class="section-label">Social Proof</span>
+    <h2 class="section-h2">Real results, real businesses</h2>
+    <p class="section-sub">From Surat to Hyderabad — thousands of local sellers trust BizBoost.</p>
+  </div>
+  <div class="proof-track-wrap">
+    <div class="proof-track" id="proofTrack"></div>
+  </div>
+</section>
+
+<!-- ── PRICING ───────────────────────────────────────────────── -->
+<section id="pricing">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-label">Pricing</span>
+      <h2 class="section-h2">Simple, honest pricing</h2>
+      <p class="section-sub">No hidden fees. Cancel anytime.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card reveal">
+        <div class="price-label">Starter</div>
+        <div class="price-amount"><sup>₹</sup>0<span>/mo</span></div>
+        <p class="price-desc">Perfect to explore and get your first buyer leads.</p>
+        <div class="price-div"></div>
+        <ul class="price-features">
+          <li>1 AI competitor analysis</li>
+          <li>5 keyword recommendations</li>
+          <li>Basic buyer listing</li>
+          <li>Community support</li>
+        </ul>
+        <button class="price-cta" onclick="openModal('register')">Start Free</button>
+      </div>
+      <div class="price-card featured reveal" style="transition-delay:0.1s">
+        <div class="price-label">Growth</div>
+        <div class="price-amount"><sup>₹</sup>499<span>/mo</span></div>
+        <p class="price-desc">For serious sellers ready to dominate their local market.</p>
+        <div class="price-div"></div>
+        <ul class="price-features">
+          <li>Unlimited competitor tracking</li>
+          <li>Full AI Growth Playbook</li>
+          <li>Priority buyer matching</li>
+          <li>GMB & SEO optimization</li>
+          <li>Monthly strategy refresh</li>
+          <li>Email + chat support</li>
+        </ul>
+        <button class="price-cta" onclick="openModal('register')">Start 14-day Trial →</button>
+      </div>
+      <div class="price-card reveal" style="transition-delay:0.2s">
+        <div class="price-label">Pro</div>
+        <div class="price-amount"><sup>₹</sup>1,299<span>/mo</span></div>
+        <p class="price-desc">For wholesalers, distributors, and multi-category sellers.</p>
+        <div class="price-div"></div>
+        <ul class="price-features">
+          <li>Everything in Growth</li>
+          <li>Multi-city market intel</li>
+          <li>B2B buyer pipeline</li>
+          <li>Ad campaign guidance</li>
+          <li>Dedicated account manager</li>
+          <li>API access</li>
+        </ul>
+        <button class="price-cta" onclick="openModal('register')">Contact Sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ───────────────────────────────────────────────────── -->
+<section id="cta">
+  <div class="container">
+    <div class="cta-box reveal">
+      <span class="section-label">Get Started</span>
+      <h2 class="section-h2">Ready to outgrow your competition?</h2>
+      <p class="section-sub">Join 2,400+ local businesses already using BizBoost to win their market.</p>
+      <div class="cta-email-row">
+        <input type="email" id="ctaEmail" placeholder="Enter your email" />
+        <button class="btn-accent" onclick="ctaSignup()">Get Started Free</button>
+      </div>
+      <p style="font-size:12px;color:var(--muted2);margin-top:12px">No credit card required · Free forever plan available</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MOBILE APP SHELL  (visible only on ≤480px, replaces whole page)
+     ═══════════════════════════════════════════════════════════ -->
+<div id="mob-app" aria-hidden="true">
+
+  <!-- Top bar -->
+  <header class="ma-topbar">
+    <a class="ma-logo" href="#">Biz<span>Boost</span></a>
+    <div class="ma-topbar-right">
+      <button class="ma-theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="ma-signin-pill" onclick="openModal('login')">Sign In</button>
+    </div>
+  </header>
+
+  <!-- Screen container (slides) -->
+  <div class="ma-screens" id="maScreens">
+
+    <!-- ── SCREEN 1: HOME ─────────────────────────────────── -->
+    <div class="ma-screen active" id="ms-home" data-screen="home">
+      <div class="ma-screen-inner">
+
+        <!-- Live badge -->
+        <div class="ma-badge">
+          <span class="ma-badge-dot"></span>
+          <strong>2,400+</strong> businesses growing with BizBoost
+        </div>
+
+        <!-- Headline -->
+        <h1 class="ma-h1">
+          Grow your<br>
+          <span class="ma-h1-grad">local business</span><br>
+          with AI precision
+        </h1>
+
+        <!-- AI typing search -->
+        <div class="ma-search-wrap">
+          <div class="ma-search-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <input class="ma-search-input" id="maSearchInput" type="text" placeholder="Search products or services…" autocomplete="off" />
+          <button class="ma-search-btn ripple-container" onclick="maMobileSearch()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+
+        <!-- Chips -->
+        <div class="ma-chips">
+          <button class="ma-chip" onclick="maFillSearch('Kurtis')">👗 Kurtis</button>
+          <button class="ma-chip" onclick="maFillSearch('Mobile Accessories')">📱 Mobiles</button>
+          <button class="ma-chip" onclick="maFillSearch('Organic Spices')">🌿 Spices</button>
+          <button class="ma-chip" onclick="maFillSearch('Hardware Tools')">🔧 Tools</button>
+          <button class="ma-chip" onclick="maFillSearch('T-Shirts')">👕 T-Shirts</button>
+        </div>
+
+        <!-- Stats 2×2 -->
+        <div class="ma-stats">
+          <div class="ma-stat">
+            <div class="ma-stat-num" data-target="2400" data-suffix="+">0</div>
+            <div class="ma-stat-label">Active Sellers</div>
+          </div>
+          <div class="ma-stat">
+            <div class="ma-stat-num" data-target-text="₹4.2Cr+">₹0</div>
+            <div class="ma-stat-label">Revenue Generated</div>
+          </div>
+          <div class="ma-stat">
+            <div class="ma-stat-num" data-target="18000" data-suffix="+">0</div>
+            <div class="ma-stat-label">Buyer Connections</div>
+          </div>
+          <div class="ma-stat">
+            <div class="ma-stat-num" data-target="94" data-suffix="%">0%</div>
+            <div class="ma-stat-label">Satisfaction Rate</div>
+          </div>
+        </div>
+
+        <!-- Primary CTA -->
+        <button class="ma-cta-btn ripple-container" onclick="openModal('register')">
+          Start for Free — No Credit Card
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- ── SCREEN 2: HOW IT WORKS ─────────────────────────── -->
+    <div class="ma-screen" id="ms-how" data-screen="how">
+      <div class="ma-screen-inner">
+        <div class="ma-screen-header">
+          <span class="ma-screen-label">Process</span>
+          <h2 class="ma-screen-h2">Up in <span class="ma-h1-grad">5 minutes</span></h2>
+        </div>
+
+        <!-- Step stepper -->
+        <div class="ma-steps-wrap">
+          <div class="ma-step-progress">
+            <div class="ma-step-bar" id="maStepBar"></div>
+          </div>
+
+          <div class="ma-steps" id="maSteps">
+            <div class="ma-step active" data-step="0">
+              <div class="ma-step-icon blue">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+              <div class="ma-step-badge">STEP 01</div>
+              <h3 class="ma-step-h">Register your business</h3>
+              <p class="ma-step-p">Enter your business name, category, and city. Takes under 2 minutes. No credit card required.</p>
+              <button class="ma-step-next" onclick="maNextStep()">Next <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            </div>
+            <div class="ma-step" data-step="1">
+              <div class="ma-step-icon purple">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+              </div>
+              <div class="ma-step-badge">STEP 02</div>
+              <h3 class="ma-step-h">AI analyses your market</h3>
+              <p class="ma-step-p">Our AI scans local competitors, identifies pricing gaps, and builds a custom growth strategy for your exact category.</p>
+              <button class="ma-step-next" onclick="maNextStep()">Next <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            </div>
+            <div class="ma-step" data-step="2">
+              <div class="ma-step-icon green">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              </div>
+              <div class="ma-step-badge">STEP 03</div>
+              <h3 class="ma-step-h">Execute and grow</h3>
+              <p class="ma-step-p">Receive buyer leads, keyword rankings, and step-by-step actions. Track results live from your dashboard.</p>
+              <button class="ma-step-next" onclick="openModal('register')">Get Started Free →</button>
+            </div>
+          </div>
+
+          <!-- Dot indicators -->
+          <div class="ma-step-dots" id="maStepDots">
+            <span class="ma-dot active" onclick="maGoStep(0)"></span>
+            <span class="ma-dot" onclick="maGoStep(1)"></span>
+            <span class="ma-dot" onclick="maGoStep(2)"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SCREEN 3: FEATURES ─────────────────────────────── -->
+    <div class="ma-screen" id="ms-features" data-screen="features">
+      <div class="ma-screen-inner">
+        <div class="ma-screen-header">
+          <span class="ma-screen-label">Features</span>
+          <h2 class="ma-screen-h2">Everything you <span class="ma-h1-grad">need</span></h2>
+          <p class="ma-screen-sub">Swipe to explore ←→</p>
+        </div>
+
+        <!-- Swipeable card deck -->
+        <div class="ma-feat-deck-wrap">
+          <div class="ma-feat-deck" id="maFeatDeck">
+
+            <div class="ma-feat-card" data-idx="0" style="--card-color:#2563EB;--card-glow:rgba(37,99,235,0.2)">
+              <div class="ma-feat-card-icon" style="background:rgba(37,99,235,0.15);border-color:rgba(37,99,235,0.3)">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </div>
+              <div class="ma-feat-card-num">01 / 06</div>
+              <h3 class="ma-feat-card-h">Hyper-local competitor tracking</h3>
+              <p class="ma-feat-card-p">Find actual competitors on your street — not giant e-commerce players. Real intel for your real market.</p>
+              <div class="ma-feat-card-tags">
+                <span style="background:rgba(37,99,235,0.12);color:#2563EB">Real-time</span>
+                <span style="background:rgba(37,99,235,0.12);color:#2563EB">Street-level</span>
+              </div>
+            </div>
+
+            <div class="ma-feat-card" data-idx="1" style="--card-color:#22C55E;--card-glow:rgba(34,197,94,0.2)">
+              <div class="ma-feat-card-icon" style="background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.3)">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              </div>
+              <div class="ma-feat-card-num">02 / 06</div>
+              <h3 class="ma-feat-card-h">SEO keyword engine</h3>
+              <p class="ma-feat-card-p">Discover exactly what your local customers search for. Get on Google's first page for terms that convert.</p>
+              <div class="ma-feat-card-tags">
+                <span style="background:rgba(34,197,94,0.12);color:#22C55E">Local SEO</span>
+                <span style="background:rgba(34,197,94,0.12);color:#22C55E">GMB Optimize</span>
+              </div>
+            </div>
+
+            <div class="ma-feat-card" data-idx="2" style="--card-color:#A78BFA;--card-glow:rgba(167,139,250,0.2)">
+              <div class="ma-feat-card-icon" style="background:rgba(167,139,250,0.15);border-color:rgba(167,139,250,0.3)">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="ma-feat-card-num">03 / 06</div>
+              <h3 class="ma-feat-card-h">B2B & B2C buyer leads</h3>
+              <p class="ma-feat-card-p">Retailers, wholesalers, and end consumers looking for your products get connected to you directly.</p>
+              <div class="ma-feat-card-tags">
+                <span style="background:rgba(167,139,250,0.12);color:#A78BFA">Verified Buyers</span>
+                <span style="background:rgba(167,139,250,0.12);color:#A78BFA">Bulk Orders</span>
+              </div>
+            </div>
+
+            <div class="ma-feat-card" data-idx="3" style="--card-color:#F59E0B;--card-glow:rgba(245,158,11,0.2)">
+              <div class="ma-feat-card-icon" style="background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3)">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+              </div>
+              <div class="ma-feat-card-num">04 / 06</div>
+              <h3 class="ma-feat-card-h">AI Growth Playbook</h3>
+              <p class="ma-feat-card-p">Personalised step-by-step action plan — pricing strategy, marketing channels, seasonal tactics. Updated monthly.</p>
+              <div class="ma-feat-card-tags">
+                <span style="background:rgba(245,158,11,0.12);color:#F59E0B">Personalised AI</span>
+                <span style="background:rgba(245,158,11,0.12);color:#F59E0B">Monthly Updates</span>
+              </div>
+            </div>
+
+            <div class="ma-feat-card" data-idx="4" style="--card-color:#F87171;--card-glow:rgba(248,113,113,0.2)">
+              <div class="ma-feat-card-icon" style="background:rgba(248,113,113,0.15);border-color:rgba(248,113,113,0.3)">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              </div>
+              <div class="ma-feat-card-num">05 / 06</div>
+              <h3 class="ma-feat-card-h">Live analytics dashboard</h3>
+              <p class="ma-feat-card-p">Track visitor leads, keyword rankings, and buyer enquiries in real time. Know exactly what's working.</p>
+              <div class="ma-feat-card-tags">
+                <span style="background:rgba(248,113,113,0.12);color:#F87171">Real-time</span>
+                <span style="background:rgba(248,113,113,0.12);color:#F87171">ROI Tracking</span>
+              </div>
+            </div>
+
+            <div class="ma-feat-card" data-idx="5" style="--card-color:#06B6D4;--card-glow:rgba(6,182,212,0.2)">
+              <div class="ma-feat-card-icon" style="background:rgba(6,182,212,0.15);border-color:rgba(6,182,212,0.3)">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <div class="ma-feat-card-num">06 / 06</div>
+              <h3 class="ma-feat-card-h">WhatsApp & social sync</h3>
+              <p class="ma-feat-card-p">Get buyer enquiries directly on WhatsApp. Auto-post your deals to Instagram and Facebook with one tap.</p>
+              <div class="ma-feat-card-tags">
+                <span style="background:rgba(6,182,212,0.12);color:#06B6D4">WhatsApp</span>
+                <span style="background:rgba(6,182,212,0.12);color:#06B6D4">Social Media</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Progress bar -->
+          <div class="ma-feat-progress-wrap">
+            <div class="ma-feat-progress-bar" id="maFeatBar"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SCREEN 4: PRICING ──────────────────────────────── -->
+    <div class="ma-screen" id="ms-pricing" data-screen="pricing">
+      <div class="ma-screen-inner">
+        <div class="ma-screen-header">
+          <span class="ma-screen-label">Pricing</span>
+          <h2 class="ma-screen-h2">Simple, <span class="ma-h1-grad">honest</span> pricing</h2>
+          <p class="ma-screen-sub">Swipe to compare plans</p>
+        </div>
+
+        <div class="ma-pricing-scroll" id="maPricingScroll">
+
+          <div class="ma-price-card">
+            <div class="ma-plan-label">Starter</div>
+            <div class="ma-plan-price"><sup>₹</sup>0<span>/mo</span></div>
+            <p class="ma-plan-desc">Explore and get your first buyer leads.</p>
+            <ul class="ma-plan-features">
+              <li>1 AI competitor analysis</li>
+              <li>5 keyword recommendations</li>
+              <li>Basic buyer listing</li>
+              <li>Community support</li>
+            </ul>
+            <button class="ma-plan-btn outline ripple-container" onclick="openModal('register')">Start Free</button>
+          </div>
+
+          <div class="ma-price-card featured">
+            <div class="ma-plan-badge">MOST POPULAR</div>
+            <div class="ma-plan-label">Growth</div>
+            <div class="ma-plan-price"><sup>₹</sup>499<span>/mo</span></div>
+            <p class="ma-plan-desc">Dominate your local market with AI.</p>
+            <ul class="ma-plan-features">
+              <li>Unlimited competitor tracking</li>
+              <li>Full AI Growth Playbook</li>
+              <li>Priority buyer matching</li>
+              <li>GMB & SEO optimization</li>
+              <li>Monthly strategy refresh</li>
+              <li>Email + chat support</li>
+            </ul>
+            <button class="ma-plan-btn filled ripple-container" onclick="openModal('register')">Start 14-day Trial →</button>
+          </div>
+
+          <div class="ma-price-card">
+            <div class="ma-plan-label">Pro</div>
+            <div class="ma-plan-price"><sup>₹</sup>1,299<span>/mo</span></div>
+            <p class="ma-plan-desc">For wholesalers and multi-city sellers.</p>
+            <ul class="ma-plan-features">
+              <li>Everything in Growth</li>
+              <li>Multi-city market intel</li>
+              <li>B2B buyer pipeline</li>
+              <li>Ad campaign guidance</li>
+              <li>Dedicated account manager</li>
+              <li>API access</li>
+            </ul>
+            <button class="ma-plan-btn outline ripple-container" onclick="openModal('register')">Contact Sales</button>
+          </div>
+
+        </div>
+
+        <!-- Scroll dots -->
+        <div class="ma-pricing-dots" id="maPricingDots">
+          <span class="ma-pdot active"></span>
+          <span class="ma-pdot"></span>
+          <span class="ma-pdot"></span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SCREEN 5: JOIN ─────────────────────────────────── -->
+    <div class="ma-screen" id="ms-join" data-screen="join">
+      <div class="ma-screen-inner">
+
+        <!-- Testimonial snippet -->
+        <div class="ma-testimonial">
+          <div class="ma-testi-stars">★★★★★</div>
+          <p class="ma-testi-body" id="maTesiBody">"BizBoost helped me rank #1 for 'kurti Surat' in 3 weeks. Revenue doubled."</p>
+          <div class="ma-testi-author">
+            <div class="ma-testi-avatar av1" id="maTesiAvatar">PR</div>
+            <div>
+              <div class="ma-testi-name" id="maTesiName">Priya Rathod</div>
+              <div class="ma-testi-biz" id="maTesiBiz">Priya's Kurta House, Surat</div>
+            </div>
+          </div>
+          <div class="ma-testi-dots" id="maTestiDots">
+            <span class="ma-tdot active"></span>
+            <span class="ma-tdot"></span>
+            <span class="ma-tdot"></span>
+          </div>
+        </div>
+
+        <!-- CTA card -->
+        <div class="ma-join-card">
+          <div class="ma-join-header">
+            <span class="ma-screen-label" style="margin-bottom:8px;display:block">Get Started</span>
+            <h2 class="ma-screen-h2" style="font-size:26px">Ready to outgrow<br><span class="ma-h1-grad">your competition?</span></h2>
+          </div>
+          <p class="ma-join-sub">Free forever plan · No credit card · 2-min setup</p>
+          <input class="ma-join-email" id="maJoinEmail" type="email" placeholder="Enter your email address" />
+          <button class="ma-cta-btn ripple-container" style="margin-top:12px" onclick="maCtaSignup()">
+            Get Started Free →
+          </button>
+          <p class="ma-join-or">Already have an account? <a href="#" onclick="openModal('login');return false">Sign In</a></p>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /ma-screens -->
+
+  <!-- Bottom navigation -->
+  <nav class="ma-bottom-nav" id="maBottomNav">
+    <button class="ma-nav-btn active" data-target="home" onclick="maGoScreen('home',this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="ma-nav-btn" data-target="how" onclick="maGoScreen('how',this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>How</span>
+    </button>
+    <button class="ma-nav-btn" data-target="features" onclick="maGoScreen('features',this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>Features</span>
+    </button>
+    <button class="ma-nav-btn" data-target="pricing" onclick="maGoScreen('pricing',this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <span>Pricing</span>
+    </button>
+    <button class="ma-nav-btn cta" data-target="join" onclick="maGoScreen('join',this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+      <span>Join</span>
+    </button>
+  </nav>
+
+</div><!-- /mob-app -->
+
+<!-- ── FOOTER ────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">Biz<span>Boost</span></a>
+      <p>AI-powered growth tools for India's local businesses.</p>
+    </div>
+    <div class="footer-links-group">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="seller/dashboard.html">Dashboard</a></li>
+      </ul>
+    </div>
+    <div class="footer-links-group">
+      <h4>For Sellers</h4>
+      <ul>
+        <li><a href="#" onclick="openModal('register');return false">Register Business</a></li>
+        <li><a href="#">Seller Guide</a></li>
+        <li><a href="#">Case Studies</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
+    <div class="footer-links-group">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 BizBoost. All rights reserved.</p>
+    <p style="display:flex;align-items:center;gap:6px">Crafted with <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> for Indian entrepreneurs</p>
+  </div>
+</footer>
+
+<!-- ── AUTH MODAL ─────────────────────────────────────────────── -->
+<div class="modal-overlay" id="authModal" onclick="overlayClose(event)">
+  <div class="modal-box" id="modalBox">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <span class="modal-logo">Biz<span>Boost</span></span>
+      <button class="modal-close" onclick="closeModal()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- ── ROLE TOGGLE ─────────────────────────────────────── -->
+    <div class="role-toggle-wrap">
+      <div class="role-toggle">
+
+        <button class="role-btn" id="roleSellerBtn" onclick="switchRole('seller')">
+          <!-- store/shop icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          I'm a Seller
+          <span class="role-badge seller-badge">Business</span>
+        </button>
+
+        <button class="role-btn" id="roleBuyerBtn" onclick="switchRole('buyer')">
+          <!-- shopping bag icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          I'm a Buyer
+          <span class="role-badge buyer-badge">Find Products</span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Context hint (changes with role) -->
+    <p class="role-context" id="roleContext"></p>
+
+    <!-- Action tabs -->
+    <div class="modal-tabs">
+      <button class="modal-tab" id="tabLogin"    onclick="switchTab('login')">Sign In</button>
+      <button class="modal-tab" id="tabRegister" onclick="switchTab('register')">Create Account</button>
+    </div>
+
+    <div class="modal-body">
+      <div id="formErr"     class="form-err"></div>
+      <div id="formSuccess" class="form-success"></div>
+
+      <!-- ════════════════════════════════════
+           SELLER — SIGN IN
+           Calls: /api/seller_login.php
+           ════════════════════════════════════ -->
+      <div id="formSellerLogin">
+        <div class="form-group">
+          <label class="form-label">Business Email</label>
+          <input id="slEmail" class="form-input" type="email" placeholder="you@yourbusiness.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-wrap">
+            <input id="slPwd" class="form-input" type="password" placeholder="Your password" autocomplete="current-password" />
+            <button class="pwd-toggle" type="button" onclick="togglePwd('slPwd',this)" tabindex="-1">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <button id="slBtn" class="form-submit" onclick="doSellerLogin()">Sign In to Dashboard →</button>
+        <p class="form-footer">New seller? <a href="#" onclick="switchTab('register');return false">Register your business free</a></p>
+      </div>
+
+      <!-- ════════════════════════════════════
+           SELLER — REGISTER
+           Calls: /api/seller_register.php
+           ════════════════════════════════════ -->
+      <div id="formSellerRegister" style="display:none">
+        <div class="form-group">
+          <label class="form-label">Business Name *</label>
+          <input id="srName" class="form-input" type="text" placeholder="e.g. Priya's Kurta House" autocomplete="organization" />
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Email *</label>
+            <input id="srEmail" class="form-input" type="email" placeholder="you@example.com" autocomplete="email" />
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">City</label>
+            <input id="srCity" class="form-input" type="text" placeholder="e.g. Surat" autocomplete="address-level2" />
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:16px">
+          <label class="form-label">Category</label>
+          <select id="srCat" class="form-select">
+            <option value="">Select your category</option>
+            <option value="clothing">Clothing & Apparel</option>
+            <option value="electronics">Electronics & Mobile</option>
+            <option value="food">Food & Grocery</option>
+            <option value="hardware">Hardware & Tools</option>
+            <option value="beauty">Beauty & Personal Care</option>
+            <option value="textiles">Textiles & Fabric</option>
+            <option value="furniture">Furniture & Home</option>
+            <option value="jewellery">Jewellery & Accessories</option>
+            <option value="wholesale">Wholesale / Distribution</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password * <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted2)">(min 8 characters)</span></label>
+          <div class="input-wrap">
+            <input id="srPwd" class="form-input" type="password" placeholder="Create a strong password" autocomplete="new-password" />
+            <button class="pwd-toggle" type="button" onclick="togglePwd('srPwd',this)" tabindex="-1">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <button id="srBtn" class="form-submit" onclick="doSellerRegister()">Create Business Account →</button>
+        <p class="form-footer">Already have an account? <a href="#" onclick="switchTab('login');return false">Sign in</a></p>
+        <p style="text-align:center;font-size:11px;color:var(--muted2);margin-top:10px">
+          By registering, you agree to our <a href="#" style="color:var(--muted)">Terms</a> &amp; <a href="#" style="color:var(--muted)">Privacy Policy</a>
+        </p>
+      </div>
+
+      <!-- ════════════════════════════════════
+           BUYER — SIGN IN
+           Calls: /api/buyer_login.php
+           ════════════════════════════════════ -->
+      <div id="formBuyerLogin" style="display:none">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input id="blEmail" class="form-input" type="email" placeholder="you@example.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-wrap">
+            <input id="blPwd" class="form-input" type="password" placeholder="Your password" autocomplete="current-password" />
+            <button class="pwd-toggle" type="button" onclick="togglePwd('blPwd',this)" tabindex="-1">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <button id="blBtn" class="form-submit buyer-submit" onclick="doBuyerLogin()">Sign In →</button>
+        <p class="form-footer">New here? <a href="#" onclick="switchTab('register');return false">Create a buyer account</a></p>
+      </div>
+
+      <!-- ════════════════════════════════════
+           BUYER — REGISTER
+           Calls: /api/buyer_register.php
+           ════════════════════════════════════ -->
+      <div id="formBuyerRegister" style="display:none">
+        <div class="form-group">
+          <label class="form-label">Your Name *</label>
+          <input id="brName" class="form-input" type="text" placeholder="e.g. Rahul Sharma" autocomplete="name" />
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Email *</label>
+            <input id="brEmail" class="form-input" type="email" placeholder="you@example.com" autocomplete="email" />
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">City</label>
+            <input id="brCity" class="form-input" type="text" placeholder="e.g. Mumbai" autocomplete="address-level2" />
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:16px">
+          <label class="form-label">What are you looking to buy?</label>
+          <input id="brInterest" class="form-input" type="text" placeholder="e.g. Printed kurtis, Mobile accessories" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password * <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted2)">(min 8 characters)</span></label>
+          <div class="input-wrap">
+            <input id="brPwd" class="form-input" type="password" placeholder="Create a strong password" autocomplete="new-password" />
+            <button class="pwd-toggle" type="button" onclick="togglePwd('brPwd',this)" tabindex="-1">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <button id="brBtn" class="form-submit buyer-submit" onclick="doBuyerRegister()">Find Local Sellers →</button>
+        <p class="form-footer">Already have an account? <a href="#" onclick="switchTab('login');return false">Sign in</a></p>
+      </div>
+
+    </div><!-- /modal-body -->
+  </div><!-- /modal-box -->
+</div><!-- /modal-overlay -->
+
+<script>
+/* ── CONFIG ──────────────────────────────────────────── */
+const API = '/api';
+const DEMO_MODE = false;
+
+/* ── CURSOR ──────────────────────────────────────────── */
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx = -100, my = -100, rx = -100, ry = -100;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+(function animCursor() {
+  rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  ring.style.left   = rx + 'px'; ring.style.top  = ry + 'px';
+  requestAnimationFrame(animCursor);
+})();
+document.querySelectorAll('a,button,[class*="chip"],[class*="card"],[class*="toggle"]').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+});
+
+/* ── THEME ───────────────────────────────────────────── */
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  const newTheme = isDark ? 'light' : 'dark';
+  html.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  const label = document.getElementById('mob-theme-label');
+  if (label) label.textContent = newTheme === 'dark' ? 'Switch to Light' : 'Switch to Dark';
+}
+(function initTheme() {
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    const label = document.getElementById('mob-theme-label');
+    if (label) label.textContent = saved === 'dark' ? 'Switch to Light' : 'Switch to Dark';
+  } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+
+/* ── NAV SCROLL ──────────────────────────────────────── */
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+/* ── MOBILE MENU ─────────────────────────────────────── */
+function toggleMobile() {
+  const btn  = document.getElementById('burgerBtn');
+  const menu = document.getElementById('mobileMenu');
+  const isOpen = menu.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+  // Animate links staggered in
+  if (isOpen) {
+    const links = menu.querySelectorAll('.mob-nav-links a');
+    links.forEach((l, i) => {
+      l.style.opacity = '0';
+      l.style.transform = 'translateY(16px)';
+      setTimeout(() => {
+        l.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+        l.style.opacity = '1';
+        l.style.transform = 'translateY(0)';
+      }, 80 + i * 60);
+    });
+    const actions = menu.querySelector('.mob-menu-actions');
+    if (actions) {
+      actions.style.opacity = '0';
+      actions.style.transform = 'translateY(16px)';
+      setTimeout(() => {
+        actions.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+        actions.style.opacity = '1';
+        actions.style.transform = 'translateY(0)';
+      }, 320);
+    }
+  }
+}
+
+/* ── REVEAL ON SCROLL ─────────────────────────────────── */
+const revealEls = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.12 });
+revealEls.forEach(el => revealObs.observe(el));
+
+/* ── TYPING ANIMATION ────────────────────────────────── */
+const phrases = ['kurtis in Surat…', 'mobile accessories in Nagpur…', 'hardware tools in Pune…', 'organic spices in Jaipur…', 'handloom fabrics in Varanasi…', 'electronics in Hyderabad…'];
+let pi = 0, ci = 0, deleting = false;
+const typingEl = document.getElementById('typingText');
+function typeNext() {
+  const phrase = phrases[pi];
+  if (!deleting) {
+    typingEl.textContent = phrase.substring(0, ci + 1); ci++;
+    if (ci === phrase.length) { deleting = true; setTimeout(typeNext, 2200); return; }
+    setTimeout(typeNext, 60);
+  } else {
+    typingEl.textContent = phrase.substring(0, ci - 1); ci--;
+    if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; setTimeout(typeNext, 280); return; }
+    setTimeout(typeNext, 35);
+  }
+}
+setTimeout(typeNext, 1000);
+
+/* ── BUYER SEARCH ────────────────────────────────────── */
+function fillBuyerSearch(q) {
+  document.getElementById('buyerProduct').value = q;
+  document.getElementById('buyerProduct').focus();
+}
+function doBuyerSearch() {
+  const q    = document.getElementById('buyerProduct').value.trim();
+  const city = document.getElementById('buyerCity').value.trim();
+  if (!q) {
+    const inp = document.getElementById('buyerProduct');
+    inp.classList.add('error'); inp.focus();
+    setTimeout(() => inp.classList.remove('error'), 1600);
+    return;
+  }
+  const params = new URLSearchParams({ product: q });
+  if (city) params.set('city', city);
+  window.location.href = 'buyer/search.html?' + params.toString();
+}
+document.getElementById('buyerProduct').addEventListener('keydown', e => { if (e.key === 'Enter') doBuyerSearch(); });
+document.getElementById('buyerCity').addEventListener('keydown',   e => { if (e.key === 'Enter') doBuyerSearch(); });
+
+/* ── TESTIMONIALS ────────────────────────────────────── */
+const testimonials = [
+  { text: "BizBoost found 9 real competitors selling similar kurtis in Surat. The AI plan helped me beat 3 of them in 6 weeks.", name: "Priya Mehta", biz: "Priya's Kurta House, Surat", av: "av1", init: "P" },
+  { text: "Finally a tool that doesn't show Croma as my competitor. I sell mobile accessories from a small shop — it found real local dealers.", name: "Rahul Sharma", biz: "QuickMobile, Nagpur", av: "av2", init: "R" },
+  { text: "The keyword targets were spot on. Ranked on first page for 'printed tshirt Vadodara' within 3 weeks.", name: "Dev Patel", biz: "PrintZone, Vadodara", av: "av3", init: "D" },
+  { text: "3 buyer leads in the first week. One became a bulk order for ₹85,000. Worth every rupee.", name: "Sunita Agarwal", biz: "Agarwal Textiles, Jaipur", av: "av4", init: "S" },
+  { text: "The SEO fixes section alone was worth it. My Google Business Profile views went up 4x after implementing the changes.", name: "Amit Verma", biz: "Verma Hardware, Lucknow", av: "av5", init: "A" },
+  { text: "I was wasting money on Google Ads targeting wrong keywords. BizBoost showed me exactly what my customers search for.", name: "Neha Joshi", biz: "Neha's Beauty Studio, Pune", av: "av6", init: "N" },
+  { text: "Setup took 5 minutes. The report was so specific — it named my actual competitors on my street. Incredible.", name: "Vijay Reddy", biz: "Reddy Electronics, Hyderabad", av: "av1", init: "V" },
+  { text: "As a wholesaler, the B2B leads are gold. Retailers from my city now contact me directly through the platform.", name: "Ramesh Gupta", biz: "Gupta Fabrics Wholesale, Surat", av: "av3", init: "R" },
+];
+const track = document.getElementById('proofTrack');
+[...testimonials, ...testimonials].forEach(t => {
+  track.innerHTML += `
+    <div class="tcard">
+      <div class="tcard-stars">${'<svg width="13" height="13" viewBox="0 0 24 24" fill="var(--orange)" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'.repeat(5)}</div>
+      <div class="tcard-body">"${t.text}"</div>
+      <div class="tcard-author">
+        <div class="tcard-avatar ${t.av}">${t.init}</div>
+        <div><div class="tcard-name">${t.name}</div><div class="tcard-biz">${t.biz}</div></div>
+      </div>
+    </div>`;
+});
+
+/* ── PASSWORD TOGGLE ─────────────────────────────────── */
+function togglePwd(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    btn.style.color = 'var(--accent)';
+  } else {
+    inp.type = 'password';
+    btn.style.color = '';
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   MODAL  —  role-aware (seller / buyer)
+   ═══════════════════════════════════════════════════════ */
+
+let _currentRole = 'seller';   // 'seller' | 'buyer'
+let _currentTab  = 'login';    // 'login'  | 'register'
+
+// Context hints per role+tab
+const CONTEXTS = {
+  seller: {
+    login:    'Welcome back! Sign in to access your dashboard, competitors & AI strategy.',
+    register: 'Grow your local business with AI. Find competitors, get buyer leads & SEO keywords.',
+  },
+  buyer: {
+    login:    'Sign in to browse verified local sellers and request quotes.',
+    register: 'Create a free buyer account to connect with local sellers near you.',
+  }
+};
+
+// All 4 form panel IDs
+const PANELS = ['formSellerLogin','formSellerRegister','formBuyerLogin','formBuyerRegister'];
+
+function openModal(tab = 'login', role = 'seller') {
+  document.getElementById('authModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  _currentRole = role;
+  _currentTab  = tab;
+  _renderModal();
+  clearMessages();
+}
+
+function closeModal() {
+  document.getElementById('authModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function overlayClose(e) {
+  if (e.target === document.getElementById('authModal')) closeModal();
+}
+
+function switchRole(role) {
+  _currentRole = role;
+  _renderModal();
+  clearMessages();
+}
+
+function switchTab(tab) {
+  _currentTab = tab;
+  _renderModal();
+  clearMessages();
+}
+
+function _renderModal() {
+  const isSeller = _currentRole === 'seller';
+  const isLogin  = _currentTab  === 'login';
+
+  // Role buttons
+  document.getElementById('roleSellerBtn').className =
+    'role-btn' + (isSeller ? ' seller-on' : '');
+  document.getElementById('roleBuyerBtn').className =
+    'role-btn' + (!isSeller ? ' buyer-on'  : '');
+
+  // Modal box class (controls tab underline colour)
+  document.getElementById('modalBox').className =
+    'modal-box' + (!isSeller ? ' buyer-mode' : '');
+
+  // Action tabs
+  document.getElementById('tabLogin').classList.toggle('on',    isLogin);
+  document.getElementById('tabRegister').classList.toggle('on', !isLogin);
+
+  // Context hint
+  document.getElementById('roleContext').textContent =
+    CONTEXTS[_currentRole][_currentTab];
+
+  // Show correct panel, hide all others
+  const active = isSeller
+    ? (isLogin ? 'formSellerLogin' : 'formSellerRegister')
+    : (isLogin ? 'formBuyerLogin'  : 'formBuyerRegister');
+
+  PANELS.forEach(id => {
+    document.getElementById(id).style.display = id === active ? 'block' : 'none';
+  });
+}
+
+function showErr(msg) {
+  const el = document.getElementById('formErr');
+  el.textContent = msg; el.classList.add('show');
+  document.getElementById('formSuccess').classList.remove('show');
+}
+function showSuccess(msg) {
+  const el = document.getElementById('formSuccess');
+  el.textContent = msg; el.classList.add('show');
+  document.getElementById('formErr').classList.remove('show');
+}
+function clearMessages() {
+  document.getElementById('formErr').classList.remove('show');
+  document.getElementById('formSuccess').classList.remove('show');
+}
+
+function validateEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+/* ── CTA EMAIL ───────────────────────────────────────── */
+function ctaSignup() {
+  const email = document.getElementById('ctaEmail').value.trim();
+  openModal('register', 'seller');
+  if (email) setTimeout(() => { document.getElementById('srEmail').value = email; }, 350);
+}
+
+/* ═══════════════════════════════════════════
+   SELLER LOGIN   →  /api/seller_login.php
+   ═══════════════════════════════════════════ */
+async function doSellerLogin() {
+  clearMessages();
+  const email = document.getElementById('slEmail').value.trim();
+  const pwd   = document.getElementById('slPwd').value;
+  if (!email || !validateEmail(email)) { showErr('Please enter a valid email address.'); return; }
+  if (!pwd)                            { showErr('Please enter your password.'); return; }
+
+  const btn = document.getElementById('slBtn');
+  btn.disabled = true; btn.textContent = 'Signing in…';
+
+  try {
+    if (DEMO_MODE) {
+      await new Promise(r => setTimeout(r, 800));
+      const stored = localStorage.getItem('seller');
+      if (!stored) throw new Error('No account found. Please register first.');
+      const seller = JSON.parse(stored);
+      if (seller.email !== email) throw new Error('Email not found. Please check and try again.');
+      const storedPwd = localStorage.getItem('sellerPwd');
+      if (storedPwd && storedPwd !== pwd) throw new Error('Incorrect password. Please try again.');
+      const d = JSON.parse(localStorage.getItem('sellerDetails') || '{}');
+      closeModal();
+      location.href = (!d.products_offered || !seller.city) ? 'seller/onboard.html' : 'seller/dashboard.html';
+      return;
+    }
+
+    const res   = await fetch(`${API}/seller_login.php`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pwd })
+    });
+    const data  = await _parseRes(res);
+    if (!data.success) throw new Error(data.error || 'Login failed. Please check your credentials.');
+
+    localStorage.setItem('seller',        JSON.stringify(data.seller));
+    localStorage.setItem('sellerDetails', JSON.stringify(data.details || {}));
+    localStorage.removeItem('lastReport');
+    localStorage.removeItem('lastIntel');
+    closeModal();
+    const d = data.details || {};
+    location.href = (!d.products_offered || !data.seller.city)
+      ? 'seller/onboard.html' : 'seller/dashboard.html';
+
+  } catch(err) {
+    showErr(err.message);
+    btn.disabled = false; btn.textContent = 'Sign In to Dashboard →';
+  }
+}
+
+/* ═══════════════════════════════════════════
+   SELLER REGISTER  →  /api/seller_register.php
+   ═══════════════════════════════════════════ */
+async function doSellerRegister() {
+  clearMessages();
+  const name  = document.getElementById('srName').value.trim();
+  const email = document.getElementById('srEmail').value.trim();
+  const pwd   = document.getElementById('srPwd').value;
+  const city  = document.getElementById('srCity').value.trim();
+  const cat   = document.getElementById('srCat').value;
+
+  ['srName','srEmail','srPwd'].forEach(id => document.getElementById(id).classList.remove('error'));
+
+  if (!name)  { document.getElementById('srName').classList.add('error');  showErr('Please enter your business name.'); return; }
+  if (!email) { document.getElementById('srEmail').classList.add('error'); showErr('Please enter your email address.'); return; }
+  if (!validateEmail(email)) { document.getElementById('srEmail').classList.add('error'); showErr('Please enter a valid email address.'); return; }
+  if (!pwd || pwd.length < 8) { document.getElementById('srPwd').classList.add('error'); showErr('Password must be at least 8 characters.'); return; }
+
+  const btn = document.getElementById('srBtn');
+  btn.disabled = true; btn.textContent = 'Creating your account…';
+
+  try {
+    if (DEMO_MODE) {
+      await new Promise(r => setTimeout(r, 1000));
+      const existing = localStorage.getItem('seller');
+      if (existing && JSON.parse(existing).email === email)
+        throw new Error('An account with this email already exists. Please sign in instead.');
+      const seller = { id: 'demo_' + Date.now(), name, email, city, category: cat, created: new Date().toISOString() };
+      localStorage.setItem('seller',        JSON.stringify(seller));
+      localStorage.setItem('sellerPwd',     pwd);
+      localStorage.setItem('sellerDetails', JSON.stringify({}));
+      localStorage.removeItem('lastReport');
+      closeModal();
+      location.href = 'seller/onboard.html';
+      return;
+    }
+
+    const res  = await fetch(`${API}/seller_register.php`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password: pwd, city, category: cat })
+    });
+    const data = await _parseRes(res);
+    if (!data.success) throw new Error(data.error || 'Registration failed. Please try again.');
+
+    const seller = { id: data.seller_id, seller_id: data.seller_id, name, email, city, category: cat };
+    localStorage.setItem('seller',        JSON.stringify(seller));
+    localStorage.setItem('sellerDetails', JSON.stringify({}));
+    localStorage.removeItem('lastReport');
+    closeModal();
+    location.href = 'seller/onboard.html';
+
+  } catch(err) {
+    showErr(err.message);
+    btn.disabled = false; btn.textContent = 'Create Business Account →';
+  }
+}
+
+/* ═══════════════════════════════════════════
+   BUYER LOGIN   →  /api/buyer_login.php
+   ═══════════════════════════════════════════ */
+async function doBuyerLogin() {
+  clearMessages();
+  const email = document.getElementById('blEmail').value.trim();
+  const pwd   = document.getElementById('blPwd').value;
+  if (!email || !validateEmail(email)) { showErr('Please enter a valid email address.'); return; }
+  if (!pwd)                            { showErr('Please enter your password.'); return; }
+
+  const btn = document.getElementById('blBtn');
+  btn.disabled = true; btn.textContent = 'Signing in…';
+
+  try {
+    const res  = await fetch(`${API}/buyer_login.php`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pwd })
+    });
+    const data = await _parseRes(res);
+    if (!data.success) throw new Error(data.error || 'Login failed. Please check your credentials.');
+
+    localStorage.setItem('buyer', JSON.stringify(data.buyer));
+    closeModal();
+    location.href = 'buyer/search.html';
+
+  } catch(err) {
+    showErr(err.message);
+    btn.disabled = false; btn.textContent = 'Sign In →';
+  }
+}
+
+/* ═══════════════════════════════════════════
+   BUYER REGISTER  →  /api/buyer_register.php
+   ═══════════════════════════════════════════ */
+async function doBuyerRegister() {
+  clearMessages();
+  const name     = document.getElementById('brName').value.trim();
+  const email    = document.getElementById('brEmail').value.trim();
+  const pwd      = document.getElementById('brPwd').value;
+  const city     = document.getElementById('brCity').value.trim();
+  const interest = document.getElementById('brInterest').value.trim();
+
+  ['brName','brEmail','brPwd'].forEach(id => document.getElementById(id).classList.remove('error'));
+
+  if (!name)  { document.getElementById('brName').classList.add('error');  showErr('Please enter your name.'); return; }
+  if (!email) { document.getElementById('brEmail').classList.add('error'); showErr('Please enter your email address.'); return; }
+  if (!validateEmail(email)) { document.getElementById('brEmail').classList.add('error'); showErr('Please enter a valid email address.'); return; }
+  if (!pwd || pwd.length < 8) { document.getElementById('brPwd').classList.add('error'); showErr('Password must be at least 8 characters.'); return; }
+
+  const btn = document.getElementById('brBtn');
+  btn.disabled = true; btn.textContent = 'Creating your account…';
+
+  try {
+    const res  = await fetch(`${API}/buyer_register.php`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password: pwd, city, product_interest: interest })
+    });
+    const data = await _parseRes(res);
+    if (!data.success) throw new Error(data.error || 'Registration failed. Please try again.');
+
+    const buyer = { id: data.buyer_id, name, email, city, product_interest: interest };
+    localStorage.setItem('buyer', JSON.stringify(buyer));
+    closeModal();
+    location.href = 'buyer/search.html';
+
+  } catch(err) {
+    showErr(err.message);
+    btn.disabled = false; btn.textContent = 'Find Local Sellers →';
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE APP SHELL LOGIC
+   ═══════════════════════════════════════════════════════════ */
+(function() {
+  if (window.innerWidth > 480) return; // only run on mobile
+
+  /* ── Screen navigation ──────────────────────────────── */
+  let currentScreen = 'home';
+  function maGoScreen(id, btn) {
+    if (id === currentScreen) return;
+    const prev = document.getElementById('ms-' + currentScreen);
+    const next = document.getElementById('ms-' + id);
+    if (!prev || !next) return;
+
+    prev.classList.remove('active');
+    prev.classList.add('exit-left');
+    setTimeout(() => prev.classList.remove('exit-left'), 400);
+
+    next.style.transform = 'translateX(30px)';
+    next.classList.add('active');
+    // force reflow
+    next.getBoundingClientRect();
+    next.style.transform = '';
+
+    currentScreen = id;
+
+    // Update bottom nav
+    document.querySelectorAll('.ma-nav-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    else {
+      const b = document.querySelector(`.ma-nav-btn[data-target="${id}"]`);
+      if (b) b.classList.add('active');
+    }
+
+    // Trigger stat counters when home becomes visible
+    if (id === 'home') maStartCounters();
+  }
+  window.maGoScreen = maGoScreen;
+
+  /* ── Stat counters ──────────────────────────────────── */
+  let countersRan = false;
+  function maStartCounters() {
+    if (countersRan) return;
+    countersRan = true;
+    document.querySelectorAll('.ma-stat-num[data-target]').forEach(el => {
+      const target = parseInt(el.dataset.target);
+      const suffix = el.dataset.suffix || '';
+      let start = null;
+      const step = ts => {
+        if (!start) start = ts;
+        const p = Math.min((ts - start) / 1400, 1);
+        const e = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.floor(e * target).toLocaleString('en-IN') + suffix;
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = target.toLocaleString('en-IN') + suffix;
+      };
+      requestAnimationFrame(step);
+    });
+    // Revenue special
+    const rev = document.querySelector('.ma-stat-num[data-target-text]');
+    if (rev) {
+      let s = null;
+      const step = ts => {
+        if (!s) s = ts;
+        const p = Math.min((ts - s) / 1400, 1);
+        const e = 1 - Math.pow(1 - p, 3);
+        rev.textContent = '₹' + (e * 4.2).toFixed(1) + 'Cr+';
+        if (p < 1) requestAnimationFrame(step);
+        else rev.textContent = '₹4.2Cr+';
+      };
+      requestAnimationFrame(step);
+    }
+  }
+  // Start on load
+  setTimeout(maStartCounters, 400);
+
+  /* ── Search ─────────────────────────────────────────── */
+  window.maFillSearch = function(q) {
+    const inp = document.getElementById('maSearchInput');
+    if (inp) { inp.value = q; inp.focus(); }
+  };
+  window.maMobileSearch = function() {
+    const q = (document.getElementById('maSearchInput')?.value || '').trim();
+    if (!q) return;
+    window.location.href = 'buyer/search.html?product=' + encodeURIComponent(q);
+  };
+  document.getElementById('maSearchInput')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') window.maMobileSearch();
+  });
+
+  /* ── How: step stepper ──────────────────────────────── */
+  let currentStep = 0;
+  function maGoStep(idx) {
+    const steps = document.querySelectorAll('.ma-step');
+    const dots = document.querySelectorAll('.ma-dot');
+    const bar = document.getElementById('maStepBar');
+    steps[currentStep]?.classList.remove('active');
+    steps[currentStep]?.classList.add('exit-left');
+    setTimeout(() => steps[currentStep]?.classList.remove('exit-left'), 400);
+    currentStep = idx;
+    steps[idx]?.classList.add('active');
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    if (bar) bar.style.width = ((idx + 1) / steps.length * 100) + '%';
+  }
+  window.maGoStep = maGoStep;
+  window.maNextStep = function() {
+    const total = document.querySelectorAll('.ma-step').length;
+    if (currentStep < total - 1) maGoStep(currentStep + 1);
+  };
+
+  /* ── Features: swipe card deck ──────────────────────── */
+  let featIdx = 0;
+  const featCards = document.querySelectorAll('.ma-feat-card');
+  const featBar = document.getElementById('maFeatBar');
+  if (featCards.length) {
+    featCards[0].classList.add('active');
+    function maGoFeat(idx) {
+      if (idx === featIdx) return;
+      featCards[featIdx].classList.remove('active');
+      featCards[featIdx].classList.add('exit-left');
+      setTimeout(() => featCards[featIdx]?.classList.remove('exit-left'), 400);
+      featIdx = ((idx % featCards.length) + featCards.length) % featCards.length;
+      featCards[featIdx].classList.add('active');
+      if (featBar) featBar.style.width = ((featIdx + 1) / featCards.length * 100) + '%';
+    }
+
+    // Touch swipe
+    const deck = document.getElementById('maFeatDeck');
+    if (deck) {
+      let sx = 0, dragging = false;
+      deck.addEventListener('touchstart', e => { sx = e.touches[0].clientX; dragging = true; }, {passive:true});
+      deck.addEventListener('touchend', e => {
+        if (!dragging) return;
+        const dx = e.changedTouches[0].clientX - sx;
+        if (Math.abs(dx) > 40) maGoFeat(featIdx + (dx < 0 ? 1 : -1));
+        dragging = false;
+      });
+    }
+  }
+
+  /* ── Pricing scroll dots ────────────────────────────── */
+  const ps = document.getElementById('maPricingScroll');
+  const pdots = document.querySelectorAll('.ma-pdot');
+  if (ps && pdots.length) {
+    ps.addEventListener('scroll', () => {
+      const idx = Math.round(ps.scrollLeft / ps.offsetWidth);
+      pdots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }, {passive:true});
+  }
+
+  /* ── Testimonial rotator ────────────────────────────── */
+  const testis = [
+    { body: '"BizBoost helped me rank #1 for \'kurti Surat\' in 3 weeks. Revenue doubled."', name: 'Priya Rathod', biz: 'Priya\'s Kurta House, Surat', av: 'av1', init: 'PR' },
+    { body: '"The AI playbook told me exactly which keywords to target. My footfall went up 40%."', name: 'Rahul Verma', biz: 'Verma Electronics, Nagpur', av: 'av2', init: 'RV' },
+    { body: '"Within 2 months I connected with 3 wholesale buyers. Best investment I made."', name: 'Sunita Joshi', biz: 'Joshi Spice Traders, Jaipur', av: 'av3', init: 'SJ' },
+  ];
+  let tIdx = 0;
+  const tdots = document.querySelectorAll('.ma-tdot');
+  function showTesti(i) {
+    const t = testis[i];
+    const body = document.getElementById('maTesiBody');
+    const name = document.getElementById('maTesiName');
+    const biz  = document.getElementById('maTesiBiz');
+    const av   = document.getElementById('maTesiAvatar');
+    if (!body) return;
+    body.style.opacity = '0'; body.style.transform = 'translateY(8px)';
+    setTimeout(() => {
+      body.textContent = t.body;
+      if (name) name.textContent = t.name;
+      if (biz)  biz.textContent  = t.biz;
+      if (av)   { av.className = 'ma-testi-avatar ' + t.av; av.textContent = t.init; }
+      tdots.forEach((d, j) => d.classList.toggle('active', j === i));
+      body.style.transition = 'opacity 0.4s, transform 0.4s';
+      body.style.opacity = '1'; body.style.transform = 'translateY(0)';
+    }, 200);
+    tIdx = i;
+  }
+  tdots.forEach((d, i) => d.addEventListener('click', () => showTesti(i)));
+  setInterval(() => showTesti((tIdx + 1) % testis.length), 4000);
+
+  /* ── CTA email signup ───────────────────────────────── */
+  window.maCtaSignup = function() {
+    const email = document.getElementById('maJoinEmail')?.value.trim();
+    if (!email || !email.includes('@')) {
+      document.getElementById('maJoinEmail')?.classList.add('error');
+      return;
+    }
+    openModal('register');
+  };
+
+  /* ── Ripple on mobile app buttons ──────────────────── */
+  document.querySelectorAll('#mob-app .ripple-container').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      const rect = this.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      ripple.className = 'ripple';
+      const size = Math.max(rect.width, rect.height);
+      ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+      this.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+    });
+  });
+
+  /* ── Scroll pricing dots ─────────────────────────────── */
+  document.getElementById('maPricingScroll')?.scrollTo({ left: 10, behavior: 'instant' });
+
+})();
+async function _parseRes(res) {
+  const text = await res.text();
+  const clean = text.trim().replace(/^\uFEFF/, '');
+  try { return JSON.parse(clean); }
+  catch(e) { throw new Error('Server error. Please try again later.'); }
+}
+
+/* ── Keyboard shortcuts ──────────────────────────────── */
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ── Remove error state on input ─────────────────────── */
+['slEmail','slPwd','srName','srEmail','srPwd','blEmail','blPwd','brName','brEmail','brPwd'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', function() { this.classList.remove('error'); });
+});
+['slPwd','blPwd'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') { id.startsWith('sl') ? doSellerLogin() : doBuyerLogin(); } });
+});
+
+/* ── ALREADY LOGGED IN ───────────────────────────────── */
+window.addEventListener('DOMContentLoaded', () => {
+  // Initialise modal to seller-login state (hidden)
+  _renderModal();
+
+  const s = localStorage.getItem('seller');
+  if (s) {
+    try {
+      const seller = JSON.parse(s);
+      if (seller?.id) {
+        document.getElementById('navCta').innerHTML = `
+          <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
+            <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <a href="seller/dashboard.html" class="btn-ghost">Dashboard</a>
+          <button class="btn-accent" onclick="localStorage.clear();location.reload()">Sign Out</button>`;
+        document.querySelectorAll('#navCta a,#navCta button').forEach(el => {
+          el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+          el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+        });
+        const saved = localStorage.getItem('theme');
+        if (saved) document.documentElement.setAttribute('data-theme', saved);
+      }
+    } catch(e) {}
+  }
+});
+
+/* removed — consolidated above */
+
+/* ── SCROLL PROGRESS BAR ─────────────────────────────── */
+const progressBar = document.getElementById('scroll-progress');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  progressBar.style.width = pct + '%';
+}, { passive: true });
+
+/* ── ANIMATED COUNTERS ───────────────────────────────── */
+function animateCounter(el, target, suffix, duration = 1600) {
+  let start = null;
+  const step = (ts) => {
+    if (!start) start = ts;
+    const progress = Math.min((ts - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const val = Math.floor(eased * target);
+    el.textContent = val.toLocaleString('en-IN') + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = target.toLocaleString('en-IN') + suffix;
+  };
+  requestAnimationFrame(step);
+}
+
+const counterDefs = [
+  { selector: '.hero-stat:nth-child(1) .hero-stat-num', target: 2400,  suffix: '+' },
+  { selector: '.hero-stat:nth-child(2) .hero-stat-num', target: 4.2,   suffix: 'Cr+', isFloat: true },
+  { selector: '.hero-stat:nth-child(3) .hero-stat-num', target: 18000, suffix: '+' },
+  { selector: '.hero-stat:nth-child(4) .hero-stat-num', target: 94,    suffix: '%' },
+];
+
+let countersStarted = false;
+const heroStats = document.querySelector('.hero-stats');
+if (heroStats) {
+  const statsObs = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting && !countersStarted) {
+      countersStarted = true;
+      counterDefs.forEach(def => {
+        const el = document.querySelector(def.selector);
+        if (!el) return;
+        if (def.isFloat) {
+          let start = null;
+          const step = (ts) => {
+            if (!start) start = ts;
+            const p = Math.min((ts - start) / 1600, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            el.textContent = '₹' + (eased * def.target).toFixed(1) + def.suffix;
+            if (p < 1) requestAnimationFrame(step);
+            else el.textContent = '₹' + def.target + def.suffix;
+          };
+          requestAnimationFrame(step);
+        } else {
+          animateCounter(el, def.target, def.suffix);
+        }
+      });
+    }
+  }, { threshold: 0.4 });
+  statsObs.observe(heroStats);
+}
+
+/* ── RIPPLE EFFECT ───────────────────────────────────── */
+document.querySelectorAll('.btn-accent, .buyer-bar-btn, .price-cta, .mobile-fab').forEach(btn => {
+  btn.classList.add('ripple-container');
+  btn.addEventListener('click', function(e) {
+    const rect = this.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    const size = Math.max(rect.width, rect.height);
+    ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size/2}px;top:${e.clientY - rect.top - size/2}px`;
+    this.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  });
+});
+
+/* ── HERO CHIP CLICK FEEDBACK ────────────────────────── */
+document.querySelectorAll('.hero-chip').forEach(chip => {
+  chip.addEventListener('click', function() {
+    this.style.borderColor = 'var(--accent)';
+    this.style.color = 'var(--accent)';
+    this.style.background = 'rgba(37,99,235,0.08)';
+    setTimeout(() => {
+      this.style.borderColor = '';
+      this.style.color = '';
+      this.style.background = '';
+    }, 600);
+  });
+});
+
+/* ── HIDE MOBILE FAB WHEN MODAL OPEN ────────────────── */
+const fab = document.querySelector('.mobile-fab');
+const origOpen = window.openModal;
+window.openModal = function(...args) {
+  if (fab) fab.style.display = 'none';
+  origOpen?.(...args);
+};
+const origClose = window.closeModal;
+window.closeModal = function(...args) {
+  if (fab && window.innerWidth <= 640) fab.style.display = 'block';
+  origClose?.(...args);
+};
+</script>
+</body>
+</html>
