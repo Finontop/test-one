@@ -102,7 +102,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
 .wbar-r{display:flex;gap:10px;align-items:center}
 
 /* KPI STRIP */
-.kpi-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
   margin-bottom:28px;animation:fadeUp .55s var(--ease) .07s both}
 .kpi{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);
   padding:20px 22px;position:relative;overflow:hidden;
@@ -276,6 +276,26 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
 .ei{font-size:28px;margin-bottom:10px;opacity:.35}
 .empty p{font-size:13px;color:var(--text3);line-height:1.6}
 
+/* USAGE CARD */
+.usage-feat{display:flex;flex-direction:column;gap:12px;padding:4px 0}
+.usage-row{background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:12px;padding:14px 16px;transition:all .2s var(--ease)}
+.usage-row:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}
+.usage-row-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.usage-feat-name{font-size:13px;font-weight:600;display:flex;align-items:center;gap:7px}
+.usage-counts{font-size:12px;color:var(--text2);font-family:monospace}
+.usage-bar-wrap{height:5px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
+.usage-bar-fill{height:100%;border-radius:3px;transition:width .9s var(--ease);width:0}
+.usage-tier-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;
+  font-weight:700;padding:3px 10px;border-radius:980px;letter-spacing:.03em}
+.usage-tier-free{background:rgba(255,255,255,.07);color:rgba(245,245,247,.5)}
+.usage-tier-basic{background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.22);color:#22d3ee}
+.usage-tier-pro{background:rgba(41,151,255,.12);border:1px solid rgba(41,151,255,.25);color:var(--blue)}
+.usage-tier-enterprise{background:rgba(255,214,10,.12);border:1px solid rgba(255,214,10,.22);color:#ffd60a}
+.usage-upgrade-hint{margin-top:14px;padding:12px 14px;border-radius:10px;
+  background:rgba(255,159,10,.07);border:1px solid rgba(255,159,10,.15);
+  font-size:12.5px;color:var(--orange);line-height:1.55;display:flex;align-items:flex-start;gap:8px}
+
 /* TOAST */
 .toast{position:fixed;bottom:28px;left:50%;
   transform:translateX(-50%) translateY(14px);
@@ -305,7 +325,6 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
   .nav{padding:0 16px}
   .main{padding:24px 16px 80px}
   .kpi-strip{grid-template-columns:1fr 1fr;gap:10px}
-  .kpi:last-child{grid-column:span 2}
   .kpi{padding:16px 18px}
   .kpi-val{font-size:26px}
   .wbar-l h1{font-size:22px}
@@ -331,11 +350,11 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
   <div class="mob-backdrop" onclick="closeMob()"></div>
   <div class="mob-panel">
     <div class="mob-links">
-      <a href="dashboard.html" class="mob-link on">📊 Overview</a>
-      <a href="competitors.html" class="mob-link">🏆 Competitors</a>
-      <a href="keywords.html" class="mob-link">🔑 Keywords</a>
-      <a href="leads.html" class="mob-link">📦 Leads</a>
-      <a href="onboard.html" class="mob-link">✏️ Edit Profile</a>
+      <a href="dashboard.html" class="mob-link on"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Overview</a>
+      <a href="competitors.html" class="mob-link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.29 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.29 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg> Competitors</a>
+      <a href="keywords.html" class="mob-link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg> Keywords</a>
+      <a href="leads.html" class="mob-link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg> Leads</a>
+      <a href="onboard.html" class="mob-link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:6px;flex-shrink:0"><path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg> Edit Profile</a>
     </div>
     <div class="mob-actions">
       <button class="nbtn blue" style="flex:1;border-radius:10px;padding:10px"
@@ -370,7 +389,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
   <div class="wbar">
     <div class="wbar-l">
       <div class="w-greeting">Your Dashboard</div>
-      <h1 id="wTitle">Welcome back 👋</h1>
+      <h1 id="wTitle">Welcome back</h1>
       <p id="wSub">Loading your business…</p>
     </div>
     <div class="wbar-r">
@@ -381,21 +400,27 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
   <div class="kpi-strip">
     <div class="kpi" onclick="ripple(event,this);jumpTo('reportCard')" tabindex="0"
          onkeydown="if(event.key==='Enter')ripple(event,this)">
-      <span class="kpi-icon">🏆</span>
+      <span class="kpi-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.29 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.29 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg></span>
       <div class="kpi-val" id="kpiComp">—</div>
       <div class="kpi-lbl">Competitors</div>
     </div>
     <div class="kpi" onclick="ripple(event,this);jumpTo('leadsWrap')" tabindex="0"
          onkeydown="if(event.key==='Enter')ripple(event,this)">
-      <span class="kpi-icon">📦</span>
+      <span class="kpi-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
       <div class="kpi-val" id="kpiLeads">—</div>
       <div class="kpi-lbl">Active Leads</div>
     </div>
     <div class="kpi" onclick="ripple(event,this);jumpTo('reportCard')" tabindex="0"
          onkeydown="if(event.key==='Enter')ripple(event,this)">
-      <span class="kpi-icon">🔑</span>
+      <span class="kpi-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></span>
       <div class="kpi-val" id="kpiKw">—</div>
       <div class="kpi-lbl">Keywords</div>
+    </div>
+    <div class="kpi" onclick="ripple(event,this);jumpTo('usageCard')" tabindex="0"
+         onkeydown="if(event.key==='Enter')ripple(event,this)">
+      <span class="kpi-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
+      <div class="kpi-val" id="kpiCredits">—</div>
+      <div class="kpi-lbl">Credits Used</div>
     </div>
   </div>
 
@@ -425,7 +450,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
 
       <div class="card" id="ctaBox">
         <div class="cta-box">
-          <div class="cta-orb">✦</div>
+          <div class="cta-orb"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
           <h3>Ready for your strategy?</h3>
           <p>Get a full competitor analysis and AI-powered growth plan for your local market.</p>
           <div class="cta-btns">
@@ -436,7 +461,7 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
 
       <div class="card" id="reportCard" style="display:none">
         <div class="ch">
-          <h3><div class="ch-icon blue">📊</div>Business Analysis</h3>
+          <h3><div class="ch-icon blue"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>Business Analysis</h3>
           <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
             <span id="rTime" style="font-size:11px;color:var(--text3)"></span>
             <button onclick="runResearch()" class="nbtn"
@@ -452,20 +477,20 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
     <div>
       <div class="card">
         <div class="ch">
-          <h3><div class="ch-icon purple">🏪</div>Business Profile</h3>
+          <h3><div class="ch-icon purple"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V11a4 4 0 00-8 0v10"/><path d="M2 7l2-5h16l2 5"/></svg></div>Business Profile</h3>
           <div style="display:flex;gap:8px;flex-shrink:0">
             <a href="onboard.html" class="nbtn" style="font-size:12px;padding:4px 12px">Edit →</a>
             <button class="ctog" id="togProfile" onclick="toggleCb('profilePanel','togProfile')">▾</button>
           </div>
         </div>
         <div class="cb" id="profilePanel">
-          <div class="empty"><div class="ei">📋</div><p>Loading…</p></div>
+          <div class="empty"><div class="ei"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.35"><rect x="9" y="2" width="6" height="4" rx="1" ry="1"/><path d="M9 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2h-3"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg></div><p>Loading…</p></div>
         </div>
       </div>
 
       <div class="card" id="compCard" style="display:none">
         <div class="ch">
-          <h3><div class="ch-icon orange">🏆</div>Top Competitors</h3>
+          <h3><div class="ch-icon orange"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.29 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.29 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg></div>Top Competitors</h3>
           <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
             <span id="compCount" style="font-size:12px;color:var(--text3)"></span>
             <button class="ctog" id="togComp" onclick="toggleCb('compPreview','togComp')">▾</button>
@@ -475,16 +500,30 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
         <a href="competitors.html" class="va">View all competitors <span class="va-arr">→</span></a>
       </div>
 
+      <!-- USAGE / CREDITS CARD -->
+      <div class="card" id="usageCard">
+        <div class="ch">
+          <h3><div class="ch-icon blue"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>API Credits</h3>
+          <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
+            <span id="usageTierBadge"></span>
+            <button class="ctog" id="togUsage" onclick="toggleCb('usagePanel','togUsage')">▾</button>
+          </div>
+        </div>
+        <div class="cb" id="usagePanel">
+          <div class="empty"><div class="ei"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.35"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><p>Loading usage…</p></div>
+        </div>
+      </div>
+
       <div class="card" id="leadsWrap">
         <div class="ch">
-          <h3><div class="ch-icon green">📦</div>Buyer Leads</h3>
+          <h3><div class="ch-icon green"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>Buyer Leads</h3>
           <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
             <span id="leadsSub" style="font-size:12px;color:var(--text3)"></span>
             <button class="ctog" id="togLeads" onclick="toggleCb('leadsPreview','togLeads')">▾</button>
           </div>
         </div>
         <div class="cb" id="leadsPreview">
-          <div class="empty"><div class="ei">📦</div><p>No leads yet.</p></div>
+          <div class="empty"><div class="ei"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.35"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><p>No leads yet.</p></div>
         </div>
         <a href="leads.html" class="va">View all leads <span class="va-arr">→</span></a>
       </div>
@@ -495,6 +534,40 @@ body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;background:var(--b
 <div class="toast" id="toast"></div>
 
 <script>
+// ── SVG ICON HELPER ──────────────────────────────────────────
+const ICONS={
+  'bar-chart':'<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+  'storefront':'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V11a4 4 0 00-8 0v10"/><path d="M2 7l2-5h16l2 5"/>',
+  'trophy':'<path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.29 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.29 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/>',
+  'package':'<line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+  'key':'<path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>',
+  'credit-card':'<rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>',
+  'phone':'<path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>',
+  'star':'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  'map-pin':'<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>',
+  'dollar-sign':'<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>',
+  'zap':'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+  'alert-triangle':'<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+  'clipboard':'<rect x="9" y="2" width="6" height="4" rx="1" ry="1"/><path d="M9 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2h-3"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/>',
+  'check-circle':'<path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+  'check':'<polyline points="20 6 9 17 4 12"/>',
+  'x-circle':'<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
+  'layout-grid':'<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
+  'compass':'<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+  'search':'<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+  'inbox':'<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/>',
+  'edit-2':'<path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>',
+  'list':'<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
+  'trending-up':'<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>',
+  'robot':'<rect x="3" y="11" width="18" height="10" rx="2"/><path d="M12 3a2 2 0 00-2 2v6h4V5a2 2 0 00-2-2z"/><line x1="8" y1="16" x2="8.01" y2="16"/><line x1="16" y1="16" x2="16.01" y2="16"/>',
+  'refresh-cw':'<path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>',
+  'gem':'<polygon points="6 3 18 3 22 9 12 22 2 9"/><polyline points="2 9 6 3 12 9 18 3 22 9"/><line x1="12" y1="22" x2="12" y2="9"/>',
+  'circle':'<circle cx="12" cy="12" r="10"/>',
+  'crown':'<path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M5 20h14"/>',
+};
+function icon(name,size=16){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0">${ICONS[name]||''}</svg>`;
+}
 const API="/api";
 let seller=JSON.parse(localStorage.getItem("seller")||"null");
 let details=JSON.parse(localStorage.getItem("sellerDetails")||"{}");
@@ -557,7 +630,7 @@ function toggleCb(cbId,btnId){
 let _toastTid;
 function toast(msg,dur=3500,type=""){
   const t=document.getElementById("toast");
-  t.textContent=msg;t.className="toast show"+(type?" "+type:"");
+  t.innerHTML=msg;t.className="toast show"+(type?" "+type:"");
   clearTimeout(_toastTid);
   _toastTid=setTimeout(()=>t.classList.remove("show"),dur);
 }
@@ -586,7 +659,7 @@ function initWelcome(){
   seller=JSON.parse(localStorage.getItem("seller")||"{}");
   details=JSON.parse(localStorage.getItem("sellerDetails")||"{}");
   const name=seller.name?.split(" ")[0]||"there";
-  document.getElementById("wTitle").textContent="Welcome back, "+name+" 👋";
+  document.getElementById("wTitle").textContent="Welcome back, "+name;
   document.getElementById("wSub").textContent=
     [(seller.city||""),(seller.state||"")].filter(Boolean).join(", ")+(seller.category?" · "+seller.category:"");
   const av=document.getElementById("navAvatar");
@@ -625,7 +698,7 @@ function renderProfile(){
     h+=`<div style="margin-top:14px;background:rgba(255,159,10,.07);
         border:1px solid rgba(255,159,10,.15);border-radius:10px;
         padding:12px 14px;font-size:13px;color:var(--orange);line-height:1.55">
-      ⚠️ Add more details for better analysis.
+      ${icon('alert-triangle',14)} Add more details for better analysis.
       <a href="onboard.html" style="color:var(--orange);font-weight:700;margin-left:6px">Complete →</a>
     </div>`;
   }
@@ -645,7 +718,7 @@ function renderCompPreview(comps){
       <div class="cirk ${cls}">${i+1}</div>
       <div style="min-width:0">
         <div class="ci-name">${esc(c.name)}</div>
-        <div class="ci-sub">${c.rating?`⭐ ${c.rating} (${c.reviews})`:""} ${c.phone?`· 📞 ${esc(c.phone)}`:""}</div>
+        <div class="ci-sub">${c.rating?`${icon('star',11)} ${c.rating} (${c.reviews})`:""} ${c.phone?`· ${icon('phone',11)} ${esc(c.phone)}`:""}</div>
       </div>
     </div>`;
   }).join("");
@@ -666,7 +739,7 @@ async function loadLeads(){
           <span class="li-name">${esc(l.product)}</span>
           <span class="badge-g">Active</span>
         </div>
-        <div class="li-meta">📍 ${esc(l.city)} · 💰 ${l.budget_max>0?`₹${Number(l.budget_min).toLocaleString("en-IN")}–₹${Number(l.budget_max).toLocaleString("en-IN")}`:"Budget N/A"}</div>
+        <div class="li-meta">${icon('map-pin',11)} ${esc(l.city)} · ${icon('dollar-sign',11)} ${l.budget_max>0?`₹${Number(l.budget_min).toLocaleString("en-IN")}–₹${Number(l.budget_max).toLocaleString("en-IN")}`:"Budget N/A"}</div>
       </div>`).join("");
   }catch(e){}
 }
@@ -675,9 +748,9 @@ loadLeads();
 /* COPY TAG */
 function copyTag(el,text){
   navigator.clipboard?.writeText(text).then(()=>{
-    const orig=el.textContent;
-    el.classList.add("copied");el.textContent="✓ Copied";
-    setTimeout(()=>{el.classList.remove("copied");el.textContent=orig},1800);
+    const orig=el.innerHTML;
+    el.classList.add("copied");el.innerHTML=icon('check',12)+' Copied';
+    setTimeout(()=>{el.classList.remove("copied");el.innerHTML=orig},1800);
   }).catch(()=>toast("Copy not supported",2000));
 }
 
@@ -690,15 +763,15 @@ function renderReport(s){
   const tc=s.top_competitor;
   if(tc?.name){
     h+=`<div style="margin-bottom:24px">
-      <div class="slbl">🏆 Top Local Competitor</div>
+      <div class="slbl">${icon('trophy',11)} Top Local Competitor</div>
       <div class="tcc">
-        <div class="tcc-name">🥊 ${esc(tc.name)}</div>
+        <div class="tcc-name">${icon('trending-up',14)} ${esc(tc.name)}</div>
         <div class="tcc-sub">Currently winning your local market</div>
         <div class="tcc-why">${esc(tc.why_winning||"")}</div>
       </div>`;
     if((tc.their_strengths||[]).length){
       h+=`<div class="slbl">Why they're ahead</div>`;
-      h+=tc.their_strengths.map(t=>`<div class="ri"><span class="ic">⚡</span><p>${esc(t)}</p></div>`).join("");
+      h+=tc.their_strengths.map(t=>`<div class="ri"><span class="ic">${icon('zap',13)}</span><p>${esc(t)}</p></div>`).join("");
     }
     if((tc.how_to_beat_them||[]).length){
       h+=`<div class="slbl" style="color:var(--blue)">How to beat them</div>`;
@@ -707,25 +780,25 @@ function renderReport(s){
     h+=`</div>`;
   }
   if((s.bottlenecks||[]).length){
-    h+=`<div style="margin-bottom:24px"><div class="slbl">🚧 What's Blocking Your Sales</div>`;
-    h+=s.bottlenecks.map(b=>`<div class="ri"><span class="ic">⚠️</span><p>${esc(b)}</p></div>`).join("");
+    h+=`<div style="margin-bottom:24px"><div class="slbl">${icon('alert-triangle',11)} What's Blocking Your Sales</div>`;
+    h+=s.bottlenecks.map(b=>`<div class="ri"><span class="ic">${icon('alert-triangle',13)}</span><p>${esc(b)}</p></div>`).join("");
     h+=`</div>`;
   }
   if((s.weekly_actions||[]).length){
-    h+=`<div style="margin-bottom:24px"><div class="slbl">📋 This Week's Priority Actions</div>`;
+    h+=`<div style="margin-bottom:24px"><div class="slbl">${icon('list',11)} This Week's Priority Actions</div>`;
     h+=s.weekly_actions.map((a,i)=>`<div class="ri"><div class="rnum">${i+1}</div><p>${esc(a)}</p></div>`).join("");
     h+=`</div>`;
   }
   if((s.keyword_targets||[]).length){
     h+=`<div style="margin-bottom:4px">
-      <div class="slbl">🔑 Keyword Targets
+      <div class="slbl">${icon('key',11)} Keyword Targets
         <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)"> — tap to copy</span>
       </div>
       <div class="tags">`;
     h+=s.keyword_targets.map(k=>`<span class="tag" onclick="copyTag(this,'${esc(k)}')">${esc(k)}</span>`).join("");
     h+=`</div></div>`;
   }
-  if(!h)h=`<div class="empty"><div class="ei">🤖</div><p>Re-run analysis to generate strategy.</p></div>`;
+  if(!h)h=`<div class="empty"><div class="ei">${icon('robot',28)}</div><p>Re-run analysis to generate strategy.</p></div>`;
   document.getElementById("reportBody").innerHTML=h;
 }
 
@@ -789,22 +862,96 @@ async function runResearch(){
     document.getElementById("rTime").textContent="Last run: "+now;
     renderReport(data.strategy);
     renderCompPreview(data.competitors||[]);
-    toast("✅ Analysis complete!",3500,"ok");
+    toast(`${icon('check-circle',14)} Analysis complete!`,3500,"ok");
+    loadUsage();
   }catch(err){
     clearInterval(tick);
     document.getElementById("loaderBox").style.display="none";
     document.getElementById("ctaBox").style.display="block";
     document.getElementById("ctaBox").innerHTML=`<div class="cta-box">
-      <div class="cta-orb" style="background:rgba(255,69,58,.1);border-color:rgba(255,69,58,.2);animation:none">⚠️</div>
+      <div class="cta-orb" style="background:rgba(255,69,58,.1);border-color:rgba(255,69,58,.2);animation:none">${icon('alert-triangle',24)}</div>
       <h3>Analysis Failed</h3>
       <p style="color:var(--red)">${esc(err.message)}</p>
       <div class="cta-btns"><button class="cta-primary" onclick="runResearch()">Retry →</button></div>
     </div>`;
-    toast("❌ "+err.message,6000,"err");
+    toast(`${icon('x-circle',14)} `+err.message,6000,"err");
   }finally{
     document.getElementById("loaderBox").style.display="none";
     document.getElementById("topBtn").disabled=false;
   }
+}
+
+/* USAGE */
+async function loadUsage(){
+  const s=JSON.parse(localStorage.getItem("seller")||"{}");
+  if(!s.id)return;
+  try{
+    const r=await fetch(`${API}/seller-usage.php?seller_id=${s.id}`);
+    const d=await r.json();
+    if(!d.success)return;
+    renderUsage(d);
+  }catch(e){}
+}
+
+function renderUsage(d){
+  const tier=d.tier||"free";
+  const limits=d.limits||{free:2,basic:10,pro:30,enterprise:-1};
+  const usage=d.usage||[];
+  const limit=limits[tier];
+  const tierLabels={free:"Free",basic:"Basic",pro:"Pro",enterprise:"Enterprise"};
+  const tierBadgeClass={free:"usage-tier-free",basic:"usage-tier-basic",pro:"usage-tier-pro",enterprise:"usage-tier-enterprise"};
+  const tierIcons={free:icon('circle',11),basic:icon('circle',11),pro:icon('gem',11),enterprise:icon('crown',11)};
+
+  const badgeEl=document.getElementById("usageTierBadge");
+  if(badgeEl){
+    badgeEl.innerHTML=`<span class="usage-tier-badge ${tierBadgeClass[tier]||'usage-tier-free'}">${tierIcons[tier]||''} ${tierLabels[tier]||tier}</span>`;
+  }
+
+  const featureNames={analyze:`${icon('search',13)} Analyze`,competitor_intel:`${icon('compass',13)} Competitor Intel`};
+  const features=["analyze","competitor_intel"];
+  let totalUsedThisMonth=0;
+  let totalLimit=0;
+
+  let html='<div class="usage-feat">';
+  features.forEach(feat=>{
+    const row=usage.find(u=>u.feature===feat)||{this_month:0,total:0};
+    const used=parseInt(row.this_month||0);
+    totalUsedThisMonth+=used;
+    const pct=limit&&limit!==-1?Math.min(100,Math.round(used/limit*100)):0;
+    const barColor=pct>=100?"var(--red)":pct>=80?"var(--orange)":"var(--blue)";
+    if(limit!==-1)totalLimit+=limit;
+    html+=`<div class="usage-row">
+      <div class="usage-row-top">
+        <span class="usage-feat-name">${featureNames[feat]||feat}</span>
+        <span class="usage-counts">${used}${limit&&limit!==-1?" / "+limit:""} this month</span>
+      </div>
+      ${limit&&limit!==-1?`<div class="usage-bar-wrap"><div class="usage-bar-fill" id="ubar-${feat}" style="background:${barColor};width:0%"></div></div>`
+        :`<div style="font-size:11px;color:var(--green);display:flex;align-items:center;gap:5px">${icon('check-circle',11)} Unlimited</div>`}
+      <div style="margin-top:6px;font-size:11px;color:var(--text3)">${row.total||0} total all-time</div>
+    </div>`;
+  });
+  html+='</div>';
+
+  if(limit&&limit!==-1&&totalLimit>0){
+    const overallPct=Math.round(totalUsedThisMonth/totalLimit*100);
+    if(overallPct>=80){
+      html+=`<div class="usage-upgrade-hint">${icon('alert-triangle',14)}<div>You've used <strong>${overallPct}%</strong> of your monthly credits. ${overallPct>=100?'<strong>Upgrade to continue using features.</strong>':'Consider upgrading for more.'}</div></div>`;
+    }
+  }
+
+  document.getElementById("usagePanel").innerHTML=html;
+
+  setTimeout(()=>{
+    features.forEach(feat=>{
+      const row=usage.find(u=>u.feature===feat)||{this_month:0,total:0};
+      const used=parseInt(row.this_month||0);
+      const pct=limit&&limit!==-1?Math.min(100,Math.round(used/limit*100)):0;
+      const el=document.getElementById("ubar-"+feat);
+      if(el)el.style.width=pct+"%";
+    });
+  },80);
+
+  animCount(document.getElementById("kpiCredits"),totalUsedThisMonth);
 }
 
 /* INIT */
@@ -814,7 +961,7 @@ window.addEventListener("DOMContentLoaded",()=>{
     history.replaceState({},"","dashboard.html");
     localStorage.removeItem("lastReport");
     initWelcome();renderProfile();
-    toast("✅ Profile saved — running analysis…",3000,"ok");
+    toast(`${icon('check-circle',14)} Profile saved — running analysis…`,3000,"ok");
     setTimeout(runResearch,800);
   }else{
     const cached=JSON.parse(localStorage.getItem("lastReport")||"null");
@@ -826,6 +973,7 @@ window.addEventListener("DOMContentLoaded",()=>{
       if(cached.timestamp)document.getElementById("rTime").textContent="Last run: "+cached.timestamp;
     }
   }
+  loadUsage();
 });
 </script>
 </body>
