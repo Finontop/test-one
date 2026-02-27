@@ -99,6 +99,18 @@ $competitors  = isset($body["competitors"]) && is_array($body["competitors"])
 
 if (!$sid) respond(["success" => false, "error" => "seller_id required"]);
 
+// ── Credit check ───────────────────────────────────────────────────
+$credit = checkUsage($sid, "competitor_intel");
+if (!$credit["allowed"]) {
+    respond([
+        "success" => false,
+        "error"   => $credit["error"] ?? "Usage limit reached",
+        "tier"    => $credit["tier"] ?? "free",
+        "used"    => $credit["used"] ?? 0,
+        "limit"   => $credit["limit"] ?? 0,
+    ]);
+}
+
 // ── Load seller from DB (same query pattern as seller_reserch_.php) ─
 try {
     $stmt = db()->prepare("

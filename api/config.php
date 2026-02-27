@@ -81,23 +81,92 @@ function db() {
     return $pdo;
 }
 
+// ── Subscription tier limits (analyzes per month, -1 = unlimited) ──
+define("TIER_LIMITS", [
+    "free"       => 2,
+    "basic"      => 10,
+    "pro"        => 30,
+    "enterprise" => -1,
+]);
+
+// ── Check & increment usage; returns true if allowed ────────────────
+function checkUsage($seller_id, $feature = "analyze") {
+    $pdo = db();
+
+    // Get seller tier
+    try {
+        $st = $pdo->prepare("SELECT COALESCE(subscription_tier,'free') AS tier FROM sellers WHERE id=? LIMIT 1");
+        $st->execute([$seller_id]);
+        $row = $st->fetch();
+    } catch (Exception $e) {
+        return ["allowed" => true]; // fail open if column missing
+    }
+    if (!$row) return ["allowed" => false, "error" => "Seller not found"];
+
+    $tier   = $row["tier"] ?? "free";
+    $limits = TIER_LIMITS;
+    $limit  = isset($limits[$tier]) ? $limits[$tier] : 2;
+
+    if ($limit === -1) {
+        // Unlimited — still track usage but always allow
+        try {
+            $pdo->prepare("INSERT INTO seller_usage (seller_id, feature, used_at)
+                VALUES (?, ?, NOW())")->execute([$seller_id, $feature]);
+        } catch (Exception $e) {}
+        return ["allowed" => true, "tier" => $tier, "limit" => -1];
+    }
+
+    // Count usage this calendar month
+    try {
+        $cu = $pdo->prepare("SELECT COUNT(*) AS cnt FROM seller_usage
+            WHERE seller_id=? AND feature=?
+              AND YEAR(used_at)=YEAR(NOW()) AND MONTH(used_at)=MONTH(NOW())");
+        $cu->execute([$seller_id, $feature]);
+        $used = (int)($cu->fetch()["cnt"] ?? 0);
+    } catch (Exception $e) {
+        return ["allowed" => true]; // fail open if table missing
+    }
+
+    if ($used >= $limit) {
+        return [
+            "allowed" => false,
+            "error"   => "Monthly limit reached. Your {$tier} plan allows {$limit} {$feature}s per month. Upgrade to continue.",
+            "tier"    => $tier,
+            "used"    => $used,
+            "limit"   => $limit,
+        ];
+    }
+
+    // Record usage
+    try {
+        $pdo->prepare("INSERT INTO seller_usage (seller_id, feature, used_at)
+            VALUES (?, ?, NOW())")->execute([$seller_id, $feature]);
+    } catch (Exception $e) {}
+
+    return ["allowed" => true, "tier" => $tier, "used" => $used + 1, "limit" => $limit];
+}
+
 // ── Tables WITHOUT foreign keys (InfinityFree compatible) ──────
 function setupDB() {
     try {
         $pdo = db();
 
         $pdo->exec("CREATE TABLE IF NOT EXISTS sellers (
-            id         INT AUTO_INCREMENT PRIMARY KEY,
-            name       VARCHAR(255) NOT NULL,
-            category   VARCHAR(255) NOT NULL,
-            city       VARCHAR(255) NOT NULL,
-            state      VARCHAR(255) NOT NULL,
-            website    VARCHAR(500) DEFAULT NULL,
-            contact    VARCHAR(50)  NOT NULL,
-            email      VARCHAR(255) NOT NULL UNIQUE,
-            password   VARCHAR(255) NOT NULL,
-            created_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+            id                INT AUTO_INCREMENT PRIMARY KEY,
+            name              VARCHAR(255) NOT NULL,
+            category          VARCHAR(255) NOT NULL,
+            city              VARCHAR(255) NOT NULL,
+            state             VARCHAR(255) NOT NULL,
+            website           VARCHAR(500) DEFAULT NULL,
+            contact           VARCHAR(50)  NOT NULL,
+            email             VARCHAR(255) NOT NULL UNIQUE,
+            password          VARCHAR(255) NOT NULL,
+            subscription_tier VARCHAR(20)  NOT NULL DEFAULT 'free',
+            created_at        TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4");
+
+        // Safely add subscription_tier to existing sellers tables
+        try { $pdo->exec("ALTER TABLE sellers ADD COLUMN subscription_tier VARCHAR(20) NOT NULL DEFAULT 'free'"); } catch (Throwable $_) {}
 
         $pdo->exec("CREATE TABLE IF NOT EXISTS buyers (
             id          INT AUTO_INCREMENT PRIMARY KEY,
@@ -187,6 +256,14 @@ function setupDB() {
             working_hours    VARCHAR(100) DEFAULT NULL,
             delivery_radius  VARCHAR(100) DEFAULT NULL,
             updated_at       TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4");
+
+        $pdo->exec("CREATE TABLE IF NOT EXISTS seller_usage (
+            id          INT AUTO_INCREMENT PRIMARY KEY,
+            seller_id   INT         NOT NULL,
+            feature     VARCHAR(50) NOT NULL DEFAULT 'analyze',
+            used_at     DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            INDEX idx_usage (seller_id, feature, used_at)
         ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4");
 
     } catch (PDOException $e) {

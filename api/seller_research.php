@@ -44,6 +44,18 @@ $body = json_decode($raw, true);
 $sid  = isset($body["seller_id"]) ? (int)$body["seller_id"] : 0;
 if (!$sid) respond(array("success"=>false,"error"=>"seller_id required"));
 
+// ── Credit check ───────────────────────────────────────────────
+$credit = checkUsage($sid, "analyze");
+if (!$credit["allowed"]) {
+    respond(array(
+        "success" => false,
+        "error"   => $credit["error"] ?? "Usage limit reached",
+        "tier"    => $credit["tier"] ?? "free",
+        "used"    => $credit["used"] ?? 0,
+        "limit"   => $credit["limit"] ?? 0,
+    ));
+}
+
 // ── Load seller ────────────────────────────────────────────────
 try {
     $stmt = db()->prepare("

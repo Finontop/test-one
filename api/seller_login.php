@@ -77,6 +77,7 @@ try {
 
 // ── Fetch seller ───────────────────────────────────────────────────
 $sql  = "SELECT id, name, email, city, state, category, website, contact,
+                COALESCE(subscription_tier,'free') AS subscription_tier,
                 `$pwdCol` AS password_hash
          FROM sellers
          WHERE email = ?
@@ -166,15 +167,16 @@ try {
 respond([
     'success' => true,
     'seller'  => [
-        'id'        => (int)$row['id'],
-        'seller_id' => (int)$row['id'],
-        'name'      => $row['name']     ?? '',
-        'email'     => $row['email']    ?? '',
-        'city'      => $row['city']     ?? '',
-        'state'     => $row['state']    ?? '',
-        'category'  => $row['category'] ?? '',
-        'website'   => $row['website']  ?? '',
-        'contact'   => $row['contact']  ?? '',
+        'id'                => (int)$row['id'],
+        'seller_id'         => (int)$row['id'],
+        'name'              => $row['name']              ?? '',
+        'email'             => $row['email']             ?? '',
+        'city'              => $row['city']              ?? '',
+        'state'             => $row['state']             ?? '',
+        'category'          => $row['category']          ?? '',
+        'website'           => $row['website']           ?? '',
+        'contact'           => $row['contact']           ?? '',
+        'subscription_tier' => $row['subscription_tier'] ?? 'free',
     ],
     'details' => $details,
 ]);
